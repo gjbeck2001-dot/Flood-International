@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flood Systems — Brand Operating System</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0A0A0A;
+    --off-black: #111111;
+    --card-bg: #161616;
+    --border: rgba(255,255,255,0.08);
+    --border-light: rgba(255,255,255,0.14);
+    --white: #FFFFFF;
+    --off-white: #E8E8E8;
+    --muted: #888888;
+    --accent: #C8F04D;
+    --accent-dark: #A8CC35;
+    --text-sm: 13px;
+    --text-base: 16px;
+    --text-lg: 20px;
+    --text-xl: 28px;
+    --text-2xl: 40px;
+    --text-3xl: 58px;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-logo { font-size: 15px; font-weight: 600; letter-spacing: 0.04em; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { font-size: var(--text-sm); color: var(--muted); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--accent); color: var(--black);
+    font-size: var(--text-sm); font-weight: 600;
+    padding: 10px 22px; border-radius: var(--radius-sm);
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent-dark); }
+
+  /* SECTIONS */
+  section { padding: 120px 48px; max-width: 1100px; margin: 0 auto; }
+
+  /* HERO */
+  .hero {
+    padding-top: 180px;
+    padding-bottom: 120px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(200,240,77,0.1); border: 0.5px solid rgba(200,240,77,0.3);
+    color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 6px 16px; border-radius: 100px; margin-bottom: 32px;
+  }
+  .hero h1 {
+    font-size: clamp(38px, 6vw, 68px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    color: var(--white);
+  }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero p {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--muted);
+    max-width: 580px;
+    margin: 0 auto 44px;
+    line-height: 1.65;
+  }
+  .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: var(--black);
+    font-size: 15px; font-weight: 700;
+    padding: 16px 36px; border-radius: var(--radius-sm);
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent; color: var(--off-white);
+    font-size: 15px; font-weight: 500;
+    padding: 16px 36px; border-radius: var(--radius-sm);
+    border: 0.5px solid var(--border-light);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.04); }
+
+  /* STAT BAR */
+  .stat-bar {
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    padding: 40px 48px;
+    display: flex; justify-content: center; gap: 80px; flex-wrap: wrap;
+    background: var(--off-black);
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 36px; font-weight: 700; letter-spacing: -0.03em; color: var(--white); }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* PROBLEM */
+  .problem { text-align: center; }
+  .section-tag {
+    display: inline-block;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 20px;
+  }
+  .problem h2 {
+    font-size: clamp(28px, 4vw, 48px); font-weight: 700; letter-spacing: -0.025em;
+    line-height: 1.1; margin-bottom: 20px;
+  }
+  .problem p { font-size: var(--text-lg); color: var(--muted); max-width: 600px; margin: 0 auto 60px; }
+  .problem-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    background: var(--border); border-radius: var(--radius); overflow: hidden;
+  }
+  .problem-card {
+    background: var(--card-bg);
+    padding: 36px 28px;
+    text-align: left;
+  }
+  .problem-icon { font-size: 28px; margin-bottom: 16px; }
+  .problem-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+  .problem-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* HOW IT WORKS */
+  .hiw { }
+  .hiw-header { text-align: center; margin-bottom: 72px; }
+  .hiw-header h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 700; letter-spacing: -0.025em; margin-bottom: 16px; }
+  .hiw-header p { font-size: var(--text-lg); color: var(--muted); max-width: 520px; margin: 0 auto; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
+  .step { background: var(--card-bg); padding: 36px 24px; }
+  .step-num { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; }
+  .step h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; line-height: 1.3; }
+  .step p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* FEATURES */
+  .features { }
+  .features-header { text-align: center; margin-bottom: 72px; }
+  .features-header h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 700; letter-spacing: -0.025em; margin-bottom: 16px; }
+  .features-header p { font-size: var(--text-lg); color: var(--muted); max-width: 520px; margin: 0 auto; }
+  .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
+  .feature-card { background: var(--card-bg); padding: 40px 36px; }
+  .feature-card.accent-card { background: var(--accent); }
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: var(--radius-sm);
+    background: rgba(200,240,77,0.12); border: 0.5px solid rgba(200,240,77,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 20px;
+  }
+  .accent-card .feature-icon { background: rgba(0,0,0,0.15); border-color: rgba(0,0,0,0.2); }
+  .feature-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
+  .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .accent-card h3 { color: var(--black); }
+  .accent-card p { color: rgba(0,0,0,0.65); }
+  .feature-list { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .feature-list li { font-size: 13px; color: var(--muted); display: flex; align-items: flex-start; gap: 8px; }
+  .feature-list li::before { content: "→"; color: var(--accent); flex-shrink: 0; font-size: 13px; }
+  .accent-card .feature-list li { color: rgba(0,0,0,0.65); }
+  .accent-card .feature-list li::before { color: var(--black); }
+
+  /* PRICING */
+  .pricing { }
+  .pricing-header { text-align: center; margin-bottom: 72px; }
+  .pricing-header h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 700; letter-spacing: -0.025em; margin-bottom: 16px; }
+  .pricing-header p { font-size: var(--text-lg); color: var(--muted); max-width: 520px; margin: 0 auto; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .pricing-card {
+    background: var(--card-bg); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 36px 28px;
+    display: flex; flex-direction: column;
+  }
+  .pricing-card.featured { border-color: var(--accent); background: var(--off-black); }
+  .featured-badge {
+    background: var(--accent); color: var(--black);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 100px;
+    display: inline-block; margin-bottom: 20px; align-self: flex-start;
+  }
+  .tier-name { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .tier-price { font-size: 42px; font-weight: 700; letter-spacing: -0.03em; color: var(--white); line-height: 1; }
+  .tier-price span { font-size: 16px; font-weight: 400; color: var(--muted); }
+  .tier-desc { font-size: 13px; color: var(--muted); margin: 12px 0 28px; line-height: 1.5; }
+  .tier-divider { border: none; border-top: 0.5px solid var(--border); margin-bottom: 24px; }
+  .tier-features { list-style: none; display: flex; flex-direction: column; gap: 12px; flex: 1; margin-bottom: 32px; }
+  .tier-features li { font-size: 13px; color: var(--off-white); display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
+  .check { color: var(--accent); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .tier-btn {
+    display: block; text-align: center;
+    padding: 14px; border-radius: var(--radius-sm);
+    font-size: 14px; font-weight: 600;
+    border: 0.5px solid var(--border-light);
+    color: var(--white);
+    transition: background 0.2s, border-color 0.2s;
+    margin-top: auto;
+  }
+  .tier-btn:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); }
+  .tier-btn.featured-btn { background: var(--accent); color: var(--black); border-color: var(--accent); }
+  .tier-btn.featured-btn:hover { background: var(--accent-dark); }
+  .setup-note { text-align: center; margin-top: 24px; font-size: 13px; color: var(--muted); }
+  .setup-note span { color: var(--off-white); }
+
+  /* WHO IT'S FOR */
+  .who { }
+  .who-header { text-align: center; margin-bottom: 72px; }
+  .who-header h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 700; letter-spacing: -0.025em; margin-bottom: 16px; }
+  .who-header p { font-size: var(--text-lg); color: var(--muted); max-width: 520px; margin: 0 auto; }
+  .who-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
+  .who-card { background: var(--card-bg); padding: 36px; }
+  .who-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+  .who-card p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    background: var(--off-black);
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    padding: 120px 48px;
+  }
+  .cta-section h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; }
+  .cta-section h2 em { color: var(--accent); font-style: normal; }
+  .cta-section p { font-size: var(--text-lg); color: var(--muted); max-width: 500px; margin: 0 auto 44px; }
+
+  /* FOOTER */
+  footer {
+    padding: 48px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: gap;
+    border-top: 0.5px solid var(--border);
+    max-width: 1100px; margin: 0 auto;
+  }
+  .footer-logo { font-size: 14px; font-weight: 600; }
+  .footer-logo span { color: var(--accent); }
+  .footer-copy { font-size: 12px; color: var(--muted); }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    nav .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .stat-bar { padding: 32px 24px; gap: 40px; }
+    .problem-grid, .steps, .features-grid, .who-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .cta-section { padding: 80px 24px; }
+    footer { padding: 32px 24px; flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">FLOOD <span>SYSTEMS</span></div>
+  <div class="nav-links">
+    <a href="#how-it-works">How It Works</a>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#who">Who It's For</a>
+  </div>
+  <a class="nav-cta" data-tally-open="YOUR_FORM_A_ID" data-tally-overlay="1" data-tally-width="560">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Brand Operating System</div>
+  <h1>Your brand.<br><em>Running on intelligence.</em></h1>
+  <p>Flood Systems gives companies, creatives, and athletes the AI infrastructure to analyze, build, automate, and grow — without hiring a team or giving up ownership.</p>
+  <div class="hero-actions">
+    <a class="btn-primary" data-tally-open="YOUR_FORM_A_ID" data-tally-overlay="1" data-tally-width="560">Start Building</a>
+    <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+  </div>
+</section>
+
+<!-- STAT BAR -->
+<div class="stat-bar">
+  <div class="stat">
+    <div class="stat-num">3<span>x</span></div>
+    <div class="stat-label">Average content output increase</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">48<span>hrs</span></div>
+    <div class="stat-label">From intake to live system</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">100<span>%</span></div>
+    <div class="stat-label">You own everything built</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">1<span> platform</span></div>
+    <div class="stat-label">For every part of your brand</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <p class="section-tag">The Problem</p>
+  <h2>Most brands are leaking<br>time, money, and position.</h2>
+  <p>The infrastructure that serious brands run on is expensive, complicated, and usually comes with a catch. Not anymore.</p>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-icon">⏱</div>
+      <h3>Manual content burns hours</h3>
+      <p>Creating, scheduling, and managing content manually takes time away from the work that actually builds your brand and generates revenue.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">📉</div>
+      <h3>No data, no direction</h3>
+      <p>Most brands post and hope. Without real intelligence on what your audience wants and when to move, you're guessing every time.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">💸</div>
+      <h3>Agencies cost ownership</h3>
+      <p>Hiring an agency means giving up your voice, your relationships, and sometimes your equity. The infrastructure shouldn't cost you the thing you're building.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="hiw" id="how-it-works">
+  <div class="hiw-header">
+    <p class="section-tag">How It Works</p>
+    <h2>Four steps to a brand<br>that runs itself.</h2>
+    <p>You input your brand. The system builds around it. You stay in control while we handle the execution.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">Step 01</div>
+      <h3>Brand Intake</h3>
+      <p>You complete a deep intake form — your brand identity, goals, audience, content history, and what you want to build. This is what the AI trains on.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 02</div>
+      <h3>AI Brand Analysis</h3>
+      <p>The system analyzes your brand across every dimension — what you're strong in, where you're leaking, and exactly what to prioritize to grow faster.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 03</div>
+      <h3>System Build</h3>
+      <p>Your content pipeline, automation, tracking dashboard, and branded landing page are built and calibrated specifically to your brand — not a template.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">Step 04</div>
+      <h3>Launch & Track</h3>
+      <p>Your brand goes live on automation. You approve content before it posts, track performance in real time, and get monthly intelligence reports on what's moving.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-header">
+    <p class="section-tag">The Platform</p>
+    <h2>Everything your brand needs.<br>One operating system.</h2>
+    <p>Built on AI. Powered by Flood International's cultural infrastructure. Owned entirely by you.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🧠</div>
+      <h3>AI Brand Gap Analysis</h3>
+      <p>Deep analysis of what your brand is doing well and where it's losing ground — across content, positioning, audience engagement, and market presence.</p>
+      <ul class="feature-list">
+        <li>Strengths and gap report delivered at onboarding</li>
+        <li>Updated quarterly as your brand evolves</li>
+        <li>Prioritized action plan included</li>
+      </ul>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚙️</div>
+      <h3>Content Pipeline Automation</h3>
+      <p>Your brand voice, pillars, and audience data feed an AI content system that generates ready-to-post content — calibrated to you, not generic.</p>
+      <ul class="feature-list">
+        <li>Up to 10 posts per week across platforms</li>
+        <li>24-hour approval queue — you control what goes live</li>
+        <li>Platform-specific formatting built in</li>
+      </ul>
+    </div>
+    <div class="feature-card accent-card">
+      <div class="feature-icon">🎬</div>
+      <h3>Production Integration</h3>
+      <p>Upload your own footage or bring in Flood's production team. Either way, the editing, formatting, and distribution is handled inside the platform.</p>
+      <ul class="feature-list">
+        <li>Upload portal for your own raw content</li>
+        <li>Flood production team available at Tier 3</li>
+        <li>Edited content delivered and scheduled automatically</li>
+      </ul>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Live Tracking Dashboard</h3>
+      <p>Real-time performance data on every piece of content, every platform, and every audience signal — all in one place. No more pulling reports manually.</p>
+      <ul class="feature-list">
+        <li>Engagement, growth, and reach in real time</li>
+        <li>Monthly intelligence report delivered automatically</li>
+        <li>What's working, what's not, what's next</li>
+      </ul>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <h3>Custom Brand Landing Page</h3>
+      <p>A tailored landing page built for your brand — not a generic template. Designed to keep clients and audiences engaged and moving toward your offer.</p>
+      <ul class="feature-list">
+        <li>Built during onboarding, live within 48 hours</li>
+        <li>Updated automatically as your brand evolves</li>
+        <li>Optimized for audience conversion</li>
+      </ul>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💬</div>
+      <h3>Community Intelligence</h3>
+      <p>The system monitors what your audience is saying and doing — surfacing what they want next, who your most engaged followers are, and when to make your next move.</p>
+      <ul class="feature-list">
+        <li>Audience signal monitoring across platforms</li>
+        <li>Drop and launch timing recommendations</li>
+        <li>Monthly community intelligence summary</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing-header">
+    <p class="section-tag">Pricing</p>
+    <h2>Built for where you are.<br>Priced for where you're going.</h2>
+    <p>Every tier includes full system setup. You own everything that gets built.</p>
+  </div>
+  <div class="pricing-grid">
+
+    <div class="pricing-card">
+      <div class="tier-name">Foundation</div>
+      <div class="tier-price">$997<span>/mo</span></div>
+      <p class="tier-desc">For creatives and small brands ready to stop guessing and start operating with real infrastructure.</p>
+      <hr class="tier-divider">
+      <ul class="tier-features">
+        <li><span class="check">✓</span> AI brand intake + gap analysis report</li>
+        <li><span class="check">✓</span> Content pipeline (up to 5 posts/week)</li>
+        <li><span class="check">✓</span> 24-hour approval queue</li>
+        <li><span class="check">✓</span> Custom brand landing page</li>
+        <li><span class="check">✓</span> Live tracking dashboard</li>
+        <li><span class="check">✓</span> Monthly performance report</li>
+      </ul>
+      <a class="tier-btn" data-tally-open="YOUR_FORM_A_ID" data-tally-overlay="1" data-tally-width="560">Get Started</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="featured-badge">Most Popular</div>
+      <div class="tier-name">Builder</div>
+      <div class="tier-price">$2,500<span>/mo</span></div>
+      <p class="tier-desc">For brands actively growing who need full content infrastructure, intelligence, and strategic direction.</p>
+      <hr class="tier-divider">
+      <ul class="tier-features">
+        <li><span class="check">✓</span> Everything in Foundation</li>
+        <li><span class="check">✓</span> Content pipeline (up to 10 posts/week)</li>
+        <li><span class="check">✓</span> 2–3 platforms managed simultaneously</li>
+        <li><span class="check">✓</span> Monthly brand intelligence report</li>
+        <li><span class="check">✓</span> Community intelligence monitoring</li>
+        <li><span class="check">✓</span> 2 strategy calls/month with Nicholas King</li>
+        <li><span class="check">✓</span> Upload portal for your own content</li>
+      </ul>
+      <a class="tier-btn featured-btn" data-tally-open="YOUR_FORM_A_ID" data-tally-overlay="1" data-tally-width="560">Get Started</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="tier-name">Full Platform + Production</div>
+      <div class="tier-price">$5,000<span>/mo+</span></div>
+      <p class="tier-desc">For companies, athletes, and operators who want full execution — including Flood's production team.</p>
+      <hr class="tier-divider">
+      <ul class="tier-features">
+        <li><span class="check">✓</span> Everything in Builder</li>
+        <li><span class="check">✓</span> Flood production team included</li>
+        <li><span class="check">✓</span> Professional shoots + edited deliverables/month</li>
+        <li><span class="check">✓</span> Full social management + approval layer</li>
+        <li><span class="check">✓</span> Weekly strategy calls</li>
+        <li><span class="check">✓</span> Priority support</li>
+        <li><span class="check">✓</span> Custom scope for agencies + large companies</li>
+      </ul>
+      <a class="tier-btn" data-tally-open="YOUR_FORM_A_ID" data-tally-overlay="1" data-tally-width="560">Get Started</a>
+    </div>
+
+  </div>
+  <p class="setup-note">All tiers include a one-time <span>$500–$750 setup fee</span> covering brand intake, AI analysis, and system calibration.</p>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section class="who" id="who">
+  <div class="who-header">
+    <p class="section-tag">Who It's For</p>
+    <h2>Built for the serious.<br>Not the casual.</h2>
+    <p>Flood Systems is for people who are already building something real and ready to operate at the next level.</p>
+  </div>
+  <div class="who-grid">
+    <div class="who-card">
+      <div class="who-title">Companies & Brands</div>
+      <p>You have a product, a vision, and an audience — but content execution is eating your time and your budget. Flood Systems becomes the infrastructure your marketing team doesn't have yet.</p>
+    </div>
+    <div class="who-card">
+      <div class="who-title">Creatives & Artists</div>
+      <p>You've built something real. Now you need the systems to scale it without signing ownership away. Flood Systems gives you the infrastructure that used to require a label deal or a major agency.</p>
+    </div>
+    <div class="who-card">
+      <div class="who-title">Athletes</div>
+      <p>Your brand has value beyond the sport. Flood Systems builds the infrastructure to turn your platform into an owned asset — consistent, strategic, and growing while you focus on performance.</p>
+    </div>
+    <div class="who-card">
+      <div class="who-title">Agencies & Operators</div>
+      <p>You manage talent or brands and need scalable infrastructure for multiple clients. Flood Systems becomes your backend — AI-powered, consistent, and built for volume without sacrificing quality.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section" id="contact">
+  <h2>Stop building manually.<br><em>Start operating at scale.</em></h2>
+  <p>Book a 20-minute call. We'll assess your brand, identify the gaps, and tell you exactly what the right tier looks like for where you are.</p>
+  <div class="hero-actions">
+    <a class="btn-primary" data-tally-open="YOUR_FORM_A_ID" data-tally-overlay="1" data-tally-width="560">Start Your Intake</a>
+    <a href="#pricing" class="btn-secondary">View Pricing</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">FLOOD <span>SYSTEMS</span> — Part of Flood International</div>
+  <div class="footer-copy">© 2026 Flood International. All rights reserved.</div>
+</footer>
+
+<!-- TALLY EMBED SCRIPT — powers all popup buttons -->
+<script async src="https://tally.so/widgets/embed.js"></script>
+
+</body>
+</html>
