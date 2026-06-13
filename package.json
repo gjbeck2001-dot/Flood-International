@@ -1,0 +1,14 @@
+{
+  "name": "flood-international",
+  "version": "1.0.0",
+  "description": "Flood Systems — Brand Operating System",
+  "private": true,
+  "scripts": {
+    "dev": "npx http-server . -p 3000",
+    "build": "echo 'Static site - no build needed'",
+    "lint": "echo 'No linting configured'"
+  },
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.12"
+  }
+}
