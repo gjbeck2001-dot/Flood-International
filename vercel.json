@@ -1,0 +1,24 @@
+{
+  "outputDirectory": ".",
+  "crons": [
+    {
+      "path": "/api/cron/abandonment",
+      "schedule": "0 8,20 * * *"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://tally.so"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "POST, OPTIONS"
+        }
+      ]
+    }
+  ]
+}
