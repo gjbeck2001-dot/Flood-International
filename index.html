@@ -1,641 +1,341 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flood International — Infrastructure for Cultural Builders</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flood International</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:#05090F;-webkit-font-smoothing:antialiased;font-family:'Archivo',sans-serif;}
+  ::selection{background:#E5352B;color:#fff;}
+  @keyframes floodDrift{0%{transform:scale(1.08) translate(0,0);}100%{transform:scale(1.16) translate(-2%,-3%);}}
+  @keyframes floodMarquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+  @keyframes floodBlink{0%,49%{opacity:1;}50%,100%{opacity:0.15;}}
+  @keyframes floodBob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+  a{color:inherit;text-decoration:none;}
 
-  :root {
-    --black:       #080808;
-    --off-black:   #0f0f0f;
-    --card:        #131313;
-    --card-hover:  #181818;
-    --border:      rgba(255,255,255,0.07);
-    --border-mid:  rgba(255,255,255,0.12);
-    --white:       #ffffff;
-    --off-white:   #e8e8e8;
-    --muted:       #555;
-    --muted-light: #888;
-    --accent:      #C8F04D;
-    --accent-dark: #a8cc35;
-    --accent-glow: rgba(200,240,77,0.15);
-    --radius:      10px;
-    --radius-sm:   6px;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-
-  a { color: inherit; text-decoration: none; }
-  img { display: block; max-width: 100%; }
-
-  /* ─── GRID BACKGROUND ─── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 48px;
-    height: 68px;
-    background: rgba(8,8,8,0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-logo {
-    font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--white);
-  }
-  .nav-logo span { color: var(--accent); }
-  .nav-links { display: flex; gap: 36px; }
-  .nav-links a {
-    font-size: 13px; color: var(--muted-light); letter-spacing: 0.02em;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--white); }
+  /* NAV PORTAL LINK */
   .nav-portal {
-    font-size: 12px; color: var(--muted-light); letter-spacing: 0.06em;
-    text-transform: uppercase; font-weight: 600;
-    padding: 9px 18px; border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-    transition: color 0.2s, border-color 0.2s;
-    white-space: nowrap;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.14em;
+    color:rgba(232,238,244,.6);
+    padding:8px 16px;
+    border:1px solid rgba(232,238,244,.18);
+    border-radius:999px;
+    transition:color .2s,border-color .2s;
+    white-space:nowrap;
   }
-  .nav-portal:hover { color: var(--accent); border-color: var(--accent); }
-  .nav-cta {
-    background: var(--accent); color: var(--black);
-    font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 10px 22px; border-radius: var(--radius-sm);
-    transition: background 0.2s;
-    cursor: pointer;
-  }
-  .nav-cta:hover { background: var(--accent-dark); }
-
-  /* ─── HERO ─── */
-  .hero {
-    position: relative; z-index: 1;
-    padding: 200px 48px 140px;
-    max-width: 1100px; margin: 0 auto;
-    text-align: center;
-  }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(200,240,77,0.08); border: 1px solid rgba(200,240,77,0.2);
-    color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 7px 18px; border-radius: 100px; margin-bottom: 40px;
-  }
-  .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-  .hero h1 {
-    font-size: clamp(44px, 7vw, 84px);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 1.02;
-    margin-bottom: 28px;
-    color: var(--white);
-  }
-  .hero h1 em { color: var(--accent); font-style: normal; }
-  .hero-sub {
-    font-size: clamp(16px, 2vw, 20px);
-    color: var(--muted-light);
-    max-width: 620px; margin: 0 auto 52px;
-    line-height: 1.7;
-  }
-  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 80px; }
-  .btn-primary {
-    background: var(--accent); color: var(--black);
-    font-size: 14px; font-weight: 700; letter-spacing: 0.04em;
-    padding: 16px 36px; border-radius: var(--radius-sm);
-    transition: background 0.2s, transform 0.15s;
-    cursor: pointer; border: none;
-  }
-  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
-  .btn-secondary {
-    background: transparent; color: var(--off-white);
-    font-size: 14px; font-weight: 500;
-    padding: 16px 36px; border-radius: var(--radius-sm);
-    border: 1px solid var(--border-mid);
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .btn-secondary:hover { border-color: rgba(255,255,255,0.28); background: rgba(255,255,255,0.04); }
-
-  /* founder strip */
-  .founder-strip {
-    display: inline-flex; align-items: center; gap: 16px;
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 100px; padding: 12px 24px 12px 12px;
-  }
-  .founder-avatar {
-    width: 40px; height: 40px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; font-weight: 700; color: var(--black); flex-shrink: 0;
-  }
-  .founder-info { text-align: left; }
-  .founder-name { font-size: 13px; font-weight: 600; }
-  .founder-title { font-size: 12px; color: var(--muted-light); }
-
-  /* ─── STAT BAR ─── */
-  .stat-bar {
-    position: relative; z-index: 1;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    background: var(--off-black);
-    padding: 48px;
-    display: flex; justify-content: center; gap: 100px; flex-wrap: wrap;
-  }
-  .stat { text-align: center; }
-  .stat-num { font-size: 42px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
-  .stat-num span { color: var(--accent); }
-  .stat-label { font-size: 12px; color: var(--muted-light); margin-top: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
-
-  /* ─── SECTION SHARED ─── */
-  .section { position: relative; z-index: 1; padding: 120px 48px; max-width: 1100px; margin: 0 auto; }
-  .section-tag {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--accent); display: block; margin-bottom: 20px;
-  }
-  .section-h2 {
-    font-size: clamp(28px, 4vw, 52px); font-weight: 700;
-    letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 16px;
-  }
-  .section-sub { font-size: 18px; color: var(--muted-light); max-width: 520px; line-height: 1.65; }
-  .section-header { margin-bottom: 72px; }
-  .section-header.center { text-align: center; }
-  .section-header.center .section-sub { margin: 0 auto; }
-
-  /* ─── SEGMENTS ─── */
-  .segments-wrap { background: var(--off-black); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .segments-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
-  .segment-card {
-    background: var(--card); padding: 40px 32px;
-    transition: background 0.2s;
-    cursor: pointer;
-  }
-  .segment-card:hover { background: var(--card-hover); }
-  .segment-icon { font-size: 28px; margin-bottom: 20px; }
-  .segment-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
-  .segment-card p { font-size: 13px; color: var(--muted-light); line-height: 1.65; margin-bottom: 24px; }
-  .segment-link { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; }
-
-  /* ─── DIVISIONS ─── */
-  .divisions-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 2px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
-  .division-card {
-    background: var(--card); padding: 36px 28px;
-    transition: background 0.2s;
-    display: flex; flex-direction: column;
-  }
-  .division-card:hover { background: var(--card-hover); }
-  .division-icon {
-    width: 48px; height: 48px; border-radius: var(--radius-sm);
-    background: rgba(200,240,77,0.08); border: 1px solid rgba(200,240,77,0.15);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; margin-bottom: 20px;
-  }
-  .division-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
-  .division-card p { font-size: 13px; color: var(--muted-light); line-height: 1.6; flex: 1; margin-bottom: 20px; }
-  .division-link { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; }
-
-  /* ─── FIOS ─── */
-  .fios-wrap {
-    position: relative; z-index: 1;
-    background: linear-gradient(135deg, #0d1a00 0%, #111 60%, var(--black) 100%);
-    border-top: 1px solid rgba(200,240,77,0.12);
-    border-bottom: 1px solid rgba(200,240,77,0.12);
-    padding: 120px 48px;
-    overflow: hidden;
-  }
-  .fios-wrap::after {
-    content: '';
-    position: absolute; top: -200px; right: -200px;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(200,240,77,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .fios-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
-  .fios-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-  .fios-col h3 { font-size: 15px; font-weight: 600; color: var(--muted-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px; }
-  .fios-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
-  .fios-list li { font-size: 15px; color: var(--off-white); display: flex; align-items: flex-start; gap: 12px; line-height: 1.5; }
-  .fios-list li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
-  .fios-cta { margin-top: 36px; }
-
-  /* ─── PHILOSOPHY ─── */
-  .philosophy-wrap { background: var(--off-black); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .philosophy-quote {
-    font-size: clamp(18px, 2.5vw, 26px); font-weight: 400; line-height: 1.65;
-    color: var(--off-white); max-width: 780px; margin: 0 auto 72px; text-align: center;
-  }
-  .pillars-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
-  .pillar-card { background: var(--card); padding: 40px 32px; }
-  .pillar-icon { font-size: 28px; margin-bottom: 20px; }
-  .pillar-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
-  .pillar-card p { font-size: 13px; color: var(--muted-light); line-height: 1.6; }
-
-  /* ─── PRICING ─── */
-  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-  .pricing-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 40px 32px;
-    display: flex; flex-direction: column;
-    transition: border-color 0.2s;
-  }
-  .pricing-card:hover { border-color: var(--border-mid); }
-  .pricing-card.featured { border-color: rgba(200,240,77,0.4); background: #111; }
-  .featured-badge {
-    background: var(--accent); color: var(--black);
-    font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 5px 12px; border-radius: 100px;
-    display: inline-block; margin-bottom: 24px; align-self: flex-start;
-  }
-  .tier-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-light); margin-bottom: 10px; }
-  .tier-price { font-size: 48px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
-  .tier-price span { font-size: 15px; font-weight: 400; color: var(--muted-light); }
-  .tier-desc { font-size: 13px; color: var(--muted-light); margin: 14px 0 28px; line-height: 1.6; }
-  .tier-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 28px; }
-  .tier-features { list-style: none; display: flex; flex-direction: column; gap: 12px; flex: 1; margin-bottom: 36px; }
-  .tier-features li { font-size: 13px; color: var(--off-white); display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
-  .check { color: var(--accent); flex-shrink: 0; }
-  .tier-btn {
-    display: block; text-align: center;
-    padding: 15px; border-radius: var(--radius-sm);
-    font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
-    border: 1px solid var(--border-mid); color: var(--white);
-    transition: background 0.2s, border-color 0.2s;
-    cursor: pointer; margin-top: auto;
-  }
-  .tier-btn:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.22); }
-  .tier-btn.featured-btn { background: var(--accent); color: var(--black); border-color: var(--accent); }
-  .tier-btn.featured-btn:hover { background: var(--accent-dark); }
-  .pricing-note { text-align: center; margin-top: 28px; font-size: 13px; color: var(--muted-light); }
-  .pricing-note span { color: var(--off-white); }
-
-  /* ─── CTA SECTION ─── */
-  .cta-section {
-    position: relative; z-index: 1;
-    text-align: center;
-    background: var(--off-black);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 140px 48px;
-    overflow: hidden;
-  }
-  .cta-section::before {
-    content: '';
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-    width: 800px; height: 400px;
-    background: radial-gradient(ellipse, rgba(200,240,77,0.05) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .cta-section h2 { font-size: clamp(32px, 5vw, 64px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.06; margin-bottom: 20px; position: relative; }
-  .cta-section h2 em { color: var(--accent); font-style: normal; }
-  .cta-section p { font-size: 18px; color: var(--muted-light); max-width: 480px; margin: 0 auto 48px; line-height: 1.65; position: relative; }
-
-  /* ─── FOOTER ─── */
-  footer {
-    position: relative; z-index: 1;
-    padding: 48px;
-    border-top: 1px solid var(--border);
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
-    max-width: 1100px; margin: 0 auto;
-  }
-  .footer-logo { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; }
-  .footer-logo span { color: var(--accent); }
-  .footer-divisions { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
-  .footer-copy { font-size: 12px; color: var(--muted); }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 1024px) {
-    .divisions-grid { grid-template-columns: repeat(3,1fr); }
-    .fios-grid { gap: 48px; }
-  }
-  @media (max-width: 768px) {
-    nav { padding: 0 24px; }
-    .nav-links { display: none; }
-    .hero { padding: 140px 24px 80px; }
-    .stat-bar { padding: 40px 24px; gap: 40px; }
-    .section { padding: 80px 24px; }
-    .segments-grid, .divisions-grid, .pillars-grid, .pricing-grid { grid-template-columns: 1fr; }
-    .fios-wrap { padding: 80px 24px; }
-    .fios-grid { grid-template-columns: 1fr; gap: 40px; }
-    .cta-section { padding: 100px 24px; }
-    footer { padding: 32px 24px; flex-direction: column; text-align: center; }
-  }
+  .nav-portal:hover{color:#E8EEF4;border-color:rgba(232,238,244,.5);}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">FLOOD <span>INTERNATIONAL</span></div>
-  <div class="nav-links">
-    <a href="#segments">Who It's For</a>
-    <a href="#divisions">Ecosystem</a>
-    <a href="#fios">Enterprise</a>
-    <a href="#pricing">Pricing</a>
-  </div>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <a class="nav-portal" href="https://flood-api-production-8435.up.railway.app/portal" target="_blank">Client Login</a>
-    <a class="nav-cta" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Get Started</a>
-  </div>
-</nav>
+<div style="background:#05090F;color:#E8EEF4;min-height:100vh;overflow-x:hidden;font-family:'Archivo',sans-serif;">
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-badge">Build. Own. Last.</div>
-  <h1>The ecosystem for the<br>culture-builder who is<br><em>almost there.</em></h1>
-  <p class="hero-sub">Flood International is the music, fashion, infrastructure, and investment that turns creative talent into something you own.</p>
-  <div class="hero-actions">
-    <a class="btn-primary" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Start Your Intake</a>
-    <a href="#divisions" class="btn-secondary">Explore the Ecosystem</a>
-  </div>
-  <div class="founder-strip">
-    <div class="founder-avatar">NK</div>
-    <div class="founder-info">
-      <div class="founder-name">Nicholas King</div>
-      <div class="founder-title">Founder & Creative Director, Flood International</div>
-    </div>
-  </div>
-</section>
+  <!-- ===== HERO ===== -->
+  <section id="top" style="height:100vh;min-height:700px;padding:16px;">
+    <div style="position:relative;width:100%;height:100%;border-radius:28px;overflow:hidden;background:#070E1A;">
 
-<!-- STAT BAR -->
-<div class="stat-bar">
-  <div class="stat">
-    <div class="stat-num">5<span></span></div>
-    <div class="stat-label">Divisions Operating</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">48<span>hrs</span></div>
-    <div class="stat-label">Intake to Live System</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">100<span>%</span></div>
-    <div class="stat-label">You Own Everything Built</div>
-  </div>
-  <div class="stat">
-    <div class="stat-num">3<span>x</span></div>
-    <div class="stat-label">Average Output Increase</div>
-  </div>
-</div>
+      <!-- ocean bg -->
+      <div style="position:absolute;inset:-7%;">
+        <img src="assets/ocean-clean.jpg" alt="" style="width:100%;height:100%;object-fit:cover;animation:floodDrift 28s ease-in-out infinite alternate;will-change:transform;"/>
+      </div>
+      <!-- noise -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.5;mix-blend-mode:overlay;pointer-events:none;" xmlns="http://www.w3.org/2000/svg"><filter id="nH"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"></feTurbulence></filter><rect width="100%" height="100%" filter="url(#nH)"></rect></svg>
+      <!-- overlays -->
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,9,15,.45) 0%,rgba(5,9,15,.05) 38%,rgba(5,9,15,.82) 100%);"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(96deg,rgba(5,9,15,.6) 0%,rgba(5,9,15,.12) 50%,rgba(5,9,15,0) 100%);"></div>
 
-<!-- SEGMENTS -->
-<div class="segments-wrap" id="segments">
-  <div class="section">
-    <div class="section-header center">
-      <span class="section-tag">Who It's For</span>
-      <h2 class="section-h2">You have a craft.<br>You have a following.<br>None of it has compounded yet.</h2>
-    </div>
-    <div class="segments-grid">
-      <div class="segment-card" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">
-        <div class="segment-icon">🎵</div>
-        <h3>The Ascending Artist</h3>
-        <p>You have the sound. You have the catalog. You don't have the infrastructure to own what you're building — yet.</p>
-        <span class="segment-link">Build Your System →</span>
+      <!-- nav pill -->
+      <nav style="position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:20;background:#05090F;border-radius:0 0 22px 22px;padding:14px 32px;display:flex;align-items:center;gap:clamp(16px,2.8vw,40px);">
+        <a href="#thesis" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;color:rgba(232,238,244,.75);transition:color .2s;">Thesis</a>
+        <a href="#system" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;color:rgba(232,238,244,.75);transition:color .2s;">System</a>
+        <span style="width:5px;height:5px;background:#E5352B;border-radius:50%;flex:none;"></span>
+        <a href="#divisions" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;color:rgba(232,238,244,.75);transition:color .2s;">Divisions</a>
+        <a href="#protocol" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;color:rgba(232,238,244,.75);transition:color .2s;">Protocol</a>
+        <a href="#intake" style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;color:rgba(232,238,244,.75);transition:color .2s;">Intake</a>
+        <a class="nav-portal" href="https://flood-api-production-8435.up.railway.app/portal" target="_blank">Client Login</a>
+      </nav>
+
+      <!-- telemetry top corners -->
+      <div style="position:absolute;top:24px;left:28px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(232,238,244,.5);display:flex;align-items:center;gap:9px;">
+        <span style="width:7px;height:7px;border-radius:50%;background:#5BBF8A;display:inline-block;animation:floodBlink 2.4s infinite;"></span>SYSTEM ONLINE
       </div>
-      <div class="segment-card" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">
-        <div class="segment-icon">⚙️</div>
-        <h3>The Creative Operator</h3>
-        <p>You run things inside music, fashion, media, or tech. You need systems that scale — and keep ownership in your hands.</p>
-        <span class="segment-link">Build Your Engine →</span>
+      <div style="position:absolute;top:24px;right:28px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(232,238,244,.5);text-align:right;line-height:1.8;">
+        <div>EST. 2019</div>
+        <div>51.5074°N 0.1278°W</div>
       </div>
-      <div class="segment-card" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">
-        <div class="segment-icon">👕</div>
-        <h3>The Identity-Driven Builder</h3>
-        <p>The brands you align with are signals of where you're headed. You wear what communicates trajectory before the trajectory is public.</p>
-        <span class="segment-link">Shop N The Field →</span>
+
+      <!-- bottom content -->
+      <div data-pullup style="position:absolute;left:0;right:0;bottom:0;z-index:10;padding:0 clamp(24px,4vw,56px) clamp(32px,4vw,52px);display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(24px,4vw,56px);align-items:end;">
+
+        <!-- ACROSTIC WORDMARK -->
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div data-word style="display:flex;align-items:baseline;gap:0.04em;line-height:0.96;letter-spacing:-.03em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);">
+            <span style="color:#E5352B;font-style:italic;font-size:clamp(58px,9.5vw,138px);font-weight:800;">F</span><span style="color:#E8EEF4;font-weight:300;font-size:clamp(20px,3.1vw,44px);letter-spacing:.01em;padding-bottom:.12em;">OREVER</span>
+          </div>
+          <div data-word style="display:flex;align-items:baseline;gap:0.04em;line-height:0.96;letter-spacing:-.03em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);">
+            <span style="color:#E5352B;font-style:italic;font-size:clamp(58px,9.5vw,138px);font-weight:800;">L</span><span style="color:#E8EEF4;font-weight:300;font-size:clamp(20px,3.1vw,44px);letter-spacing:.01em;padding-bottom:.12em;">IVING</span>
+          </div>
+          <div data-word style="display:flex;align-items:baseline;gap:0.04em;line-height:0.96;letter-spacing:-.03em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);">
+            <span style="color:#E5352B;font-style:italic;font-size:clamp(58px,9.5vw,138px);font-weight:800;">O</span><span style="color:#E8EEF4;font-weight:300;font-size:clamp(20px,3.1vw,44px);letter-spacing:.01em;padding-bottom:.12em;">UT</span>
+          </div>
+          <div data-word style="display:flex;align-items:baseline;gap:0.04em;line-height:0.96;letter-spacing:-.03em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);">
+            <span style="color:#E5352B;font-style:italic;font-size:clamp(58px,9.5vw,138px);font-weight:800;">O</span><span style="color:#E8EEF4;font-weight:300;font-size:clamp(20px,3.1vw,44px);letter-spacing:.01em;padding-bottom:.12em;">UR</span>
+          </div>
+          <div data-word style="display:flex;align-items:baseline;gap:0.04em;line-height:0.96;letter-spacing:-.03em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);">
+            <span style="color:#E5352B;font-style:italic;font-size:clamp(58px,9.5vw,138px);font-weight:800;">D</span><span style="color:#E8EEF4;font-weight:300;font-size:clamp(20px,3.1vw,44px);letter-spacing:.01em;padding-bottom:.12em;">REAMS</span>
+          </div>
+          <div data-word style="font-family:'JetBrains Mono',monospace;font-weight:400;font-size:clamp(9px,1.0vw,13px);letter-spacing:.44em;color:rgba(232,238,244,.55);margin-top:.7em;padding-left:.08em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);">INTERNATIONAL</div>
+        </div>
+
+        <!-- right: description + CTA -->
+        <div style="padding-bottom:.5em;display:flex;flex-direction:column;gap:22px;">
+          <p data-word style="font-size:clamp(13px,1vw,16px);line-height:1.55;color:rgba(232,238,244,.72);max-width:340px;opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">Flood International is the operating system for entertainers that dream beyond meaning. An Intelligence Infrastructure that is fueled by AI and meant to scale.</p>
+          <div data-word style="opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);">
+            <a href="#intake" style="display:inline-flex;align-items:center;gap:14px;background:#E5352B;color:#fff;border-radius:999px;padding:10px 10px 10px 28px;font-weight:600;font-size:clamp(13px,1vw,16px);transition:gap .25s;">
+              Enter the system
+              <span style="width:42px;height:42px;border-radius:50%;background:#05090F;display:inline-flex;align-items:center;justify-content:center;flex:none;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              </span>
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="segment-card" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">
-        <div class="segment-icon">📊</div>
-        <h3>The Culture Investor</h3>
-        <p>You understand that influence converts to capital. You're looking for the moment to enter — before everyone else sees what you see.</p>
-        <span class="segment-link">Explore Ventures →</span>
+
+      <!-- scroll cue -->
+      <div style="position:absolute;bottom:28px;right:36px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:rgba(232,238,244,.45);display:flex;align-items:center;gap:8px;">
+        <span style="animation:floodBob 2.2s ease-in-out infinite;display:inline-block;">↓</span>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- DIVISIONS -->
-<div id="divisions">
-  <div class="section">
-    <div class="section-header center">
-      <span class="section-tag">The Ecosystem</span>
-      <h2 class="section-h2">Five answers to the same<br>person's five biggest needs.</h2>
-      <p class="section-sub">Music. Fashion. Infrastructure. Lifestyle. Capital. Each division compounds the next.</p>
-    </div>
-    <div class="divisions-grid">
-      <div class="division-card">
-        <div class="division-icon">🎵</div>
-        <h3>Field Vision</h3>
-        <p>Music infrastructure for ascending artists who want to own their catalog and build a licensing pipeline that outlasts any single deal.</p>
-        <span class="division-link">Explore →</span>
-      </div>
-      <div class="division-card">
-        <div class="division-icon">🧠</div>
-        <h3>Flood Systems</h3>
-        <p>The infrastructure company for creators who are ready to scale — services, systems, and tools that keep ownership in the builder's hands.</p>
-        <span class="division-link">Learn More →</span>
-      </div>
-      <div class="division-card">
-        <div class="division-icon">👕</div>
-        <h3>N The Field</h3>
-        <p>The brand that signals trajectory. Worn by people who are building, not performing. The garment as credential before the credential exists publicly.</p>
-        <span class="division-link">Shop →</span>
-      </div>
-      <div class="division-card">
-        <div class="division-icon">🌿</div>
-        <h3>Field Scent</h3>
-        <p>The lifestyle layer for people who live their identity, not just wear it. The daily sensory signal that you are building something worth inhabiting.</p>
-        <span class="division-link">Discover →</span>
-      </div>
-      <div class="division-card">
-        <div class="division-icon">💰</div>
-        <h3>Flood Ventures</h3>
-        <p>The capital layer that enters when cultural influence is real but hasn't converted to equity yet. We invest in what we understand because we built it.</p>
-        <span class="division-link">Partner →</span>
-      </div>
+  <!-- ===== MARQUEE ===== -->
+  <div style="border-top:1px solid rgba(232,238,244,.1);border-bottom:1px solid rgba(232,238,244,.1);overflow:hidden;white-space:nowrap;padding:13px 0;">
+    <div style="display:inline-block;animation:floodMarquee 30s linear infinite;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;color:rgba(232,238,244,.55);">
+      <span style="padding:0 26px;">FOREVER LIVING OUT OUR DREAMS</span><span style="color:#E5352B;">/</span><span style="padding:0 26px;">POSITIONING</span><span style="color:#E5352B;">/</span><span style="padding:0 26px;">INFRASTRUCTURE</span><span style="color:#E5352B;">/</span><span style="padding:0 26px;">PRODUCTION</span><span style="color:#E5352B;">/</span><span style="padding:0 26px;">OWNERSHIP</span><span style="color:#E5352B;">/</span><span style="padding:0 26px;">FOREVER LIVING OUT OUR DREAMS</span><span style="color:#E5352B;">/</span><span style="padding:0 26px;">POSITIONING</span><span style="color:#E5352B;">/</span><span style="padding:0 26px;">INFRASTRUCTURE</span><span style="color:#E5352B;">/</span><span style="padding:0 26px;">PRODUCTION</span><span style="color:#E5352B;">/</span><span style="padding:0 26px;">OWNERSHIP</span><span style="color:#E5352B;">/</span>
     </div>
   </div>
-</div>
 
-<!-- FIOS -->
-<div class="fios-wrap" id="fios">
-  <div class="fios-inner">
-    <span class="section-tag">Enterprise</span>
-    <h2 class="section-h2" style="margin-bottom:16px;">Operating Intelligence<br>for Entertainment Companies</h2>
-    <p style="font-size:18px; color:var(--muted-light); margin-bottom:72px; max-width:560px; line-height:1.65;">Unified infrastructure for labels, management companies, studios, and media funds.</p>
-    <div class="fios-grid">
-      <div class="fios-col">
-        <h3>The Problem</h3>
-        <ul class="fios-list">
-          <li>Artist and catalog data scattered across platforms</li>
-          <li>No real-time competitive visibility</li>
-          <li>Release timing based on guessing, not intelligence</li>
-          <li>Community signals go unnoticed until it's too late</li>
-        </ul>
+  <!-- ===== THESIS ===== -->
+  <section id="thesis" style="background:#05090F;padding:clamp(80px,11vw,160px) 16px;">
+    <div style="background:#0A1320;border-radius:28px;max-width:1180px;margin:0 auto;padding:clamp(48px,8vw,120px) clamp(24px,5vw,80px);text-align:center;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.28em;color:#E5352B;margin-bottom:clamp(28px,4vw,52px);">01 / THESIS</div>
+      <h2 data-pullup style="font-weight:400;font-size:clamp(28px,4.8vw,70px);line-height:.97;letter-spacing:-.02em;max-width:18ch;margin:0 auto clamp(36px,5vw,60px);">
+        <span data-word style="display:inline;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">We </span><span data-word style="display:inline;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">don't </span><span data-word style="display:inline;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">represent </span><span data-word style="display:inline;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">creators. </span><span data-word style="display:inline;font-style:italic;font-family:'JetBrains Mono',monospace;color:#9FB4C6;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">We install </span><span data-word style="display:inline;font-style:italic;font-family:'JetBrains Mono',monospace;color:#9FB4C6;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">the infrastructure </span><span data-word style="display:inline;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">that turns a name </span><span data-word style="display:inline;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">into an institution </span><span data-word style="display:inline;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">you own.</span>
+      </h2>
+      <p data-scrollchars style="font-size:clamp(14px,1.3vw,18px);line-height:1.65;color:#C9D6E2;max-width:740px;margin:0 auto;">Flood has built positioning, capital structures, and production systems beneath some of the most uncompromising names in culture — work engineered not for the feed, but for permanence, equity, and an ownership stake that outlasts the moment.</p>
+    </div>
+  </section>
+
+  <!-- ===== SYSTEM ===== -->
+  <section id="system" style="padding:0 16px clamp(60px,9vw,120px);">
+    <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:clamp(32px,5vw,72px);align-items:center;">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.28em;color:#E5352B;margin-bottom:28px;">02 / SYSTEM</div>
+        <h2 data-pullup style="font-weight:800;font-size:clamp(28px,3.8vw,52px);line-height:1.0;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:26px;">
+          <span data-word style="display:inline-block;opacity:0;transform:translateY(0.3em);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);">Not an agency.</span><br/>
+          <span data-word style="display:inline-block;opacity:0;transform:translateY(0.3em);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);">An operating system.</span>
+        </h2>
+        <p style="font-size:clamp(14px,1.1vw,16px);line-height:1.75;color:#9CB0C4;max-width:480px;">Agencies sell you their time. Flood installs infrastructure — the positioning, deals, capital architecture, and production engine running underneath your name, owned alongside you, built to outlast any single moment.</p>
       </div>
-      <div class="fios-col">
-        <h3>The Solution</h3>
-        <ul class="fios-list">
-          <li>Centralized brand and artist operating system</li>
-          <li>Competitive intelligence and market positioning</li>
-          <li>Content pipeline calibrated to your catalog</li>
-          <li>Automated community intelligence and timing engine</li>
-        </ul>
-        <div class="fios-cta">
-          <a class="btn-primary" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Explore FIOS</a>
+      <!-- console -->
+      <div style="border:1px solid rgba(232,238,244,.16);border-radius:18px;background:#0A1320;overflow:hidden;font-family:'JetBrains Mono',monospace;">
+        <div style="display:flex;justify-content:space-between;padding:15px 22px;border-bottom:1px solid rgba(232,238,244,.1);font-size:10px;letter-spacing:.16em;color:#6F869C;"><span>SYSTEM.STATUS</span><span style="color:#5BBF8A;">● ALL MODULES ACTIVE</span></div>
+        <div style="font-size:12px;">
+          <div style="display:flex;justify-content:space-between;padding:14px 22px;border-bottom:1px solid rgba(232,238,244,.06);"><span style="color:#9CB0C4;"><span style="color:#3C4E61;">001 </span>positioning</span><span style="color:#5BBF8A;">RUNNING</span></div>
+          <div style="display:flex;justify-content:space-between;padding:14px 22px;border-bottom:1px solid rgba(232,238,244,.06);"><span style="color:#9CB0C4;"><span style="color:#3C4E61;">002 </span>infrastructure</span><span style="color:#5BBF8A;">RUNNING</span></div>
+          <div style="display:flex;justify-content:space-between;padding:14px 22px;border-bottom:1px solid rgba(232,238,244,.06);"><span style="color:#9CB0C4;"><span style="color:#3C4E61;">003 </span>production</span><span style="color:#5BBF8A;">RUNNING</span></div>
+          <div style="display:flex;justify-content:space-between;padding:14px 22px;"><span style="color:#9CB0C4;"><span style="color:#3C4E61;">004 </span>ownership</span><span style="color:#5BBF8A;">RUNNING</span></div>
+        </div>
+        <div style="padding:14px 22px;border-top:1px solid rgba(232,238,244,.1);font-size:10px;letter-spacing:.12em;color:#3C4E61;">UPTIME 99.99% — FOREVER LIVING OUT OUR DREAMS</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVISIONS ===== -->
+  <section id="divisions" style="min-height:100vh;padding:clamp(70px,10vw,140px) 16px;position:relative;">
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.11;pointer-events:none;" xmlns="http://www.w3.org/2000/svg"><filter id="nF"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="4" stitchTiles="stitch"></feTurbulence></filter><rect width="100%" height="100%" filter="url(#nF)"></rect></svg>
+    <div style="max-width:1240px;margin:0 auto;position:relative;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.28em;color:#E5352B;margin-bottom:28px;">03 / DIVISIONS</div>
+      <h2 data-pullup style="font-weight:400;font-size:clamp(20px,2.8vw,38px);line-height:1.12;max-width:24ch;margin-bottom:clamp(40px,6vw,72px);">
+        <span data-word style="display:inline-block;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">Studio-grade infrastructure for creators who refuse to rent their influence. </span><br/>
+        <span data-word style="display:inline-block;color:#5E7387;opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);">Built for ownership. Powered by the system.</span>
+      </h2>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">
+        <!-- production image card -->
+        <div style="position:relative;border-radius:18px;overflow:hidden;min-height:460px;background:#070E1A;">
+          <img src="assets/ocean-clean.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:floodDrift 32s ease-in-out infinite alternate;"/>
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(5,9,15,.88) 0%,rgba(5,9,15,.1) 55%);"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:26px;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#E5352B;margin-bottom:10px;">PRODUCTION</div>
+            <div style="font-size:22px;font-weight:600;line-height:1.05;color:#E8EEF4;">Engineered for permanence.</div>
+          </div>
+        </div>
+        <!-- positioning -->
+        <div style="background:#0E1826;border-radius:18px;padding:26px;min-height:460px;display:flex;flex-direction:column;">
+          <div style="width:46px;height:46px;border-radius:11px;border:1px solid rgba(229,53,43,.45);background:#0A1320;display:flex;align-items:center;justify-content:center;margin-bottom:auto;"><span style="width:14px;height:14px;border:2px solid #E5352B;border-radius:3px;display:inline-block;"></span></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#5E7387;margin-top:24px;margin-bottom:8px;">01</div>
+          <h3 style="font-size:21px;font-weight:600;margin-bottom:18px;">Positioning.</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:auto;">
+            <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px;"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size:13px;line-height:1.45;color:#8FA3B5;">Category definition before the market names it</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px;"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size:13px;line-height:1.45;color:#8FA3B5;">Audience &amp; narrative architecture</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px;"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size:13px;line-height:1.45;color:#8FA3B5;">Competitive mapping &amp; whitespace</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px;"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size:13px;line-height:1.45;color:#8FA3B5;">A position that can't be copied</span></li>
+          </ul>
+          <a href="#intake" style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#E8EEF4;margin-top:22px;transition:gap .2s;">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg);"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+        </div>
+        <!-- infrastructure -->
+        <div style="background:#0E1826;border-radius:18px;padding:26px;min-height:460px;display:flex;flex-direction:column;">
+          <div style="width:46px;height:46px;border-radius:11px;border:1px solid rgba(229,53,43,.45);background:#0A1320;display:flex;align-items:center;justify-content:center;margin-bottom:auto;"><span style="width:14px;height:14px;border:2px solid #E5352B;display:inline-block;"></span></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#5E7387;margin-top:24px;margin-bottom:8px;">02</div>
+          <h3 style="font-size:21px;font-weight:600;margin-bottom:18px;">Infrastructure.</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:auto;">
+            <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px;"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size:13px;line-height:1.45;color:#8FA3B5;">Deal &amp; capital structure</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px;"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size:13px;line-height:1.45;color:#8FA3B5;">Legal, rights &amp; operations</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px;"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size:13px;line-height:1.45;color:#8FA3B5;">Revenue engineering across lines</span></li>
+          </ul>
+          <a href="#intake" style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#E8EEF4;margin-top:22px;transition:gap .2s;">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg);"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+        </div>
+        <!-- ownership -->
+        <div style="background:#0E1826;border-radius:18px;padding:26px;min-height:460px;display:flex;flex-direction:column;">
+          <div style="width:46px;height:46px;border-radius:11px;border:1px solid rgba(229,53,43,.45);background:#0A1320;display:flex;align-items:center;justify-content:center;margin-bottom:auto;"><span style="width:14px;height:14px;border:2px solid #E5352B;border-radius:50%;display:inline-block;"></span></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#5E7387;margin-top:24px;margin-bottom:8px;">03</div>
+          <h3 style="font-size:21px;font-weight:600;margin-bottom:18px;">Ownership.</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:auto;">
+            <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px;"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size:13px;line-height:1.45;color:#8FA3B5;">Equity &amp; IP stakes in the work</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px;"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size:13px;line-height:1.45;color:#8FA3B5;">Catalog &amp; rights retention</span></li>
+            <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px;"><path d="M20 6L9 17l-5-5"></path></svg><span style="font-size:13px;line-height:1.45;color:#8FA3B5;">The long position on your name</span></li>
+          </ul>
+          <a href="#intake" style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#E8EEF4;margin-top:22px;transition:gap .2s;">Learn more <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg);"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- PHILOSOPHY -->
-<div class="philosophy-wrap">
-  <div class="section">
-    <div class="section-header center">
-      <span class="section-tag">What We Believe</span>
-      <h2 class="section-h2">The most talented people<br>in culture rarely own it.</h2>
-    </div>
-    <p class="philosophy-quote">"We build the music, fashion, and stories that give people something to believe in — and something to build on."</p>
-    <div class="pillars-grid">
-      <div class="pillar-card">
-        <div class="pillar-icon">🏛️</div>
-        <h3>Ownership First</h3>
-        <p>Every system we build, you own. No equity clauses. No lock-in. The infrastructure belongs to the builder.</p>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-icon">🔗</div>
-        <h3>Systems Over Campaigns</h3>
-        <p>We don't do one-off campaigns. We build compounding systems that earn their place and get smarter over time.</p>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-icon">💎</div>
-        <h3>Craft Before Claims</h3>
-        <p>Authority comes from track record, not posturing. The work speaks first. When we do speak, every word has earned its place.</p>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-icon">📈</div>
-        <h3>Leverage Over Income</h3>
-        <p>Income is linear. Leverage compounds. We build the assets that generate returns long after the work is done.</p>
+  <!-- ===== ACCESS / INTAKE ===== -->
+  <section id="protocol" style="padding:0 16px clamp(70px,9vw,130px);">
+    <div style="max-width:1180px;margin:0 auto;border-top:1px solid rgba(232,238,244,.1);padding-top:clamp(60px,8vw,110px);" id="intake">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.28em;color:#E5352B;margin-bottom:32px;display:flex;align-items:center;gap:11px;"><span style="width:7px;height:7px;border-radius:50%;background:#E5352B;display:inline-block;animation:floodBlink 1.8s infinite;"></span>04 / ACCESS</div>
+      <h2 style="font-weight:800;font-size:clamp(40px,8vw,128px);line-height:.9;letter-spacing:-.03em;text-transform:uppercase;margin-bottom:36px;">Enter the<br/>system</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between;">
+        <p style="font-size:clamp(14px,1.2vw,17px);line-height:1.65;color:#9CB0C4;max-width:440px;">Access is selective. Tell us what you're building. If there's a fit, Flood opens a channel — reviewed within 72 hours.</p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+          <button onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;" style="display:inline-flex;align-items:center;gap:14px;background:transparent;color:#E8EEF4;border:1px solid rgba(232,238,244,.25);border-radius:999px;padding:11px 28px;font-weight:600;font-size:15px;cursor:pointer;transition:border-color .2s;">
+            Book a call
+          </button>
+          <span data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560" style="display:inline-flex;align-items:center;gap:14px;background:#E5352B;color:#fff;border-radius:999px;padding:11px 11px 11px 30px;font-weight:600;font-size:16px;cursor:pointer;transition:gap .25s;">
+            Request access
+            <span style="width:44px;height:44px;border-radius:50%;background:#05090F;display:inline-flex;align-items:center;justify-content:center;flex:none;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+          </span>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- PRICING -->
-<div id="pricing">
-  <div class="section">
-    <div class="section-header center">
-      <span class="section-tag">Pricing</span>
-      <h2 class="section-h2">Built for where you are.<br>Priced for where you're going.</h2>
-      <p class="section-sub">Every tier includes full system setup. You own everything that gets built.</p>
+  <!-- ===== FOOTER ===== -->
+  <footer style="padding:0 16px 40px;">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(38px,11vw,160px);line-height:.85;letter-spacing:-.03em;text-transform:uppercase;color:#10202F;border-top:1px solid rgba(232,238,244,.1);padding-top:40px;margin-bottom:36px;">Flood<br/>Int'l</div>
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;padding-top:20px;border-top:1px solid rgba(232,238,244,.1);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#45576B;">
+        <span>© 2026 FLOOD INTERNATIONAL™</span>
+        <span>FOREVER LIVING OUT OUR DREAMS</span>
+        <span>LONDON · 51.5074°N 0.1278°W</span>
+      </div>
     </div>
-    <div class="pricing-grid">
+  </footer>
 
-      <div class="pricing-card">
-        <div class="tier-label">Foundation</div>
-        <div class="tier-price">$997<span>/mo</span></div>
-        <p class="tier-desc">For creatives and small brands ready to stop guessing and start operating with real infrastructure.</p>
-        <hr class="tier-divider">
-        <ul class="tier-features">
-          <li><span class="check">✓</span> AI brand intake + gap analysis report</li>
-          <li><span class="check">✓</span> Content pipeline (up to 5 posts/week)</li>
-          <li><span class="check">✓</span> 24-hour approval queue</li>
-          <li><span class="check">✓</span> Custom brand landing page</li>
-          <li><span class="check">✓</span> Live tracking dashboard</li>
-          <li><span class="check">✓</span> Monthly performance report</li>
-        </ul>
-        <a class="tier-btn" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Get Started</a>
-      </div>
-
-      <div class="pricing-card featured">
-        <div class="featured-badge">Most Popular</div>
-        <div class="tier-label">Builder</div>
-        <div class="tier-price">$2,500<span>/mo</span></div>
-        <p class="tier-desc">For brands actively growing who need full content infrastructure, intelligence, and strategic direction.</p>
-        <hr class="tier-divider">
-        <ul class="tier-features">
-          <li><span class="check">✓</span> Everything in Foundation</li>
-          <li><span class="check">✓</span> Content pipeline (up to 10 posts/week)</li>
-          <li><span class="check">✓</span> 2–3 platforms managed simultaneously</li>
-          <li><span class="check">✓</span> Monthly brand intelligence report</li>
-          <li><span class="check">✓</span> Community intelligence monitoring</li>
-          <li><span class="check">✓</span> 2 strategy calls/month with Nicholas King</li>
-          <li><span class="check">✓</span> Upload portal for your own content</li>
-        </ul>
-        <a class="tier-btn featured-btn" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Get Started</a>
-      </div>
-
-      <div class="pricing-card">
-        <div class="tier-label">Full Platform + Production</div>
-        <div class="tier-price">$5,000<span>/mo+</span></div>
-        <p class="tier-desc">For companies, athletes, and operators who want full execution — including Flood's production team.</p>
-        <hr class="tier-divider">
-        <ul class="tier-features">
-          <li><span class="check">✓</span> Everything in Builder</li>
-          <li><span class="check">✓</span> Flood production team included</li>
-          <li><span class="check">✓</span> Professional shoots + edited deliverables</li>
-          <li><span class="check">✓</span> Full social management + approval layer</li>
-          <li><span class="check">✓</span> Weekly strategy calls</li>
-          <li><span class="check">✓</span> Priority support</li>
-          <li><span class="check">✓</span> Custom scope for agencies + large companies</li>
-        </ul>
-        <a class="tier-btn" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Get Started</a>
-      </div>
-
-    </div>
-    <p class="pricing-note">All tiers include a one-time <span>$500–$750 setup fee</span> covering brand intake, AI analysis, and system calibration.</p>
-  </div>
 </div>
 
-<!-- CTA -->
-<div class="cta-section" id="contact">
-  <h2>Ready to own<br><em>what you're building?</em></h2>
-  <p>Book a 20-minute call. We'll assess where you are, identify your gaps, and show you exactly what infrastructure looks like at your level.</p>
-  <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; position:relative;">
-    <a class="btn-primary" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Start Your Intake</a>
-    <a href="#pricing" class="btn-secondary">View Pricing</a>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">FLOOD <span>INTERNATIONAL</span></div>
-  <div class="footer-divisions">Field Vision · Flood Systems · N The Field · Field Scent · Flood Ventures</div>
-  <div class="footer-copy">© 2026 Flood International. All rights reserved.</div>
-</footer>
-
+<!-- Tally -->
 <script async src="https://tally.so/widgets/embed.js"></script>
+<!-- Calendly -->
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 
 <script>
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+document.addEventListener('DOMContentLoaded', () => {
+  // Pull-up reveal via IntersectionObserver
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const words = e.target.querySelectorAll('[data-word]');
+      words.forEach((w, i) => {
+        w.style.transitionDelay = (i * 0.08) + 's';
+        w.style.opacity = '1';
+        w.style.transform = 'none';
+      });
+      io.unobserve(e.target);
     });
-  });
-</script>
+  }, { threshold: 0.15 });
 
+  document.querySelectorAll('[data-pullup]').forEach((el) => io.observe(el));
+
+  // Hero words auto-reveal on load
+  const heroWords = document.querySelectorAll('.hero-pullup [data-word]');
+  heroWords.forEach((w, i) => {
+    setTimeout(() => {
+      w.style.opacity = '1';
+      w.style.transform = 'none';
+    }, 300 + i * 100);
+  });
+
+  // Trigger hero pullup immediately
+  document.querySelectorAll('[data-pullup]').forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      const words = el.querySelectorAll('[data-word]');
+      words.forEach((w, i) => {
+        setTimeout(() => {
+          w.style.transitionDelay = (i * 0.08) + 's';
+          w.style.opacity = '1';
+          w.style.transform = 'none';
+        }, 200);
+      });
+    }
+  });
+
+  // Scroll-linked character opacity reveal
+  const charGroups = [];
+  document.querySelectorAll('[data-scrollchars]').forEach((el) => {
+    const text = el.textContent;
+    el.textContent = '';
+    const spans = [];
+    for (const ch of text) {
+      const s = document.createElement('span');
+      s.textContent = ch;
+      s.style.opacity = '0.18';
+      s.style.transition = 'opacity .12s linear';
+      if (ch === ' ') s.style.whiteSpace = 'pre';
+      el.appendChild(s);
+      spans.push(s);
+    }
+    charGroups.push({ el, spans });
+  });
+
+  function updateChars() {
+    const vh = window.innerHeight;
+    const start = vh * 0.85, end = vh * 0.2;
+    for (const { el, spans } of charGroups) {
+      const r = el.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (start - r.top) / (start - end + 1)));
+      const n = spans.length;
+      for (let i = 0; i < n; i++) {
+        const cp = i / n;
+        const local = Math.min(1, Math.max(0, (p - cp + 0.08) / 0.16));
+        spans[i].style.opacity = (0.18 + 0.82 * local).toFixed(3);
+      }
+    }
+  }
+
+  window.addEventListener('scroll', updateChars, { passive: true });
+  window.addEventListener('resize', updateChars, { passive: true });
+  requestAnimationFrame(updateChars);
+});
+</script>
 </body>
 </html>
