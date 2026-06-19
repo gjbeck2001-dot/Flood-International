@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flood International — Infrastructure for Cultural Builders</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black:       #080808;
+    --off-black:   #0f0f0f;
+    --card:        #131313;
+    --card-hover:  #181818;
+    --border:      rgba(255,255,255,0.07);
+    --border-mid:  rgba(255,255,255,0.12);
+    --white:       #ffffff;
+    --off-white:   #e8e8e8;
+    --muted:       #555;
+    --muted-light: #888;
+    --accent:      #C8F04D;
+    --accent-dark: #a8cc35;
+    --accent-glow: rgba(200,240,77,0.15);
+    --radius:      10px;
+    --radius-sm:   6px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* ─── GRID BACKGROUND ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    height: 68px;
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links a {
+    font-size: 13px; color: var(--muted-light); letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--accent); color: var(--black);
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 10px 22px; border-radius: var(--radius-sm);
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .nav-cta:hover { background: var(--accent-dark); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; z-index: 1;
+    padding: 200px 48px 140px;
+    max-width: 1100px; margin: 0 auto;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(200,240,77,0.08); border: 1px solid rgba(200,240,77,0.2);
+    color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 7px 18px; border-radius: 100px; margin-bottom: 40px;
+  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .hero h1 {
+    font-size: clamp(44px, 7vw, 84px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    margin-bottom: 28px;
+    color: var(--white);
+  }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--muted-light);
+    max-width: 620px; margin: 0 auto 52px;
+    line-height: 1.7;
+  }
+  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 80px; }
+  .btn-primary {
+    background: var(--accent); color: var(--black);
+    font-size: 14px; font-weight: 700; letter-spacing: 0.04em;
+    padding: 16px 36px; border-radius: var(--radius-sm);
+    transition: background 0.2s, transform 0.15s;
+    cursor: pointer; border: none;
+  }
+  .btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent; color: var(--off-white);
+    font-size: 14px; font-weight: 500;
+    padding: 16px 36px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border-mid);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.28); background: rgba(255,255,255,0.04); }
+
+  /* founder strip */
+  .founder-strip {
+    display: inline-flex; align-items: center; gap: 16px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 100px; padding: 12px 24px 12px 12px;
+  }
+  .founder-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: var(--black); flex-shrink: 0;
+  }
+  .founder-info { text-align: left; }
+  .founder-name { font-size: 13px; font-weight: 600; }
+  .founder-title { font-size: 12px; color: var(--muted-light); }
+
+  /* ─── STAT BAR ─── */
+  .stat-bar {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--off-black);
+    padding: 48px;
+    display: flex; justify-content: center; gap: 100px; flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 42px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--muted-light); margin-top: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  /* ─── SECTION SHARED ─── */
+  .section { position: relative; z-index: 1; padding: 120px 48px; max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); display: block; margin-bottom: 20px;
+  }
+  .section-h2 {
+    font-size: clamp(28px, 4vw, 52px); font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 16px;
+  }
+  .section-sub { font-size: 18px; color: var(--muted-light); max-width: 520px; line-height: 1.65; }
+  .section-header { margin-bottom: 72px; }
+  .section-header.center { text-align: center; }
+  .section-header.center .section-sub { margin: 0 auto; }
+
+  /* ─── SEGMENTS ─── */
+  .segments-wrap { background: var(--off-black); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .segments-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
+  .segment-card {
+    background: var(--card); padding: 40px 32px;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .segment-card:hover { background: var(--card-hover); }
+  .segment-icon { font-size: 28px; margin-bottom: 20px; }
+  .segment-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+  .segment-card p { font-size: 13px; color: var(--muted-light); line-height: 1.65; margin-bottom: 24px; }
+  .segment-link { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ─── DIVISIONS ─── */
+  .divisions-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 2px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
+  .division-card {
+    background: var(--card); padding: 36px 28px;
+    transition: background 0.2s;
+    display: flex; flex-direction: column;
+  }
+  .division-card:hover { background: var(--card-hover); }
+  .division-icon {
+    width: 48px; height: 48px; border-radius: var(--radius-sm);
+    background: rgba(200,240,77,0.08); border: 1px solid rgba(200,240,77,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 20px;
+  }
+  .division-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+  .division-card p { font-size: 13px; color: var(--muted-light); line-height: 1.6; flex: 1; margin-bottom: 20px; }
+  .division-link { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; }
+
+  /* ─── FIOS ─── */
+  .fios-wrap {
+    position: relative; z-index: 1;
+    background: linear-gradient(135deg, #0d1a00 0%, #111 60%, var(--black) 100%);
+    border-top: 1px solid rgba(200,240,77,0.12);
+    border-bottom: 1px solid rgba(200,240,77,0.12);
+    padding: 120px 48px;
+    overflow: hidden;
+  }
+  .fios-wrap::after {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,240,77,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .fios-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .fios-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .fios-col h3 { font-size: 15px; font-weight: 600; color: var(--muted-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px; }
+  .fios-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .fios-list li { font-size: 15px; color: var(--off-white); display: flex; align-items: flex-start; gap: 12px; line-height: 1.5; }
+  .fios-list li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+  .fios-cta { margin-top: 36px; }
+
+  /* ─── PHILOSOPHY ─── */
+  .philosophy-wrap { background: var(--off-black); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .philosophy-quote {
+    font-size: clamp(18px, 2.5vw, 26px); font-weight: 400; line-height: 1.65;
+    color: var(--off-white); max-width: 780px; margin: 0 auto 72px; text-align: center;
+  }
+  .pillars-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; background: var(--border); border-radius: var(--radius); overflow: hidden; }
+  .pillar-card { background: var(--card); padding: 40px 32px; }
+  .pillar-icon { font-size: 28px; margin-bottom: 20px; }
+  .pillar-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+  .pillar-card p { font-size: 13px; color: var(--muted-light); line-height: 1.6; }
+
+  /* ─── PRICING ─── */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .pricing-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 40px 32px;
+    display: flex; flex-direction: column;
+    transition: border-color 0.2s;
+  }
+  .pricing-card:hover { border-color: var(--border-mid); }
+  .pricing-card.featured { border-color: rgba(200,240,77,0.4); background: #111; }
+  .featured-badge {
+    background: var(--accent); color: var(--black);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 5px 12px; border-radius: 100px;
+    display: inline-block; margin-bottom: 24px; align-self: flex-start;
+  }
+  .tier-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-light); margin-bottom: 10px; }
+  .tier-price { font-size: 48px; font-weight: 700; letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
+  .tier-price span { font-size: 15px; font-weight: 400; color: var(--muted-light); }
+  .tier-desc { font-size: 13px; color: var(--muted-light); margin: 14px 0 28px; line-height: 1.6; }
+  .tier-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 28px; }
+  .tier-features { list-style: none; display: flex; flex-direction: column; gap: 12px; flex: 1; margin-bottom: 36px; }
+  .tier-features li { font-size: 13px; color: var(--off-white); display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
+  .check { color: var(--accent); flex-shrink: 0; }
+  .tier-btn {
+    display: block; text-align: center;
+    padding: 15px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+    border: 1px solid var(--border-mid); color: var(--white);
+    transition: background 0.2s, border-color 0.2s;
+    cursor: pointer; margin-top: auto;
+  }
+  .tier-btn:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.22); }
+  .tier-btn.featured-btn { background: var(--accent); color: var(--black); border-color: var(--accent); }
+  .tier-btn.featured-btn:hover { background: var(--accent-dark); }
+  .pricing-note { text-align: center; margin-top: 28px; font-size: 13px; color: var(--muted-light); }
+  .pricing-note span { color: var(--off-white); }
+
+  /* ─── CTA SECTION ─── */
+  .cta-section {
+    position: relative; z-index: 1;
+    text-align: center;
+    background: var(--off-black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 140px 48px;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 800px; height: 400px;
+    background: radial-gradient(ellipse, rgba(200,240,77,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-section h2 { font-size: clamp(32px, 5vw, 64px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.06; margin-bottom: 20px; position: relative; }
+  .cta-section h2 em { color: var(--accent); font-style: normal; }
+  .cta-section p { font-size: 18px; color: var(--muted-light); max-width: 480px; margin: 0 auto 48px; line-height: 1.65; position: relative; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative; z-index: 1;
+    padding: 48px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .footer-logo { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; }
+  .footer-logo span { color: var(--accent); }
+  .footer-divisions { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+  .footer-copy { font-size: 12px; color: var(--muted); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .divisions-grid { grid-template-columns: repeat(3,1fr); }
+    .fios-grid { gap: 48px; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 140px 24px 80px; }
+    .stat-bar { padding: 40px 24px; gap: 40px; }
+    .section { padding: 80px 24px; }
+    .segments-grid, .divisions-grid, .pillars-grid, .pricing-grid { grid-template-columns: 1fr; }
+    .fios-wrap { padding: 80px 24px; }
+    .fios-grid { grid-template-columns: 1fr; gap: 40px; }
+    .cta-section { padding: 100px 24px; }
+    footer { padding: 32px 24px; flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">FLOOD <span>INTERNATIONAL</span></div>
+  <div class="nav-links">
+    <a href="#segments">Who It's For</a>
+    <a href="#divisions">Ecosystem</a>
+    <a href="#fios">Enterprise</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <a href="https://calendly.com/king-floodinternational/30min" target="_blank" class="nav-cta">Book a Call</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Build. Own. Last.</div>
+  <h1>The ecosystem for the<br>culture-builder who is<br><em>almost there.</em></h1>
+  <p class="hero-sub">Flood International is the music, fashion, infrastructure, and investment that turns creative talent into something you own.</p>
+  <div class="hero-actions">
+    <a class="btn-primary" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Start Your Intake</a>
+    <a href="#divisions" class="btn-secondary">Explore the Ecosystem</a>
+  </div>
+  <div class="founder-strip">
+    <div class="founder-avatar">NK</div>
+    <div class="founder-info">
+      <div class="founder-name">Nicholas King</div>
+      <div class="founder-title">Founder & Creative Director, Flood International</div>
+    </div>
+  </div>
+</section>
+
+<!-- STAT BAR -->
+<div class="stat-bar">
+  <div class="stat">
+    <div class="stat-num">5<span></span></div>
+    <div class="stat-label">Divisions Operating</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">48<span>hrs</span></div>
+    <div class="stat-label">Intake to Live System</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">100<span>%</span></div>
+    <div class="stat-label">You Own Everything Built</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">3<span>x</span></div>
+    <div class="stat-label">Average Output Increase</div>
+  </div>
+</div>
+
+<!-- SEGMENTS -->
+<div class="segments-wrap" id="segments">
+  <div class="section">
+    <div class="section-header center">
+      <span class="section-tag">Who It's For</span>
+      <h2 class="section-h2">You have a craft.<br>You have a following.<br>None of it has compounded yet.</h2>
+    </div>
+    <div class="segments-grid">
+      <div class="segment-card" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">
+        <div class="segment-icon">🎵</div>
+        <h3>The Ascending Artist</h3>
+        <p>You have the sound. You have the catalog. You don't have the infrastructure to own what you're building — yet.</p>
+        <span class="segment-link">Build Your System →</span>
+      </div>
+      <div class="segment-card" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">
+        <div class="segment-icon">⚙️</div>
+        <h3>The Creative Operator</h3>
+        <p>You run things inside music, fashion, media, or tech. You need systems that scale — and keep ownership in your hands.</p>
+        <span class="segment-link">Build Your Engine →</span>
+      </div>
+      <div class="segment-card" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">
+        <div class="segment-icon">👕</div>
+        <h3>The Identity-Driven Builder</h3>
+        <p>The brands you align with are signals of where you're headed. You wear what communicates trajectory before the trajectory is public.</p>
+        <span class="segment-link">Shop N The Field →</span>
+      </div>
+      <div class="segment-card" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">
+        <div class="segment-icon">📊</div>
+        <h3>The Culture Investor</h3>
+        <p>You understand that influence converts to capital. You're looking for the moment to enter — before everyone else sees what you see.</p>
+        <span class="segment-link">Explore Ventures →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIVISIONS -->
+<div id="divisions">
+  <div class="section">
+    <div class="section-header center">
+      <span class="section-tag">The Ecosystem</span>
+      <h2 class="section-h2">Five answers to the same<br>person's five biggest needs.</h2>
+      <p class="section-sub">Music. Fashion. Infrastructure. Lifestyle. Capital. Each division compounds the next.</p>
+    </div>
+    <div class="divisions-grid">
+      <div class="division-card">
+        <div class="division-icon">🎵</div>
+        <h3>Field Vision</h3>
+        <p>Music infrastructure for ascending artists who want to own their catalog and build a licensing pipeline that outlasts any single deal.</p>
+        <span class="division-link">Explore →</span>
+      </div>
+      <div class="division-card">
+        <div class="division-icon">🧠</div>
+        <h3>Flood Systems</h3>
+        <p>The infrastructure company for creators who are ready to scale — services, systems, and tools that keep ownership in the builder's hands.</p>
+        <span class="division-link">Learn More →</span>
+      </div>
+      <div class="division-card">
+        <div class="division-icon">👕</div>
+        <h3>N The Field</h3>
+        <p>The brand that signals trajectory. Worn by people who are building, not performing. The garment as credential before the credential exists publicly.</p>
+        <span class="division-link">Shop →</span>
+      </div>
+      <div class="division-card">
+        <div class="division-icon">🌿</div>
+        <h3>Field Scent</h3>
+        <p>The lifestyle layer for people who live their identity, not just wear it. The daily sensory signal that you are building something worth inhabiting.</p>
+        <span class="division-link">Discover →</span>
+      </div>
+      <div class="division-card">
+        <div class="division-icon">💰</div>
+        <h3>Flood Ventures</h3>
+        <p>The capital layer that enters when cultural influence is real but hasn't converted to equity yet. We invest in what we understand because we built it.</p>
+        <span class="division-link">Partner →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FIOS -->
+<div class="fios-wrap" id="fios">
+  <div class="fios-inner">
+    <span class="section-tag">Enterprise</span>
+    <h2 class="section-h2" style="margin-bottom:16px;">Operating Intelligence<br>for Entertainment Companies</h2>
+    <p style="font-size:18px; color:var(--muted-light); margin-bottom:72px; max-width:560px; line-height:1.65;">Unified infrastructure for labels, management companies, studios, and media funds.</p>
+    <div class="fios-grid">
+      <div class="fios-col">
+        <h3>The Problem</h3>
+        <ul class="fios-list">
+          <li>Artist and catalog data scattered across platforms</li>
+          <li>No real-time competitive visibility</li>
+          <li>Release timing based on guessing, not intelligence</li>
+          <li>Community signals go unnoticed until it's too late</li>
+        </ul>
+      </div>
+      <div class="fios-col">
+        <h3>The Solution</h3>
+        <ul class="fios-list">
+          <li>Centralized brand and artist operating system</li>
+          <li>Competitive intelligence and market positioning</li>
+          <li>Content pipeline calibrated to your catalog</li>
+          <li>Automated community intelligence and timing engine</li>
+        </ul>
+        <div class="fios-cta">
+          <a class="btn-primary" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Explore FIOS</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<div class="philosophy-wrap">
+  <div class="section">
+    <div class="section-header center">
+      <span class="section-tag">What We Believe</span>
+      <h2 class="section-h2">The most talented people<br>in culture rarely own it.</h2>
+    </div>
+    <p class="philosophy-quote">"We build the music, fashion, and stories that give people something to believe in — and something to build on."</p>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-icon">🏛️</div>
+        <h3>Ownership First</h3>
+        <p>Every system we build, you own. No equity clauses. No lock-in. The infrastructure belongs to the builder.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🔗</div>
+        <h3>Systems Over Campaigns</h3>
+        <p>We don't do one-off campaigns. We build compounding systems that earn their place and get smarter over time.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">💎</div>
+        <h3>Craft Before Claims</h3>
+        <p>Authority comes from track record, not posturing. The work speaks first. When we do speak, every word has earned its place.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">📈</div>
+        <h3>Leverage Over Income</h3>
+        <p>Income is linear. Leverage compounds. We build the assets that generate returns long after the work is done.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div id="pricing">
+  <div class="section">
+    <div class="section-header center">
+      <span class="section-tag">Pricing</span>
+      <h2 class="section-h2">Built for where you are.<br>Priced for where you're going.</h2>
+      <p class="section-sub">Every tier includes full system setup. You own everything that gets built.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <div class="pricing-card">
+        <div class="tier-label">Foundation</div>
+        <div class="tier-price">$997<span>/mo</span></div>
+        <p class="tier-desc">For creatives and small brands ready to stop guessing and start operating with real infrastructure.</p>
+        <hr class="tier-divider">
+        <ul class="tier-features">
+          <li><span class="check">✓</span> AI brand intake + gap analysis report</li>
+          <li><span class="check">✓</span> Content pipeline (up to 5 posts/week)</li>
+          <li><span class="check">✓</span> 24-hour approval queue</li>
+          <li><span class="check">✓</span> Custom brand landing page</li>
+          <li><span class="check">✓</span> Live tracking dashboard</li>
+          <li><span class="check">✓</span> Monthly performance report</li>
+        </ul>
+        <a class="tier-btn" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Get Started</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="featured-badge">Most Popular</div>
+        <div class="tier-label">Builder</div>
+        <div class="tier-price">$2,500<span>/mo</span></div>
+        <p class="tier-desc">For brands actively growing who need full content infrastructure, intelligence, and strategic direction.</p>
+        <hr class="tier-divider">
+        <ul class="tier-features">
+          <li><span class="check">✓</span> Everything in Foundation</li>
+          <li><span class="check">✓</span> Content pipeline (up to 10 posts/week)</li>
+          <li><span class="check">✓</span> 2–3 platforms managed simultaneously</li>
+          <li><span class="check">✓</span> Monthly brand intelligence report</li>
+          <li><span class="check">✓</span> Community intelligence monitoring</li>
+          <li><span class="check">✓</span> 2 strategy calls/month with Nicholas King</li>
+          <li><span class="check">✓</span> Upload portal for your own content</li>
+        </ul>
+        <a class="tier-btn featured-btn" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Get Started</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="tier-label">Full Platform + Production</div>
+        <div class="tier-price">$5,000<span>/mo+</span></div>
+        <p class="tier-desc">For companies, athletes, and operators who want full execution — including Flood's production team.</p>
+        <hr class="tier-divider">
+        <ul class="tier-features">
+          <li><span class="check">✓</span> Everything in Builder</li>
+          <li><span class="check">✓</span> Flood production team included</li>
+          <li><span class="check">✓</span> Professional shoots + edited deliverables</li>
+          <li><span class="check">✓</span> Full social management + approval layer</li>
+          <li><span class="check">✓</span> Weekly strategy calls</li>
+          <li><span class="check">✓</span> Priority support</li>
+          <li><span class="check">✓</span> Custom scope for agencies + large companies</li>
+        </ul>
+        <a class="tier-btn" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Get Started</a>
+      </div>
+
+    </div>
+    <p class="pricing-note">All tiers include a one-time <span>$500–$750 setup fee</span> covering brand intake, AI analysis, and system calibration.</p>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section" id="contact">
+  <h2>Ready to own<br><em>what you're building?</em></h2>
+  <p>Book a 30-minute call. We'll assess where you are, identify your gaps, and show you exactly what infrastructure looks like at your level.</p>
+  <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; position:relative;">
+    <a href="https://calendly.com/king-floodinternational/30min" target="_blank" class="btn-primary">Book a Discovery Call</a>
+    <a class="btn-secondary" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Start Your Intake</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">FLOOD <span>INTERNATIONAL</span></div>
+  <div class="footer-divisions">Field Vision · Flood Systems · N The Field · Field Scent · Flood Ventures</div>
+  <div class="footer-copy">© 2026 Flood International. All rights reserved.</div>
+</footer>
+
+<script async src="https://tally.so/widgets/embed.js"></script>
+
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+
+</body>
+</html>
