@@ -75,6 +75,15 @@
     transition: color 0.2s;
   }
   .nav-links a:hover { color: var(--white); }
+  .nav-portal {
+    font-size: 12px; color: var(--muted-light); letter-spacing: 0.06em;
+    text-transform: uppercase; font-weight: 600;
+    padding: 9px 18px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .nav-portal:hover { color: var(--accent); border-color: var(--accent); }
   .nav-cta {
     background: var(--accent); color: var(--black);
     font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
@@ -346,7 +355,10 @@
     <a href="#fios">Enterprise</a>
     <a href="#pricing">Pricing</a>
   </div>
-  <a class="nav-cta" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Get Started</a>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a class="nav-portal" href="https://flood-api-production-8435.up.railway.app/portal" target="_blank">Client Login</a>
+    <a class="nav-cta" data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560">Get Started</a>
+  </div>
 </nav>
 
 <!-- HERO -->
