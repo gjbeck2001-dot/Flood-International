@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flood International</title>
+<title>Flood International — AI Operations</title>
+<meta name="description" content="We build and run the AI systems that replace what you'd otherwise hire people to do. The team you can't afford to hire.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -18,495 +19,498 @@ a{color:inherit;text-decoration:none;}
 @keyframes floodDrift{0%{transform:scale(1.08) translate(0,0);}100%{transform:scale(1.16) translate(-2%,-3%);}}
 @keyframes floodMarquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 @keyframes floodBlink{0%,49%{opacity:1;}50%,100%{opacity:0.15;}}
-@keyframes floodBob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
 
-/* ─── NAV ─── */
-.nav-wrap{
-  position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:20;
-  background:#05090F;border-radius:0 0 22px 22px;
-  padding:14px 28px;
-  display:flex;align-items:center;
-  gap:clamp(14px,2.4vw,36px);
-  white-space:nowrap;
-}
-.nav-link{
-  font-family:'JetBrains Mono',monospace;font-size:12px;
-  letter-spacing:.12em;color:rgba(232,238,244,.75);transition:color .2s;
-}
+/* NAV */
+.nav-wrap{position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:20;background:#05090F;border-radius:0 0 22px 22px;padding:14px 28px;display:flex;align-items:center;gap:clamp(14px,2.4vw,36px);white-space:nowrap;}
+.nav-link{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;color:rgba(232,238,244,.75);transition:color .2s;}
 .nav-link:hover{color:#E8EEF4;}
 .nav-dot{width:5px;height:5px;background:#E5352B;border-radius:50%;flex:none;}
-.nav-portal{
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;
-  color:rgba(232,238,244,.6);padding:8px 16px;
-  border:1px solid rgba(232,238,244,.18);border-radius:999px;
-  transition:color .2s,border-color .2s;white-space:nowrap;
+.nav-cta-pill{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#fff;background:#E5352B;padding:8px 18px;border-radius:999px;transition:opacity .2s;cursor:pointer;}
+.nav-cta-pill:hover{opacity:.85;}
+@media(max-width:680px){
+  .nav-wrap{padding:12px 18px;gap:14px;}
+  .nav-hide-mobile{display:none;}
 }
-.nav-portal:hover{color:#E8EEF4;border-color:rgba(232,238,244,.5);}
-.nav-links-group{display:flex;align-items:center;gap:clamp(14px,2.4vw,36px);}
 
-/* ─── HERO ─── */
+/* HERO */
 .hero{height:100vh;min-height:600px;padding:12px;}
 .hero-inner{position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;background:#070E1A;}
 .hero-bg{position:absolute;inset:-7%;width:114%;height:114%;object-fit:cover;animation:floodDrift 28s ease-in-out infinite alternate;will-change:transform;}
 .hero-overlay-v{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,9,15,.5) 0%,rgba(5,9,15,.05) 35%,rgba(5,9,15,.9) 100%);}
 .hero-overlay-h{position:absolute;inset:0;background:linear-gradient(96deg,rgba(5,9,15,.65) 0%,rgba(5,9,15,.12) 55%,rgba(5,9,15,0) 100%);}
-.hero-telemetry-l{position:absolute;top:22px;left:24px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(232,238,244,.5);display:flex;align-items:center;gap:9px;}
-.hero-telemetry-r{position:absolute;top:22px;right:24px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(232,238,244,.5);text-align:right;line-height:1.8;}
+.hero-tel-l{position:absolute;top:22px;left:24px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(232,238,244,.5);display:flex;align-items:center;gap:9px;}
+.blink{width:7px;height:7px;border-radius:50%;background:#5BBF8A;display:inline-block;animation:floodBlink 2.4s infinite;}
+.hero-tel-r{position:absolute;top:22px;right:24px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(232,238,244,.5);text-align:right;line-height:1.8;}
 .hero-bottom{position:absolute;left:0;right:0;bottom:0;z-index:10;padding:0 clamp(20px,4vw,56px) clamp(28px,4vw,52px);display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(20px,4vw,56px);align-items:end;}
 .hero-acrostic{display:flex;flex-direction:column;gap:0;}
 .acrostic-row{display:flex;align-items:baseline;gap:0.04em;line-height:0.96;letter-spacing:-.03em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);}
 .acrostic-letter{color:#E5352B;font-style:italic;font-size:clamp(54px,9.5vw,138px);font-weight:800;}
 .acrostic-word{color:#E8EEF4;font-weight:300;font-size:clamp(18px,3.1vw,44px);letter-spacing:.01em;padding-bottom:.12em;}
-.acrostic-sub{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:clamp(9px,1.0vw,13px);letter-spacing:.44em;color:rgba(232,238,244,.55);margin-top:.7em;padding-left:.08em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);}
-.hero-right{padding-bottom:.5em;display:flex;flex-direction:column;gap:20px;}
-.hero-desc{font-size:clamp(13px,1.1vw,16px);line-height:1.6;color:rgba(232,238,244,.72);max-width:340px;opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
-.hero-what{opacity:0;transform:translateY(18px);transition:opacity .8s .1s cubic-bezier(.16,1,.3,1),transform .8s .1s cubic-bezier(.16,1,.3,1);}
-.hero-what-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
-.hero-what-list li{display:flex;align-items:center;gap:9px;font-size:clamp(12px,1vw,14px);color:rgba(232,238,244,.6);}
-.hero-what-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:#E5352B;flex:none;}
-.hero-cta{display:inline-flex;align-items:center;gap:14px;background:#E5352B;color:#fff;border-radius:999px;padding:10px 10px 10px 26px;font-weight:600;font-size:clamp(13px,1.1vw,16px);transition:gap .25s,background .2s;}
+.acrostic-sub{font-family:'JetBrains Mono',monospace;font-size:clamp(9px,1.0vw,13px);letter-spacing:.44em;color:rgba(232,238,244,.55);margin-top:.7em;padding-left:.08em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);}
+.hero-right{padding-bottom:.5em;display:flex;flex-direction:column;gap:18px;}
+.hero-tagline{font-size:clamp(15px,1.3vw,21px);font-weight:600;line-height:1.35;color:#E8EEF4;max-width:320px;opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.hero-desc{font-size:clamp(13px,1vw,15px);line-height:1.65;color:rgba(232,238,244,.6);max-width:320px;opacity:0;transform:translateY(18px);transition:opacity .8s .08s cubic-bezier(.16,1,.3,1),transform .8s .08s cubic-bezier(.16,1,.3,1);}
+.hero-cta-wrap{opacity:0;transform:translateY(18px);transition:opacity .8s .16s cubic-bezier(.16,1,.3,1),transform .8s .16s cubic-bezier(.16,1,.3,1);}
+.hero-cta{display:inline-flex;align-items:center;gap:14px;background:#E5352B;color:#fff;border-radius:999px;padding:10px 10px 10px 26px;font-weight:600;font-size:clamp(13px,1.1vw,16px);transition:gap .25s;cursor:pointer;border:none;font-family:'Archivo',sans-serif;}
 .hero-cta:hover{gap:20px;}
 .hero-cta-icon{width:40px;height:40px;border-radius:50%;background:#05090F;display:inline-flex;align-items:center;justify-content:center;flex:none;}
-.hero-scroll{position:absolute;bottom:24px;right:32px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:rgba(232,238,244,.45);display:flex;align-items:center;gap:8px;}
+@media(max-width:680px){
+  .hero-bottom{grid-template-columns:1fr;padding-bottom:32px;}
+  .hero-right{display:none;}
+}
 
-/* ─── MARQUEE ─── */
+/* MARQUEE */
 .marquee-track{border-top:1px solid rgba(232,238,244,.1);border-bottom:1px solid rgba(232,238,244,.1);overflow:hidden;white-space:nowrap;padding:12px 0;}
-.marquee-inner{display:inline-block;animation:floodMarquee 30s linear infinite;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;color:rgba(232,238,244,.55);}
+.marquee-inner{display:inline-block;animation:floodMarquee 34s linear infinite;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;color:rgba(232,238,244,.55);}
+.m-sep{color:#E5352B;padding:0 6px;}
 
-/* ─── THESIS ─── */
-.thesis{background:#05090F;padding:clamp(72px,11vw,160px) 16px;}
-.thesis-inner{background:#0A1320;border-radius:24px;max-width:1180px;margin:0 auto;padding:clamp(44px,8vw,120px) clamp(24px,5vw,80px);text-align:center;}
-.section-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.28em;color:#E5352B;margin-bottom:clamp(24px,4vw,52px);}
+/* SECTION SCAFFOLD */
+.section{padding:clamp(72px,10vw,140px) 16px;}
+.section-inner{max-width:1180px;margin:0 auto;}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.28em;color:#E5352B;margin-bottom:28px;display:flex;align-items:center;gap:10px;}
+.label-dot{width:7px;height:7px;border-radius:50%;background:#E5352B;animation:floodBlink 1.8s infinite;}
+.section-card{background:#0A1320;border-radius:24px;padding:clamp(40px,7vw,100px) clamp(24px,5vw,72px);}
 
-/* ─── SYSTEM ─── */
-.system{padding:0 16px clamp(56px,9vw,120px);}
-.system-inner{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:clamp(28px,5vw,72px);align-items:center;}
+/* PROBLEM */
+.problem-headline{font-weight:400;font-size:clamp(26px,4.5vw,66px);line-height:.97;letter-spacing:-.02em;max-width:22ch;margin:0 auto clamp(32px,4vw,52px);text-align:center;}
+.problem-body{font-size:clamp(14px,1.3vw,18px);line-height:1.65;color:#C9D6E2;max-width:680px;margin:0 auto;text-align:center;}
+
+/* SYSTEM */
+.system-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:clamp(28px,5vw,72px);align-items:center;}
+.system-headline{font-weight:800;font-size:clamp(26px,3.6vw,50px);line-height:1.0;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:22px;}
+.system-body{font-size:clamp(13px,1.1vw,16px);line-height:1.75;color:#9CB0C4;max-width:460px;}
 .console{border:1px solid rgba(232,238,244,.16);border-radius:18px;background:#0A1320;overflow:hidden;font-family:'JetBrains Mono',monospace;}
 .console-header{display:flex;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(232,238,244,.1);font-size:10px;letter-spacing:.16em;color:#6F869C;}
-.console-row{display:flex;justify-content:space-between;padding:13px 20px;border-bottom:1px solid rgba(232,238,244,.06);font-size:12px;}
-.console-row:last-of-type{border-bottom:none;}
+.console-status{color:#5BBF8A;}
+.console-row{display:flex;justify-content:space-between;align-items:center;padding:13px 20px;border-bottom:1px solid rgba(232,238,244,.06);font-size:12px;}
+.console-row:last-child{border-bottom:none;}
+.console-name{color:#9CB0C4;}
+.console-num{color:#3C4E61;margin-right:8px;}
+.console-running{color:#5BBF8A;}
 .console-footer{padding:13px 20px;border-top:1px solid rgba(232,238,244,.1);font-size:10px;letter-spacing:.12em;color:#3C4E61;}
+@media(max-width:760px){.system-grid{grid-template-columns:1fr;}}
 
-/* ─── DIVISIONS ─── */
-.divisions{min-height:auto;padding:clamp(64px,10vw,140px) 16px;position:relative;}
-.divisions-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
-.div-card-img{position:relative;border-radius:18px;overflow:hidden;min-height:440px;background:#070E1A;}
-.div-card{background:#0E1826;border-radius:18px;padding:24px;min-height:440px;display:flex;flex-direction:column;}
-.div-icon{width:44px;height:44px;border-radius:11px;border:1px solid rgba(229,53,43,.45);background:#0A1320;display:flex;align-items:center;justify-content:center;margin-bottom:auto;}
+/* PACKAGES */
+.packages-intro{font-weight:400;font-size:clamp(18px,2.6vw,36px);line-height:1.12;max-width:28ch;margin-bottom:clamp(36px,5vw,64px);}
+.packages-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.pkg{background:#0E1826;border-radius:18px;padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;border:1px solid rgba(232,238,244,.06);position:relative;}
+.pkg-featured{background:#111E2F;border-color:rgba(229,53,43,.28);}
+.pkg-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:#E5352B;border-radius:0 0 10px 10px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:#fff;white-space:nowrap;}
+.pkg-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;}
+.pkg-num{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#5E7387;margin-bottom:7px;}
+.pkg-name{font-size:20px;font-weight:700;margin-bottom:4px;}
+.pkg-replaces{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#5BBF8A;}
+.pkg-price-block{text-align:right;}
+.pkg-price{font-size:clamp(26px,2.6vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1;}
+.pkg-mo{font-family:'JetBrains Mono',monospace;font-size:10px;color:#5E7387;letter-spacing:.1em;}
+.pkg-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:auto;}
+.pkg-list li{display:flex;gap:9px;align-items:flex-start;font-size:13px;line-height:1.5;color:#8FA3B5;}
+.pkg-check{flex:none;margin-top:2px;color:#E5352B;}
+.pkg-savings{margin-top:24px;padding-top:18px;border-top:1px solid rgba(232,238,244,.08);}
+.pkg-savings-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#5E7387;margin-bottom:6px;}
+.pkg-savings-hire{font-size:13px;color:#8FA3B5;}
+.pkg-savings-ours{font-size:13px;color:#8FA3B5;}
+.pkg-savings-hire span{color:#E5352B;font-weight:600;}
+.pkg-savings-ours span{color:#5BBF8A;font-weight:600;}
+.pkg-savings-note{font-size:11px;color:#5E7387;margin-top:3px;}
+.pkg-link{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#E8EEF4;margin-top:20px;transition:gap .2s;cursor:pointer;background:none;border:none;font-family:'JetBrains Mono',monospace;padding:0;}
+.pkg-link:hover{gap:12px;}
+@media(max-width:900px){.packages-grid{grid-template-columns:1fr;max-width:500px;}}
 
-/* ─── ACCESS ─── */
-.access{padding:0 16px clamp(64px,9vw,130px);}
-.access-inner{max-width:1180px;margin:0 auto;border-top:1px solid rgba(232,238,244,.1);padding-top:clamp(56px,8vw,110px);}
-.access-ctas{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}
+/* THE MATH */
+.math-headline{font-weight:800;font-size:clamp(32px,6vw,88px);line-height:.9;letter-spacing:-.03em;text-transform:uppercase;margin-bottom:clamp(36px,5vw,64px);}
+.math-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.math-card{background:#0A1320;border-radius:18px;padding:clamp(24px,3.5vw,48px);}
+.math-card-hire{border:1px solid rgba(229,53,43,.15);}
+.math-card-flood{border:1px solid rgba(91,191,138,.2);}
+.math-card-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;margin-bottom:22px;}
+.math-card-label-hire{color:#E5352B;}
+.math-card-label-flood{color:#5BBF8A;}
+.math-rows{display:flex;flex-direction:column;gap:14px;}
+.math-row{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid rgba(232,238,244,.06);font-size:14px;}
+.math-row:last-child{border-bottom:none;padding-bottom:0;}
+.math-row-label{color:#8FA3B5;}
+.math-row-val{font-family:'JetBrains Mono',monospace;color:#E8EEF4;}
+.math-row-total .math-row-label{color:#E8EEF4;font-weight:600;}
+.math-row-total .math-row-val{font-size:18px;font-weight:700;}
+.math-row-total-hire .math-row-val{color:#E5352B;}
+.math-row-total-flood .math-row-val{color:#5BBF8A;}
+.math-row-green{color:#5BBF8A !important;}
+@media(max-width:680px){.math-grid{grid-template-columns:1fr;}}
 
-/* ─── FOOTER ─── */
+/* HOW IT WORKS */
+.how-intro{font-weight:400;font-size:clamp(18px,2.6vw,36px);line-height:1.12;max-width:26ch;margin-bottom:clamp(36px,5vw,64px);}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.how-card{background:#0E1826;border-radius:18px;padding:26px;border:1px solid rgba(232,238,244,.06);}
+.how-day{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#5E7387;margin-bottom:14px;}
+.how-title{font-size:17px;font-weight:700;margin-bottom:10px;}
+.how-body{font-size:13px;line-height:1.6;color:#8FA3B5;}
+@media(max-width:900px){.how-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:500px){.how-grid{grid-template-columns:1fr;}}
+
+/* CTA */
+.cta-section{padding:0 16px clamp(70px,9vw,130px);}
+.cta-inner{max-width:1180px;margin:0 auto;border-top:1px solid rgba(232,238,244,.1);padding-top:clamp(56px,8vw,110px);}
+.cta-headline{font-weight:800;font-size:clamp(52px,10vw,148px);line-height:.88;letter-spacing:-.03em;text-transform:uppercase;margin-bottom:36px;}
+.cta-body{display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between;}
+.cta-copy{max-width:420px;}
+.cta-copy p{font-size:clamp(14px,1.2vw,17px);line-height:1.65;color:#9CB0C4;margin-bottom:12px;}
+.cta-copy p em{color:#E8EEF4;font-style:italic;}
+.cta-copy .cta-note{font-size:clamp(13px,1vw,14px);color:#5E7387;}
+.cta-btn{display:inline-flex;align-items:center;gap:14px;background:#E5352B;color:#fff;border-radius:999px;padding:11px 11px 11px 30px;font-weight:600;font-size:16px;transition:gap .25s;cursor:pointer;border:none;font-family:'Archivo',sans-serif;}
+.cta-btn:hover{gap:22px;}
+.cta-btn-icon{width:44px;height:44px;border-radius:50%;background:#05090F;display:inline-flex;align-items:center;justify-content:center;flex:none;}
+
+/* FOOTER */
 .footer{padding:0 16px 40px;}
 .footer-inner{max-width:1180px;margin:0 auto;}
-.footer-wordmark{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(36px,11vw,160px);line-height:.85;letter-spacing:-.03em;text-transform:uppercase;color:#10202F;border-top:1px solid rgba(232,238,244,.1);padding-top:40px;margin-bottom:32px;}
-.footer-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:20px;border-top:1px solid rgba(232,238,244,.1);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#45576B;}
+.footer-wordmark{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(38px,11vw,160px);line-height:.85;letter-spacing:-.03em;text-transform:uppercase;color:#10202F;border-top:1px solid rgba(232,238,244,.1);padding-top:40px;margin-bottom:32px;}
+.footer-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-top:18px;border-top:1px solid rgba(232,238,244,.1);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#45576B;}
 
-/* ─── REVEAL ─── */
-[data-word]{opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);}
-
-/* ════════════════════════════
-   MOBILE  (≤ 767px)
-════════════════════════════ */
-@media(max-width:767px){
-
-  /* NAV — collapse to logo + CTA */
-  .nav-wrap{
-    left:0;right:0;transform:none;
-    border-radius:0;
-    padding:14px 20px;
-    justify-content:space-between;
-    background:rgba(5,9,15,.92);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
-  }
-  .nav-links-group{display:none;}
-  .nav-dot{display:none;}
-  .nav-wordmark{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    letter-spacing:.28em;color:#E8EEF4;
-  }
-
-  /* HERO — single column */
-  .hero{padding:0;height:100svh;min-height:580px;}
-  .hero-inner{border-radius:0;}
-  .hero-telemetry-r{display:none;}
-  .hero-telemetry-l{top:68px;left:20px;font-size:9px;}
-  .hero-bottom{
-    grid-template-columns:1fr;
-    gap:24px;
-    padding:0 20px 36px;
-    bottom:0;
-  }
-  .hero-right{gap:16px;padding-bottom:0;}
-  .hero-desc{max-width:100%;font-size:14px;}
-  .hero-scroll{display:none;}
-  .acrostic-letter{font-size:clamp(48px,14vw,80px);}
-  .acrostic-word{font-size:clamp(16px,4.2vw,28px);}
-
-  /* THESIS */
-  .thesis-inner{padding:40px 24px;border-radius:20px;}
-
-  /* SYSTEM — stack */
-  .system-inner{grid-template-columns:1fr;}
-
-  /* DIVISIONS — single column */
-  .divisions-grid{grid-template-columns:1fr;}
-  .div-card-img{min-height:260px;}
-  .div-card{min-height:auto;padding:24px;}
-
-  /* ACCESS */
-  .access-inner{padding-top:44px;}
-  .access-ctas{flex-direction:column;align-items:stretch;}
-  .access-ctas button,
-  .access-ctas span[data-tally-open]{width:100%;justify-content:center;}
-
-  /* FOOTER */
-  .footer-meta{flex-direction:column;gap:8px;text-align:left;}
-}
-
-/* ════════════════════════════
-   TABLET  (768–1023px)
-════════════════════════════ */
-@media(min-width:768px) and (max-width:1023px){
-  .nav-links-group a:nth-child(n+4){display:none;}
-  .hero-bottom{grid-template-columns:1fr;}
-  .hero-right{max-width:480px;}
-  .system-inner{grid-template-columns:1fr;max-width:640px;}
-  .divisions-grid{grid-template-columns:repeat(2,1fr);}
-  .div-card-img,.div-card{min-height:340px;}
-}
+/* WORD REVEAL */
+.word{opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);display:inline;}
+.word-block{display:inline-block;}
 </style>
 </head>
 <body>
 
-<!-- ===== HERO ===== -->
+<!-- HERO -->
 <section class="hero" id="top">
   <div class="hero-inner">
-
-    <!-- bg -->
     <img class="hero-bg" src="assets/ocean-clean.jpg" alt="">
-
-    <!-- noise -->
-    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.45;mix-blend-mode:overlay;pointer-events:none;" xmlns="http://www.w3.org/2000/svg">
-      <filter id="nH"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/></filter>
-      <rect width="100%" height="100%" filter="url(#nH)"/>
-    </svg>
-
-    <!-- overlays -->
     <div class="hero-overlay-v"></div>
     <div class="hero-overlay-h"></div>
 
-    <!-- nav -->
     <nav class="nav-wrap">
-      <span class="nav-wordmark" style="display:none;">FLOOD</span>
-      <div class="nav-links-group">
-        <a class="nav-link" href="#thesis">Thesis</a>
-        <a class="nav-link" href="#system">System</a>
-        <span class="nav-dot"></span>
-        <a class="nav-link" href="#divisions">Divisions</a>
-        <a class="nav-link" href="#protocol">Protocol</a>
-        <a class="nav-link" href="#intake">Intake</a>
-      </div>
-      <a class="nav-portal" href="https://flood-api-production-8435.up.railway.app/portal" target="_blank">Client Login</a>
+      <a href="#problem" class="nav-link nav-hide-mobile">The Problem</a>
+      <a href="#system" class="nav-link nav-hide-mobile">System</a>
+      <span class="nav-dot nav-hide-mobile"></span>
+      <a href="#packages" class="nav-link nav-hide-mobile">Services</a>
+      <a href="#math" class="nav-link nav-hide-mobile">The Math</a>
+      <button class="nav-cta-pill" onclick="Calendly.initPopupWidget({url:'https://calendly.com/floodinternational/15min'});return false;">Book 15 min</button>
     </nav>
 
-    <!-- telemetry -->
-    <div class="hero-telemetry-l">
-      <span style="width:7px;height:7px;border-radius:50%;background:#5BBF8A;display:inline-block;animation:floodBlink 2.4s infinite;"></span>SYSTEM ONLINE
-    </div>
-    <div class="hero-telemetry-r">
-      <div>EST. 2019</div>
-      <div>51.5074°N 0.1278°W</div>
-    </div>
+    <div class="hero-tel-l"><span class="blink"></span>SYSTEMS RUNNING</div>
+    <div class="hero-tel-r"><div>FLOOD INTERNATIONAL</div><div>AI OPERATIONS</div></div>
 
-    <!-- bottom content -->
-    <div class="hero-bottom" data-pullup>
-
-      <!-- ACROSTIC -->
+    <div class="hero-bottom" id="hero-pullup">
       <div class="hero-acrostic">
-        <div class="acrostic-row" data-word>
-          <span class="acrostic-letter">F</span><span class="acrostic-word">OREVER</span>
-        </div>
-        <div class="acrostic-row" data-word>
-          <span class="acrostic-letter">L</span><span class="acrostic-word">IVING</span>
-        </div>
-        <div class="acrostic-row" data-word>
-          <span class="acrostic-letter">O</span><span class="acrostic-word">UT</span>
-        </div>
-        <div class="acrostic-row" data-word>
-          <span class="acrostic-letter">O</span><span class="acrostic-word">UR</span>
-        </div>
-        <div class="acrostic-row" data-word>
-          <span class="acrostic-letter">D</span><span class="acrostic-word">REAMS</span>
-        </div>
-        <div class="acrostic-sub" data-word>INTERNATIONAL</div>
+        <div class="acrostic-row"><span class="acrostic-letter">F</span><span class="acrostic-word">OREVER</span></div>
+        <div class="acrostic-row"><span class="acrostic-letter">L</span><span class="acrostic-word">IVING</span></div>
+        <div class="acrostic-row"><span class="acrostic-letter">O</span><span class="acrostic-word">UT</span></div>
+        <div class="acrostic-row"><span class="acrostic-letter">O</span><span class="acrostic-word">UR</span></div>
+        <div class="acrostic-row"><span class="acrostic-letter">D</span><span class="acrostic-word">REAMS</span></div>
+        <div class="acrostic-sub">INTERNATIONAL</div>
       </div>
-
-      <!-- right: what you get + CTA -->
       <div class="hero-right">
-        <p class="hero-desc" data-word>
-          AI-powered brand infrastructure for entertainers. Content strategy, positioning, production systems — built under your name, owned by you, designed to scale.
-        </p>
-        <div class="hero-what" data-word>
-          <ul class="hero-what-list">
-            <li>30 posts per month, written &amp; reviewed by AI</li>
-            <li>Brand positioning &amp; audience strategy</li>
-            <li>Client portal — approve content in one tap</li>
-            <li>Daily reporting &amp; growth analytics</li>
-          </ul>
-          <a class="hero-cta" href="#intake">
-            Enter the system
+        <p class="hero-tagline">The team you can't afford to hire.</p>
+        <p class="hero-desc">We build and run the AI systems that handle what you'd otherwise hire people for — content, follow-up, reporting, onboarding. One retainer. No salaries. No management.</p>
+        <div class="hero-cta-wrap">
+          <button class="hero-cta" onclick="Calendly.initPopupWidget({url:'https://calendly.com/floodinternational/15min'});return false;">
+            Book 15 minutes
             <span class="hero-cta-icon">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
             </span>
-          </a>
+          </button>
         </div>
       </div>
-    </div>
-
-    <!-- scroll cue -->
-    <div class="hero-scroll">
-      <span style="animation:floodBob 2.2s ease-in-out infinite;display:inline-block;">↓</span>
     </div>
   </div>
 </section>
 
-<!-- ===== MARQUEE ===== -->
+<!-- MARQUEE -->
 <div class="marquee-track">
   <div class="marquee-inner">
-    <span style="padding:0 24px;">FOREVER LIVING OUT OUR DREAMS</span><span style="color:#E5352B;">/</span>
-    <span style="padding:0 24px;">AI CONTENT STRATEGY</span><span style="color:#E5352B;">/</span>
-    <span style="padding:0 24px;">BRAND POSITIONING</span><span style="color:#E5352B;">/</span>
-    <span style="padding:0 24px;">PRODUCTION</span><span style="color:#E5352B;">/</span>
-    <span style="padding:0 24px;">OWNERSHIP</span><span style="color:#E5352B;">/</span>
-    <span style="padding:0 24px;">FOREVER LIVING OUT OUR DREAMS</span><span style="color:#E5352B;">/</span>
-    <span style="padding:0 24px;">AI CONTENT STRATEGY</span><span style="color:#E5352B;">/</span>
-    <span style="padding:0 24px;">BRAND POSITIONING</span><span style="color:#E5352B;">/</span>
-    <span style="padding:0 24px;">PRODUCTION</span><span style="color:#E5352B;">/</span>
-    <span style="padding:0 24px;">OWNERSHIP</span><span style="color:#E5352B;">/</span>
+    <span>AI OPERATIONS</span><span class="m-sep">/</span><span>CONTENT ENGINE</span><span class="m-sep">/</span><span>AUTOMATED FOLLOW-UP</span><span class="m-sep">/</span><span>DAILY REPORTING</span><span class="m-sep">/</span><span>CLIENT ONBOARDING</span><span class="m-sep">/</span><span>THE TEAM YOU CAN'T AFFORD TO HIRE</span><span class="m-sep">/</span><span>AI OPERATIONS</span><span class="m-sep">/</span><span>CONTENT ENGINE</span><span class="m-sep">/</span><span>AUTOMATED FOLLOW-UP</span><span class="m-sep">/</span><span>DAILY REPORTING</span><span class="m-sep">/</span><span>CLIENT ONBOARDING</span><span class="m-sep">/</span><span>THE TEAM YOU CAN'T AFFORD TO HIRE</span><span class="m-sep">/</span>
   </div>
 </div>
 
-<!-- ===== THESIS ===== -->
-<section id="thesis" class="thesis">
-  <div class="thesis-inner">
-    <div class="section-label">01 / THESIS</div>
-    <h2 data-pullup style="font-weight:400;font-size:clamp(26px,4.8vw,70px);line-height:.97;letter-spacing:-.02em;max-width:18ch;margin:0 auto clamp(32px,5vw,60px);">
-      <span data-word>We </span><span data-word>don't </span><span data-word>represent </span><span data-word>creators. </span><span data-word style="font-style:italic;font-family:'JetBrains Mono',monospace;color:#9FB4C6;">We install </span><span data-word style="font-style:italic;font-family:'JetBrains Mono',monospace;color:#9FB4C6;">the infrastructure </span><span data-word>that turns a name </span><span data-word>into an institution </span><span data-word>you own.</span>
-    </h2>
-    <p data-scrollchars style="font-size:clamp(14px,1.3vw,18px);line-height:1.65;color:#C9D6E2;max-width:740px;margin:0 auto;">Flood has built positioning, capital structures, and production systems beneath some of the most uncompromising names in culture — work engineered not for the feed, but for permanence, equity, and an ownership stake that outlasts the moment.</p>
-  </div>
-</section>
-
-<!-- ===== SYSTEM ===== -->
-<section id="system" class="system">
-  <div class="system-inner">
-    <div>
-      <div class="section-label">02 / SYSTEM</div>
-      <h2 data-pullup style="font-weight:800;font-size:clamp(26px,3.8vw,52px);line-height:1.0;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:24px;">
-        <span data-word style="display:inline-block;">Not an agency.</span><br>
-        <span data-word style="display:inline-block;">An operating system.</span>
+<!-- PROBLEM -->
+<section class="section" id="problem">
+  <div class="section-inner">
+    <div class="section-card" style="text-align:center;">
+      <div class="section-label" style="justify-content:center;">01 / THE PROBLEM</div>
+      <h2 class="problem-headline" data-pullup>
+        <span class="word">You're doing the work </span><span class="word">of three people. </span><span class="word" style="font-style:italic;font-family:'JetBrains Mono',monospace;color:#9FB4C6;">That's not a strategy. </span><span class="word" style="font-style:italic;font-family:'JetBrains Mono',monospace;color:#9FB4C6;">It's a liability.</span>
       </h2>
-      <p style="font-size:clamp(14px,1.1vw,16px);line-height:1.75;color:#9CB0C4;max-width:480px;">Agencies sell you their time. Flood installs infrastructure — the positioning, deals, capital architecture, and production engine running underneath your name, owned alongside you, built to outlast any single moment.</p>
-    </div>
-    <div class="console">
-      <div class="console-header"><span>SYSTEM.STATUS</span><span style="color:#5BBF8A;">● ALL MODULES ACTIVE</span></div>
-      <div class="console-row"><span style="color:#9CB0C4;"><span style="color:#3C4E61;">001 </span>content engine</span><span style="color:#5BBF8A;">RUNNING</span></div>
-      <div class="console-row"><span style="color:#9CB0C4;"><span style="color:#3C4E61;">002 </span>brand positioning</span><span style="color:#5BBF8A;">RUNNING</span></div>
-      <div class="console-row"><span style="color:#9CB0C4;"><span style="color:#3C4E61;">003 </span>production</span><span style="color:#5BBF8A;">RUNNING</span></div>
-      <div class="console-row"><span style="color:#9CB0C4;"><span style="color:#3C4E61;">004 </span>ownership</span><span style="color:#5BBF8A;">RUNNING</span></div>
-      <div class="console-footer">UPTIME 99.99% — FOREVER LIVING OUT OUR DREAMS</div>
+      <p class="problem-body" data-scrollchars>Every week the operational debt compounds. Follow-ups slip. Content stalls. New clients don't hear back fast enough. You know you need a system — you don't have the time or the person to build one. Hiring solves the function but creates a new problem: salary, benefits, management, turnover. Flood International eliminates that problem entirely.</p>
     </div>
   </div>
 </section>
 
-<!-- ===== DIVISIONS ===== -->
-<section id="divisions" class="divisions">
-  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.1;pointer-events:none;" xmlns="http://www.w3.org/2000/svg">
-    <filter id="nF"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="4" stitchTiles="stitch"/></filter>
-    <rect width="100%" height="100%" filter="url(#nF)"/>
-  </svg>
-  <div style="max-width:1240px;margin:0 auto;position:relative;">
-    <div class="section-label">03 / WHAT YOU GET</div>
-    <h2 data-pullup style="font-weight:400;font-size:clamp(20px,2.8vw,38px);line-height:1.12;max-width:24ch;margin-bottom:clamp(36px,6vw,72px);">
-      <span data-word style="display:inline-block;">Studio-grade infrastructure for creators who refuse to rent their influence.</span><br>
-      <span data-word style="display:inline-block;color:#5E7387;">Built for ownership. Powered by the system.</span>
-    </h2>
-    <div class="divisions-grid">
+<!-- SYSTEM -->
+<section class="section" id="system" style="padding-top:0;">
+  <div class="section-inner">
+    <div class="system-grid">
+      <div>
+        <div class="section-label">02 / SYSTEM</div>
+        <h2 class="system-headline" data-pullup>
+          <span class="word word-block">Not an agency.</span><br>
+          <span class="word word-block">An operations team.</span>
+        </h2>
+        <p class="system-body">Agencies sell you their time and disappear. We embed into your business and run the daily operations — indefinitely, on retainer. The systems we build belong to your workflow. The output runs every day whether you think about it or not.</p>
+      </div>
+      <div class="console">
+        <div class="console-header"><span>FLOOD.OPERATIONS</span><span class="console-status">● ALL SYSTEMS ACTIVE</span></div>
+        <div class="console-row"><span class="console-name"><span class="console-num">001 </span>daily briefing</span><span class="console-running">RUNNING</span></div>
+        <div class="console-row"><span class="console-name"><span class="console-num">002 </span>follow-up sequences</span><span class="console-running">RUNNING</span></div>
+        <div class="console-row"><span class="console-name"><span class="console-num">003 </span>content engine</span><span class="console-running">RUNNING</span></div>
+        <div class="console-row"><span class="console-name"><span class="console-num">004 </span>client onboarding</span><span class="console-running">RUNNING</span></div>
+        <div class="console-row" style="border-bottom:none;"><span class="console-name"><span class="console-num">005 </span>weekly reporting</span><span class="console-running">RUNNING</span></div>
+        <div class="console-footer">UPTIME 99.9% — NO SICK DAYS. NO TURNOVER. NO MANAGEMENT.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-      <!-- image card -->
-      <div class="div-card-img">
-        <img src="assets/ocean-clean.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:floodDrift 32s ease-in-out infinite alternate;">
-        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(5,9,15,.9) 0%,rgba(5,9,15,.1) 55%);"></div>
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:24px;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#E5352B;margin-bottom:8px;">CONTENT ENGINE</div>
-          <div style="font-size:20px;font-weight:600;line-height:1.1;color:#E8EEF4;">30 posts per month.<br>Written. Reviewed. Ready.</div>
+<!-- PACKAGES -->
+<section class="section" id="packages" style="padding-top:0;">
+  <div class="section-inner">
+    <div class="section-label">03 / SERVICES</div>
+    <p class="packages-intro" data-pullup>
+      <span class="word">Three tiers. One system. </span><span class="word">All priced against what you'd pay to hire.</span>
+    </p>
+    <div class="packages-grid">
+
+      <!-- THE OPERATOR -->
+      <div class="pkg">
+        <div class="pkg-header">
+          <div>
+            <div class="pkg-num">01</div>
+            <div class="pkg-name">The Operator</div>
+            <div class="pkg-replaces">REPLACES YOUR EA / OPS COORDINATOR</div>
+          </div>
+          <div class="pkg-price-block">
+            <div class="pkg-price">$1,500</div>
+            <div class="pkg-mo">/MONTH</div>
+          </div>
+        </div>
+        <ul class="pkg-list">
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Daily briefing — what needs attention, every morning</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Automated 3-touch follow-up on every lead</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Weekly performance report — 1 page, every Monday</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 custom AI agent built for your specific workflow</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly 20-minute check-in call</li>
+        </ul>
+        <div class="pkg-savings">
+          <div class="pkg-savings-label">VS. HIRING</div>
+          <div class="pkg-savings-hire">EA salary + benefits = <span>$60–70K/year</span></div>
+          <div class="pkg-savings-ours">Operator tier = <span>$18K/year</span></div>
+          <div class="pkg-savings-note">You save $42,000–$52,000 annually</div>
+        </div>
+        <button class="pkg-link" onclick="Calendly.initPopupWidget({url:'https://calendly.com/floodinternational/15min'});return false;">
+          Start here <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+
+      <!-- CONTENT ENGINE -->
+      <div class="pkg pkg-featured">
+        <div class="pkg-badge">MOST COMMON</div>
+        <div class="pkg-header" style="margin-top:18px;">
+          <div>
+            <div class="pkg-num">02</div>
+            <div class="pkg-name">Content Engine</div>
+            <div class="pkg-replaces">REPLACES SM MANAGER + COPYWRITER</div>
+          </div>
+          <div class="pkg-price-block">
+            <div class="pkg-price">$2,500</div>
+            <div class="pkg-mo">/MONTH</div>
+          </div>
+        </div>
+        <ul class="pkg-list">
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in The Operator</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>30 posts/month — AI-drafted in your brand voice, ready to approve</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Scheduling and publishing — goes live automatically</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 email automation flow built and running</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly content performance report</li>
+        </ul>
+        <div class="pkg-savings">
+          <div class="pkg-savings-label">VS. HIRING</div>
+          <div class="pkg-savings-hire">Two roles combined = <span>$85–110K/year</span></div>
+          <div class="pkg-savings-ours">Content Engine = <span>$30K/year</span></div>
+          <div class="pkg-savings-note">You save $55,000–$80,000 annually</div>
+        </div>
+        <button class="pkg-link" onclick="Calendly.initPopupWidget({url:'https://calendly.com/floodinternational/15min'});return false;">
+          Get started <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+
+      <!-- FULL STACK -->
+      <div class="pkg">
+        <div class="pkg-header">
+          <div>
+            <div class="pkg-num">03</div>
+            <div class="pkg-name">The Full Stack</div>
+            <div class="pkg-replaces">REPLACES 3 OPERATIONAL ROLES</div>
+          </div>
+          <div class="pkg-price-block">
+            <div class="pkg-price">$4,500</div>
+            <div class="pkg-mo">/MONTH</div>
+          </div>
+        </div>
+        <ul class="pkg-list">
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in Content Engine</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Full email marketing automation — welcome, nurture, re-engagement</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Client onboarding sequence — new customers feel like VIPs automatically</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>3 custom AI agents built for your workflow</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly 30-minute strategy call with Nicholas</li>
+        </ul>
+        <div class="pkg-savings">
+          <div class="pkg-savings-label">VS. HIRING</div>
+          <div class="pkg-savings-hire">3 roles combined = <span>$165–200K/year</span></div>
+          <div class="pkg-savings-ours">Full Stack = <span>$54K/year</span></div>
+          <div class="pkg-savings-note">You save $111,000–$146,000 annually</div>
+        </div>
+        <button class="pkg-link" onclick="Calendly.initPopupWidget({url:'https://calendly.com/floodinternational/15min'});return false;">
+          Scale with this <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- THE MATH -->
+<section class="section" id="math" style="padding-top:0;">
+  <div class="section-inner">
+    <div class="section-label">04 / THE MATH</div>
+    <h2 class="math-headline" data-pullup>
+      <span class="word word-block">The choice</span><br>
+      <span class="word word-block" style="color:#9CB0C4;font-style:italic;">is hire or flood.</span>
+    </h2>
+    <div class="math-grid">
+      <div class="math-card math-card-hire">
+        <div class="math-card-label math-card-label-hire">OPTION A — HIRE SOMEONE</div>
+        <div class="math-rows">
+          <div class="math-row"><span class="math-row-label">Base salary (avg)</span><span class="math-row-val">$55,000/yr</span></div>
+          <div class="math-row"><span class="math-row-label">Benefits + payroll tax</span><span class="math-row-val">+$16,500/yr</span></div>
+          <div class="math-row"><span class="math-row-label">Management overhead</span><span class="math-row-val">+$8,000/yr</span></div>
+          <div class="math-row"><span class="math-row-label">Avg turnover cost</span><span class="math-row-val">+$12,000 each</span></div>
+          <div class="math-row math-row-total math-row-total-hire"><span class="math-row-label">True annual cost</span><span class="math-row-val">$79,500+</span></div>
         </div>
       </div>
-
-      <!-- positioning -->
-      <div class="div-card">
-        <div class="div-icon"><span style="width:14px;height:14px;border:2px solid #E5352B;border-radius:3px;display:inline-block;"></span></div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#5E7387;margin-top:20px;margin-bottom:8px;">01</div>
-        <h3 style="font-size:20px;font-weight:600;margin-bottom:16px;">Positioning.</h3>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:auto;">
-          <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg><span style="font-size:13px;line-height:1.5;color:#8FA3B5;">Category definition before the market names it</span></li>
-          <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg><span style="font-size:13px;line-height:1.5;color:#8FA3B5;">Audience &amp; narrative architecture</span></li>
-          <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg><span style="font-size:13px;line-height:1.5;color:#8FA3B5;">A position that can't be copied</span></li>
-        </ul>
-        <a href="#intake" style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#E8EEF4;margin-top:20px;">Get started <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg);"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-
-      <!-- infrastructure -->
-      <div class="div-card">
-        <div class="div-icon"><span style="width:14px;height:14px;border:2px solid #E5352B;display:inline-block;"></span></div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#5E7387;margin-top:20px;margin-bottom:8px;">02</div>
-        <h3 style="font-size:20px;font-weight:600;margin-bottom:16px;">Infrastructure.</h3>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:auto;">
-          <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg><span style="font-size:13px;line-height:1.5;color:#8FA3B5;">Deal &amp; capital structure</span></li>
-          <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg><span style="font-size:13px;line-height:1.5;color:#8FA3B5;">Legal, rights &amp; operations</span></li>
-          <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg><span style="font-size:13px;line-height:1.5;color:#8FA3B5;">Revenue engineering across lines</span></li>
-        </ul>
-        <a href="#intake" style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#E8EEF4;margin-top:20px;">Get started <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg);"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-
-      <!-- ownership -->
-      <div class="div-card">
-        <div class="div-icon"><span style="width:14px;height:14px;border:2px solid #E5352B;border-radius:50%;display:inline-block;"></span></div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#5E7387;margin-top:20px;margin-bottom:8px;">03</div>
-        <h3 style="font-size:20px;font-weight:600;margin-bottom:16px;">Ownership.</h3>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:auto;">
-          <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg><span style="font-size:13px;line-height:1.5;color:#8FA3B5;">Equity &amp; IP stakes in the work</span></li>
-          <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg><span style="font-size:13px;line-height:1.5;color:#8FA3B5;">Catalog &amp; rights retention</span></li>
-          <li style="display:flex;gap:10px;align-items:flex-start;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg><span style="font-size:13px;line-height:1.5;color:#8FA3B5;">The long position on your name</span></li>
-        </ul>
-        <a href="#intake" style="display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#E8EEF4;margin-top:20px;">Get started <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg);"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ===== ACCESS / INTAKE ===== -->
-<section id="protocol" class="access">
-  <div class="access-inner" id="intake">
-    <div class="section-label" style="display:flex;align-items:center;gap:10px;">
-      <span style="width:7px;height:7px;border-radius:50%;background:#E5352B;display:inline-block;animation:floodBlink 1.8s infinite;"></span>
-      04 / ACCESS
-    </div>
-    <h2 style="font-weight:800;font-size:clamp(40px,8vw,128px);line-height:.9;letter-spacing:-.03em;text-transform:uppercase;margin:28px 0 32px;">Enter the<br>system</h2>
-    <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;justify-content:space-between;">
-      <p style="font-size:clamp(14px,1.2vw,17px);line-height:1.65;color:#9CB0C4;max-width:440px;">Access is selective. Tell us what you're building. If there's a fit, Flood opens a channel — reviewed within 72 hours.</p>
-      <div class="access-ctas">
-        <button onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;" style="display:inline-flex;align-items:center;justify-content:center;gap:14px;background:transparent;color:#E8EEF4;border:1px solid rgba(232,238,244,.25);border-radius:999px;padding:14px 28px;font-weight:600;font-size:15px;font-family:'Archivo',sans-serif;cursor:pointer;transition:border-color .2s;white-space:nowrap;">
-          Book a call
-        </button>
-        <span data-tally-open="A7QpVB" data-tally-overlay="1" data-tally-width="560" style="display:inline-flex;align-items:center;justify-content:center;gap:14px;background:#E5352B;color:#fff;border-radius:999px;padding:14px 14px 14px 30px;font-weight:600;font-size:16px;cursor:pointer;white-space:nowrap;">
-          Request access
-          <span style="width:44px;height:44px;border-radius:50%;background:#05090F;display:inline-flex;align-items:center;justify-content:center;flex:none;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </span>
-        </span>
+      <div class="math-card math-card-flood">
+        <div class="math-card-label math-card-label-flood">OPTION B — FLOOD INTERNATIONAL</div>
+        <div class="math-rows">
+          <div class="math-row"><span class="math-row-label">The Operator</span><span class="math-row-val">$18,000/yr</span></div>
+          <div class="math-row"><span class="math-row-label">Content Engine</span><span class="math-row-val">$30,000/yr</span></div>
+          <div class="math-row"><span class="math-row-label">Full Stack</span><span class="math-row-val">$54,000/yr</span></div>
+          <div class="math-row"><span class="math-row-label">Sick days / PTO / turnover</span><span class="math-row-val math-row-green">$0</span></div>
+          <div class="math-row math-row-total math-row-total-flood"><span class="math-row-label">Month-to-month, cancel anytime</span><span class="math-row-val">NO CONTRACT</span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
+<!-- HOW IT WORKS -->
+<section class="section" id="how" style="padding-top:0;">
+  <div class="section-inner">
+    <div class="section-label">05 / HOW IT WORKS</div>
+    <p class="how-intro" data-pullup>
+      <span class="word">From signed to running in 7 days. </span><span class="word" style="color:#5E7387;">No management required.</span>
+    </p>
+    <div class="how-grid">
+      <div class="how-card"><div class="how-day">DAY 0</div><div class="how-title">You sign.</div><p class="how-body">Payment confirmed. Welcome email in 5 minutes. Intake form in your inbox. Takes 10 minutes to complete.</p></div>
+      <div class="how-card"><div class="how-day">DAY 3</div><div class="how-title">We audit.</div><p class="how-body">30-minute call with Nicholas. We map your operations and confirm the highest-impact function to build first.</p></div>
+      <div class="how-card"><div class="how-day">DAY 7</div><div class="how-title">You go live.</div><p class="how-body">First system is built and running. You approve what needs approving. Everything else runs automatically.</p></div>
+      <div class="how-card"><div class="how-day">DAY 30</div><div class="how-title">We review.</div><p class="how-body">30-day performance report. What ran, what improved, what changes in month 2. The retainer continues. The system compounds.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK CTA -->
+<section class="cta-section" id="book">
+  <div class="cta-inner">
+    <div class="section-label"><span class="label-dot"></span>06 / BOOK</div>
+    <h2 class="cta-headline">15<br>minutes.</h2>
+    <div class="cta-body">
+      <div class="cta-copy">
+        <p>One question. That's all the first call is: <em>"What's the one operational thing in your business that, if it ran automatically every day, would have the biggest impact?"</em></p>
+        <p class="cta-note">If you can answer that — we can build it. 15 minutes. No pitch deck. No commitment.</p>
+      </div>
+      <button class="cta-btn" onclick="Calendly.initPopupWidget({url:'https://calendly.com/floodinternational/15min'});return false;">
+        Book 15 minutes
+        <span class="cta-btn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-wordmark">Flood<br>Int'l</div>
     <div class="footer-meta">
       <span>© 2026 FLOOD INTERNATIONAL™</span>
-      <span>FOREVER LIVING OUT OUR DREAMS</span>
-      <span>LONDON · 51.5074°N 0.1278°W</span>
+      <span>THE TEAM YOU CAN'T AFFORD TO HIRE</span>
+      <span>LOS ANGELES, CA</span>
     </div>
   </div>
 </footer>
 
-<!-- Tally -->
-<script async src="https://tally.so/widgets/embed.js"></script>
-<!-- Calendly -->
 <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-
-  // Show FLOOD wordmark in nav on mobile
-  const mq = window.matchMedia('(max-width:767px)');
-  function handleMQ(e) {
-    const wm = document.querySelector('.nav-wordmark');
-    if (wm) wm.style.display = e.matches ? 'block' : 'none';
+(function(){
+  // Hero pull-up
+  const heroEl = document.getElementById('hero-pullup');
+  if(heroEl){
+    const rows = heroEl.querySelectorAll('.acrostic-row, .acrostic-sub, .hero-tagline, .hero-desc, .hero-cta-wrap');
+    rows.forEach((r,i)=>{
+      setTimeout(()=>{r.style.opacity='1';r.style.transform='none';},120+i*90);
+    });
   }
-  mq.addEventListener('change', handleMQ);
-  handleMQ(mq);
 
-  // Reveal words via IntersectionObserver
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (!e.isIntersecting) return;
-      e.target.querySelectorAll('[data-word]').forEach((w, i) => {
-        w.style.transitionDelay = (i * 0.08) + 's';
-        w.style.opacity = '1';
-        w.style.transform = 'none';
+  // Section pull-up via IntersectionObserver
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const words = e.target.querySelectorAll('.word');
+      words.forEach((w,i)=>{
+        w.style.transitionDelay=(i*0.09)+'s';
+        w.style.opacity='1';
+        w.style.transform='none';
       });
       io.unobserve(e.target);
     });
-  }, { threshold: 0.12 });
+  },{threshold:0.15});
+  document.querySelectorAll('[data-pullup]').forEach(el=>io.observe(el));
 
-  document.querySelectorAll('[data-pullup]').forEach((el) => io.observe(el));
-
-  // Hero: trigger immediately on load (it's already in view)
-  document.querySelectorAll('[data-pullup]').forEach(el => {
-    if (el.getBoundingClientRect().top < window.innerHeight) {
-      el.querySelectorAll('[data-word]').forEach((w, i) => {
-        setTimeout(() => {
-          w.style.transitionDelay = (i * 0.09) + 's';
-          w.style.opacity = '1';
-          w.style.transform = 'none';
-        }, 180);
-      });
-    }
-  });
-
-  // Scroll-linked character opacity reveal
-  const charGroups = [];
-  document.querySelectorAll('[data-scrollchars]').forEach((el) => {
-    const text = el.textContent;
-    el.textContent = '';
-    const spans = [];
-    for (const ch of text) {
-      const s = document.createElement('span');
-      s.textContent = ch;
-      s.style.opacity = '0.18';
-      s.style.transition = 'opacity .12s linear';
-      if (ch === ' ') s.style.whiteSpace = 'pre';
+  // Scroll char reveal
+  const charGroups=[];
+  document.querySelectorAll('[data-scrollchars]').forEach(el=>{
+    const text=el.textContent;
+    el.textContent='';
+    const spans=[];
+    for(const ch of text){
+      const s=document.createElement('span');
+      s.textContent=ch;
+      s.style.opacity='0.18';
+      s.style.transition='opacity .12s linear';
+      if(ch===' ')s.style.whiteSpace='pre';
       el.appendChild(s);
       spans.push(s);
     }
-    charGroups.push({ el, spans });
+    charGroups.push({el,spans});
   });
-
-  function updateChars() {
-    const vh = window.innerHeight;
-    for (const { el, spans } of charGroups) {
-      const r = el.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (vh * 0.65)));
-      const n = spans.length;
-      for (let i = 0; i < n; i++) {
-        const local = Math.min(1, Math.max(0, (p - i / n + 0.08) / 0.16));
-        spans[i].style.opacity = (0.18 + 0.82 * local).toFixed(3);
+  function updateChars(){
+    const vh=window.innerHeight;
+    const start=vh*0.85,end=vh*0.2;
+    charGroups.forEach(({el,spans})=>{
+      const r=el.getBoundingClientRect();
+      const p=Math.min(1,Math.max(0,(start-r.top)/(start-end+1)));
+      const n=spans.length;
+      for(let i=0;i<n;i++){
+        const cp=i/n;
+        const local=Math.min(1,Math.max(0,(p-cp+0.08)/0.16));
+        spans[i].style.opacity=(0.18+0.82*local).toFixed(3);
       }
-    }
+    });
   }
-
-  window.addEventListener('scroll', updateChars, { passive: true });
+  window.addEventListener('scroll',updateChars,{passive:true});
+  window.addEventListener('resize',updateChars,{passive:true});
   requestAnimationFrame(updateChars);
-});
+})();
 </script>
 </body>
 </html>
