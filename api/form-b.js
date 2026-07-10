@@ -54,9 +54,10 @@ export default async function handler(req, res) {
 
 async function writeToNotion({ name, email, phone, brand, tier, website, goal, submitted }) {
   const notes = [
-    website ? `Website: ${website}` : null,
-    goal    ? `Goal: ${goal}`       : null,
-    'Source: Form B — Full Intake',
+    tier ? `Tier interest: ${tier}` : null,
+    goal ? `Goal: ${goal}`          : null,
+    `Submitted via Tally (Form B — Full Intake): ${submitted}`,
+    'Full 49-question intake completed',
   ].filter(Boolean).join('\n');
 
   const response = await fetch('https://api.notion.com/v1/pages', {
@@ -73,16 +74,15 @@ async function writeToNotion({ name, email, phone, brand, tier, website, goal, s
         Email: { email: email },
         Phone: { phone_number: phone || null },
         ...(brand && brand !== 'N/A' ? {
-          Brand: { rich_text: [{ text: { content: brand } }] },
+          Company: { rich_text: [{ text: { content: brand } }] },
         } : {}),
-        ...(tier ? {
-          Tier: { select: { name: tier } },
+        ...(website ? {
+          'Website / Social': { url: website },
         } : {}),
-        Source: { select: { name: 'Form B — Full Intake' } },
+        Source: { select: { name: 'Website' } },
+        'Contact Type': { select: { name: 'Lead' } },
+        Status: { status: { name: 'New' } },
         Notes: { rich_text: [{ text: { content: notes } }] },
-        Status: { select: { name: 'New Lead' } },
-        'Intake Complete': { checkbox: true },
-        'Submitted At': { date: { start: submitted } },
       },
     }),
   });

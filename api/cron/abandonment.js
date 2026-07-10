@@ -97,8 +97,8 @@ async function checkNotionForComplete(email) {
             email: { equals: email },
           },
           {
-            property: 'Intake Complete',
-            checkbox: { equals: true },
+            property: 'Notes',
+            rich_text: { contains: 'Full 49-question intake completed' },
           },
         ],
       },

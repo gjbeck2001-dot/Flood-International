@@ -73,19 +73,22 @@ async function writeToNotion({ name, email, phone, brand, tier, submitted }) {
                                         phone_number: phone || null,
                             },
                             ...(brand && brand !== 'N/A' ? {
-                                        Brand: { rich_text: [{ text: { content: brand } }] },
+                                        Company: { rich_text: [{ text: { content: brand } }] },
                             } : {}),
-                            Tier: {
-                                        select: { name: tier || 'Unknown' },
-                            },
                             Source: {
-                                        select: { name: 'Form A — Quick Intake' },
+                                        select: { name: 'Website' },
+                            },
+                            'Contact Type': {
+                                        select: { name: 'Lead' },
                             },
                             Status: {
-                                        select: { name: 'New Lead' },
+                                        status: { name: 'New' },
                             },
-                            'Submitted At': {
-                                        date: { start: submitted },
+                            Notes: {
+                                        rich_text: [{ text: { content: [
+                                            tier ? `Tier interest: ${tier}` : null,
+                                            `Submitted via Tally (Form A — Quick Intake): ${submitted}`,
+                                        ].filter(Boolean).join('\n') } }],
                             },
                   },
           }),
