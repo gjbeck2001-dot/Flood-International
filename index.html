@@ -3,193 +3,571 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flood International — AI Operations</title>
-<meta name="description" content="We build and run the AI systems that replace what you'd otherwise hire people to do. The team you can't afford to hire.">
+<title>Flood International — The Flood Intelligence Operating System</title>
+<meta name="description" content="FIOS is the operating system creative businesses run on. Nine departments that gather intelligence, make decisions, run operations and build the systems underneath your name.">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://floodinternational.com/">
+<meta property="og:site_name" content="Flood International">
+<meta property="og:title" content="Flood International — The system your business runs on">
+<meta property="og:description" content="FIOS installs an operating system underneath your business — nine departments that watch the market, make the call, run the work, and remember everything.">
+<meta property="og:image" content="https://floodinternational.com/assets/ocean-hero.jpg">
+<meta property="og:image:alt" content="Flood International — dark ocean at night">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Flood International — The system your business runs on">
+<meta name="twitter:description" content="The team you can't afford to hire, running as software.">
+<meta name="twitter:image" content="https://floodinternational.com/assets/ocean-hero.jpg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://assets.calendly.com">
+<link rel="preload" as="script" href="https://assets.calendly.com/assets/external/widget.js">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700&display=swap" rel="stylesheet">
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{background:#05090F;-webkit-font-smoothing:antialiased;font-family:'Archivo',sans-serif;color:#E8EEF4;overflow-x:hidden;}
-::selection{background:#E5352B;color:#fff;}
+
+:root{
+  --bg:#04070C;
+  --bg-2:#070D16;
+  --panel:#0A1320;
+  --panel-2:#0D1826;
+  --line:rgba(232,238,244,.10);
+  --line-2:rgba(232,238,244,.18);
+  --ink:#EDF3F8;
+  --ink-2:#B9C8D6;
+  --ink-3:#8FA3B5;
+  --ink-4:#6F869C;
+  --red:#E5352B;
+  --red-dim:rgba(229,53,43,.14);
+  --green:#5BBF8A;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --sans:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+::selection{background:var(--red);color:#fff;}
 a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
 
-@keyframes floodDrift{0%{transform:scale(1.08) translate(0,0);}100%{transform:scale(1.16) translate(-2%,-3%);}}
-@keyframes floodMarquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-@keyframes floodBlink{0%,49%{opacity:1;}50%,100%{opacity:0.15;}}
+.skip{position:absolute;left:-9999px;}
+.skip:focus{left:16px;top:16px;z-index:200;background:var(--red);color:#fff;padding:12px 20px;border-radius:8px;}
+a:focus-visible,button:focus-visible,[role=button]:focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:6px;}
 
-/* NAV */
-.nav-wrap{position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:20;background:#05090F;border-radius:0 0 22px 22px;padding:14px 28px;display:flex;align-items:center;gap:clamp(14px,2.4vw,36px);white-space:nowrap;}
-.nav-link{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;color:rgba(232,238,244,.75);transition:color .2s;}
-.nav-link:hover{color:#E8EEF4;}
-.nav-dot{width:5px;height:5px;background:#E5352B;border-radius:50%;flex:none;}
-.nav-cta-pill{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#fff;background:#E5352B;padding:8px 18px;border-radius:999px;transition:opacity .2s;cursor:pointer;}
-.nav-cta-pill:hover{opacity:.85;}
-@media(max-width:680px){
-  .nav-wrap{padding:12px 18px;gap:14px;}
-  .nav-hide-mobile{display:none;}
+@keyframes drift{0%{transform:scale(1.08) translate(0,0);}100%{transform:scale(1.16) translate(-2%,-3%);}}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes blink{0%,49%{opacity:1;}50%,100%{opacity:.2;}}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+  [data-word]{opacity:1 !important;transform:none !important;}
 }
 
-/* HERO */
-.hero{height:100vh;min-height:600px;padding:12px;}
-.hero-inner{position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;background:#070E1A;}
-.hero-bg{position:absolute;inset:-7%;width:114%;height:114%;object-fit:cover;animation:floodDrift 28s ease-in-out infinite alternate;will-change:transform;}
-.hero-overlay-v{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(5,9,15,.5) 0%,rgba(5,9,15,.05) 35%,rgba(5,9,15,.9) 100%);}
-.hero-overlay-h{position:absolute;inset:0;background:linear-gradient(96deg,rgba(5,9,15,.65) 0%,rgba(5,9,15,.12) 55%,rgba(5,9,15,0) 100%);}
-.hero-tel-l{position:absolute;top:22px;left:24px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(232,238,244,.5);display:flex;align-items:center;gap:9px;}
-.blink{width:7px;height:7px;border-radius:50%;background:#5BBF8A;display:inline-block;animation:floodBlink 2.4s infinite;}
-.hero-tel-r{position:absolute;top:22px;right:24px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:rgba(232,238,244,.5);text-align:right;line-height:1.8;}
-.hero-bottom{position:absolute;left:0;right:0;bottom:0;z-index:10;padding:0 clamp(20px,4vw,56px) clamp(28px,4vw,52px);display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(20px,4vw,56px);align-items:end;}
-.hero-acrostic{display:flex;flex-direction:column;gap:0;}
-.acrostic-row{display:flex;align-items:baseline;gap:0.04em;line-height:0.96;letter-spacing:-.03em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);}
-.acrostic-letter{color:#E5352B;font-style:italic;font-size:clamp(54px,9.5vw,138px);font-weight:800;}
-.acrostic-word{color:#E8EEF4;font-weight:300;font-size:clamp(18px,3.1vw,44px);letter-spacing:.01em;padding-bottom:.12em;}
-.acrostic-sub{font-family:'JetBrains Mono',monospace;font-size:clamp(9px,1.0vw,13px);letter-spacing:.44em;color:rgba(232,238,244,.55);margin-top:.7em;padding-left:.08em;opacity:0;transform:translateY(0.35em);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);}
-.hero-right{padding-bottom:.5em;display:flex;flex-direction:column;gap:18px;}
-.hero-tagline{font-size:clamp(15px,1.3vw,21px);font-weight:600;line-height:1.35;color:#E8EEF4;max-width:320px;opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
-.hero-desc{font-size:clamp(13px,1vw,15px);line-height:1.65;color:rgba(232,238,244,.6);max-width:320px;opacity:0;transform:translateY(18px);transition:opacity .8s .08s cubic-bezier(.16,1,.3,1),transform .8s .08s cubic-bezier(.16,1,.3,1);}
-.hero-cta-wrap{opacity:0;transform:translateY(18px);transition:opacity .8s .16s cubic-bezier(.16,1,.3,1),transform .8s .16s cubic-bezier(.16,1,.3,1);}
-.hero-cta{display:inline-flex;align-items:center;gap:14px;background:#E5352B;color:#fff;border-radius:999px;padding:10px 10px 10px 26px;font-weight:600;font-size:clamp(13px,1.1vw,16px);transition:gap .25s;cursor:pointer;border:none;font-family:'Archivo',sans-serif;}
-.hero-cta:hover{gap:20px;}
-.hero-cta-icon{width:40px;height:40px;border-radius:50%;background:#05090F;display:inline-flex;align-items:center;justify-content:center;flex:none;}
-@media(max-width:680px){
-  .hero-bottom{grid-template-columns:1fr;padding-bottom:32px;}
-  .hero-right{display:none;}
-}
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,40px);}
+.section{padding:clamp(72px,10vw,150px) 0;}
+.rule{height:1px;background:var(--line);}
 
-/* MARQUEE */
-.marquee-track{border-top:1px solid rgba(232,238,244,.1);border-bottom:1px solid rgba(232,238,244,.1);overflow:hidden;white-space:nowrap;padding:12px 0;}
-.marquee-inner{display:inline-block;animation:floodMarquee 34s linear infinite;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;color:rgba(232,238,244,.55);}
-.m-sep{color:#E5352B;padding:0 6px;}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--red);margin-bottom:clamp(22px,3vw,40px);display:flex;align-items:center;gap:12px;}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex:none;}
 
-/* SECTION SCAFFOLD */
-.section{padding:clamp(72px,10vw,140px) 16px;}
-.section-inner{max-width:1180px;margin:0 auto;}
-.section-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.28em;color:#E5352B;margin-bottom:28px;display:flex;align-items:center;gap:10px;}
-.label-dot{width:7px;height:7px;border-radius:50%;background:#E5352B;animation:floodBlink 1.8s infinite;}
-.section-card{background:#0A1320;border-radius:24px;padding:clamp(40px,7vw,100px) clamp(24px,5vw,72px);}
+h2.display{font-weight:800;letter-spacing:-.035em;line-height:.96;font-size:clamp(30px,5.4vw,74px);text-wrap:balance;}
+h2.display .quiet{color:var(--ink-3);font-weight:300;font-style:italic;font-family:var(--mono);letter-spacing:-.01em;font-size:.72em;}
+.lede{font-size:clamp(15px,1.35vw,20px);line-height:1.62;color:var(--ink-2);max-width:62ch;}
 
-/* PROBLEM */
-.problem-headline{font-weight:400;font-size:clamp(26px,4.5vw,66px);line-height:.97;letter-spacing:-.02em;max-width:22ch;margin:0 auto clamp(32px,4vw,52px);text-align:center;}
-.problem-body{font-size:clamp(14px,1.3vw,18px);line-height:1.65;color:#C9D6E2;max-width:680px;margin:0 auto;text-align:center;}
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:60;background:rgba(4,7,12,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .3s,background .3s;}
+.nav.stuck{border-bottom-color:var(--line);}
+.nav-in{max-width:1200px;margin:0 auto;padding:15px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.wordmark{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.3em;color:var(--ink);}
+.nav-links{display:flex;align-items:center;gap:clamp(16px,2.2vw,32px);}
+.nav-links a{font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;color:var(--ink-3);transition:color .2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-cta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink);border:1px solid var(--line-2);border-radius:999px;padding:9px 18px;transition:background .2s,border-color .2s;background:transparent;cursor:pointer;}
+.nav-cta:hover{background:var(--red);border-color:var(--red);color:#fff;}
+@media(max-width:900px){.nav-links{display:none;}}
 
-/* SYSTEM */
-.system-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:clamp(28px,5vw,72px);align-items:center;}
-.system-headline{font-weight:800;font-size:clamp(26px,3.6vw,50px);line-height:1.0;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:22px;}
-.system-body{font-size:clamp(13px,1.1vw,16px);line-height:1.75;color:#9CB0C4;max-width:460px;}
-.console{border:1px solid rgba(232,238,244,.16);border-radius:18px;background:#0A1320;overflow:hidden;font-family:'JetBrains Mono',monospace;}
-.console-header{display:flex;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(232,238,244,.1);font-size:10px;letter-spacing:.16em;color:#6F869C;}
-.console-status{color:#5BBF8A;}
-.console-row{display:flex;justify-content:space-between;align-items:center;padding:13px 20px;border-bottom:1px solid rgba(232,238,244,.06);font-size:12px;}
+/* ── HERO ── */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;padding:120px 0 clamp(40px,6vw,72px);overflow:hidden;}
+.hero-bg{position:absolute;inset:-8%;width:116%;height:116%;object-fit:cover;animation:drift 30s ease-in-out infinite alternate;will-change:transform;}
+.hero-veil{position:absolute;inset:0;background:
+  radial-gradient(120% 90% at 15% 100%, rgba(229,53,43,.16) 0%, transparent 55%),
+  linear-gradient(to bottom, rgba(4,7,12,.62) 0%, rgba(4,7,12,.15) 30%, rgba(4,7,12,.97) 92%);}
+.hero-grain{position:absolute;inset:0;opacity:.4;mix-blend-mode:overlay;pointer-events:none;}
+.hero-in{position:relative;z-index:5;width:100%;}
+.hero-status{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ink-3);display:flex;align-items:center;gap:9px;margin-bottom:clamp(28px,5vw,56px);}
+.hero-status .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2.6s infinite;}
+.hero-kicker{font-family:var(--mono);font-size:clamp(9px,.95vw,12px);letter-spacing:.4em;color:var(--ink-3);margin-bottom:20px;}
+h1{font-weight:800;letter-spacing:-.04em;line-height:.9;font-size:clamp(42px,8.4vw,124px);margin-bottom:28px;}
+h1 .fios{color:var(--red);font-style:italic;}
+.hero-grid{display:grid;grid-template-columns:1.25fr .85fr;gap:clamp(28px,5vw,80px);align-items:end;}
+.hero-sub{font-size:clamp(14px,1.2vw,18px);line-height:1.6;color:var(--ink-2);max-width:48ch;}
+.hero-side{display:flex;flex-direction:column;gap:22px;}
+.hero-side ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.hero-side li{display:flex;gap:11px;align-items:flex-start;font-size:clamp(12.5px,1vw,14.5px);line-height:1.5;color:var(--ink-3);}
+.hero-side li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--red);flex:none;margin-top:.55em;}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:32px;}}
+
+.btn{display:inline-flex;align-items:center;gap:13px;background:var(--red);color:#fff;border:none;border-radius:999px;padding:11px 11px 11px 26px;font-family:var(--sans);font-weight:600;font-size:clamp(13.5px,1.05vw,16px);cursor:pointer;transition:gap .25s;}
+.btn:hover{gap:19px;}
+.btn .ic{width:38px;height:38px;border-radius:50%;background:var(--bg);display:inline-flex;align-items:center;justify-content:center;flex:none;}
+.btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:12px;background:transparent;color:var(--ink);border:1px solid var(--line-2);border-radius:999px;padding:14px 28px;font-family:var(--sans);font-weight:600;font-size:15px;cursor:pointer;transition:border-color .2s,background .2s;}
+.btn-ghost:hover{border-color:var(--ink-3);background:rgba(232,238,244,.04);}
+
+/* ── MARQUEE ── */
+.marq{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:13px 0;background:var(--bg-2);}
+.marq-in{display:inline-block;animation:marquee 42s linear infinite;font-family:var(--mono);font-size:11.5px;letter-spacing:.26em;color:var(--ink-4);}
+.marq-in span{padding:0 26px;}
+.marq-in .s{color:var(--red);padding:0;}
+
+/* ── PROBLEM ── */
+.problem-card{background:linear-gradient(165deg,var(--panel) 0%,var(--bg-2) 80%);border:1px solid var(--line);border-radius:26px;padding:clamp(36px,6vw,96px) clamp(24px,5vw,80px);text-align:center;}
+.problem-card h2{margin:0 auto clamp(28px,4vw,48px);max-width:19ch;}
+.problem-card .lede{margin:0 auto;}
+
+/* ── FIOS ── */
+.fios-head{display:grid;grid-template-columns:1fr .9fr;gap:clamp(28px,5vw,72px);align-items:end;margin-bottom:clamp(40px,6vw,80px);}
+@media(max-width:900px){.fios-head{grid-template-columns:1fr;gap:28px;}}
+
+.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:22px;overflow:hidden;}
+.dept{background:var(--bg-2);padding:clamp(24px,2.4vw,34px);min-height:238px;display:flex;flex-direction:column;transition:background .3s;}
+.dept:hover{background:var(--panel-2);}
+.dept-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+.dept-n{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--red);}
+.status{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;padding:4px 8px;border-radius:999px;white-space:nowrap;flex:none;}
+.status-beta{color:#E0A33E;background:rgba(224,163,62,.10);border:1px solid rgba(224,163,62,.34);}
+.status-live{color:var(--green);background:rgba(91,191,138,.10);border:1px solid rgba(91,191,138,.34);}
+.legend{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:26px;font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;color:var(--ink-4);line-height:1.7;}
+.legend .key{display:inline-flex;align-items:center;gap:8px;}
+.legend .swatch{width:8px;height:8px;border-radius:50%;flex:none;}
+.dept h3{font-size:18.5px;font-weight:600;letter-spacing:-.015em;margin-bottom:11px;}
+.dept p{font-size:13.5px;line-height:1.58;color:var(--ink-3);margin-bottom:auto;}
+.dept-eg{font-family:var(--mono);font-size:10.5px;line-height:1.65;color:var(--ink-4);border-top:1px solid var(--line);margin-top:22px;padding-top:14px;letter-spacing:.04em;}
+@media(max-width:1023px){.dept-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.dept-grid{grid-template-columns:1fr;}.dept{min-height:auto;}}
+
+/* ── WHAT IT BUILDS ── */
+.builds{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(32px,5vw,80px);align-items:start;}
+@media(max-width:900px){.builds{grid-template-columns:1fr;}}
+.console{border:1px solid var(--line-2);border-radius:18px;background:var(--panel);overflow:hidden;font-family:var(--mono);}
+.console-hd{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;border-bottom:1px solid var(--line);font-size:10px;letter-spacing:.16em;color:var(--ink-3);}
+.console-hd .live{color:var(--green);}
+.console-row{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:14px;padding:13px 20px;border-bottom:1px solid rgba(232,238,244,.055);font-size:12.5px;}
 .console-row:last-child{border-bottom:none;}
-.console-name{color:#9CB0C4;}
-.console-num{color:#3C4E61;margin-right:8px;}
-.console-running{color:#5BBF8A;}
-.console-footer{padding:13px 20px;border-top:1px solid rgba(232,238,244,.1);font-size:10px;letter-spacing:.12em;color:#3C4E61;}
-@media(max-width:760px){.system-grid{grid-template-columns:1fr;}}
+.console-row .n{color:var(--ink-4);font-size:10.5px;}
+.console-row .t{color:var(--ink-2);}
+.console-row .v{color:var(--ink-4);font-size:10px;letter-spacing:.1em;}
+.build-list{list-style:none;display:flex;flex-direction:column;gap:2px;}
+.build-list li{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--line);}
+.build-list li:last-child{border-bottom:none;}
+.build-ic{width:34px;height:34px;border-radius:9px;border:1px solid var(--red-dim);background:rgba(229,53,43,.07);display:flex;align-items:center;justify-content:center;flex:none;}
+.build-list h4{font-size:16px;font-weight:600;margin-bottom:5px;letter-spacing:-.01em;}
+.build-list p{font-size:13.5px;line-height:1.55;color:var(--ink-3);}
 
-/* PACKAGES */
-.packages-intro{font-weight:400;font-size:clamp(18px,2.6vw,36px);line-height:1.12;max-width:28ch;margin-bottom:clamp(36px,5vw,64px);}
-.packages-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.pkg{background:#0E1826;border-radius:18px;padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;border:1px solid rgba(232,238,244,.06);position:relative;}
-.pkg-featured{background:#111E2F;border-color:rgba(229,53,43,.28);}
-.pkg-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:#E5352B;border-radius:0 0 10px 10px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:#fff;white-space:nowrap;}
-.pkg-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;}
-.pkg-num{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#5E7387;margin-bottom:7px;}
-.pkg-name{font-size:20px;font-weight:700;margin-bottom:4px;}
-.pkg-replaces{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:#5BBF8A;}
-.pkg-price-block{text-align:right;}
-.pkg-price{font-size:clamp(26px,2.6vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1;}
-.pkg-mo{font-family:'JetBrains Mono',monospace;font-size:10px;color:#5E7387;letter-spacing:.1em;}
-.pkg-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:auto;}
-.pkg-list li{display:flex;gap:9px;align-items:flex-start;font-size:13px;line-height:1.5;color:#8FA3B5;}
-.pkg-check{flex:none;margin-top:2px;color:#E5352B;}
-.pkg-savings{margin-top:24px;padding-top:18px;border-top:1px solid rgba(232,238,244,.08);}
-.pkg-savings-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#5E7387;margin-bottom:6px;}
-.pkg-savings-hire{font-size:13px;color:#8FA3B5;}
-.pkg-savings-ours{font-size:13px;color:#8FA3B5;}
-.pkg-savings-hire span{color:#E5352B;font-weight:600;}
-.pkg-savings-ours span{color:#5BBF8A;font-weight:600;}
-.pkg-savings-note{font-size:11px;color:#5E7387;margin-top:3px;}
-.pkg-link{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:#E8EEF4;margin-top:20px;transition:gap .2s;cursor:pointer;background:none;border:none;font-family:'JetBrains Mono',monospace;padding:0;}
-.pkg-link:hover{gap:12px;}
-@media(max-width:900px){.packages-grid{grid-template-columns:1fr;max-width:500px;}}
+/* ── SERVICES ── */
+.pkgs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:1023px){.pkgs{grid-template-columns:1fr;max-width:560px;margin:0 auto;}}
+.pkg{position:relative;background:var(--bg-2);border:1px solid var(--line);border-radius:20px;padding:32px 28px;display:flex;flex-direction:column;transition:border-color .3s,transform .3s;}
+.pkg:hover{border-color:var(--line-2);transform:translateY(-2px);}
+.pkg-feat{background:linear-gradient(168deg,#101E2C 0%,var(--panel-2) 72%);border-color:rgba(229,53,43,.32);}
+.pkg-badge{position:absolute;top:-1px;right:24px;background:var(--red);color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:.16em;padding:6px 12px;border-radius:0 0 7px 7px;}
+.pkg-n{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--ink-4);margin-bottom:12px;}
+.pkg h3{font-size:23px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px;}
+.pkg-rep{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--red);margin-bottom:26px;line-height:1.5;}
+.pkg ul{list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:30px;}
+.pkg li{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:flex-start;font-size:13.5px;line-height:1.52;color:var(--ink-2);}
+.pkg li svg{margin-top:3px;flex:none;color:var(--red);}
+.pkg-foot{margin-top:auto;padding-top:22px;border-top:1px solid var(--line);}
+.pkg-note{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink-4);margin-bottom:14px;}
+.pkg-btn{width:100%;display:inline-flex;align-items:center;justify-content:space-between;gap:10px;background:transparent;border:1px solid var(--line-2);color:var(--ink);border-radius:999px;padding:13px 14px 13px 22px;font-family:var(--sans);font-weight:600;font-size:14px;cursor:pointer;transition:background .2s,border-color .2s;}
+.pkg-btn:hover{background:var(--red);border-color:var(--red);color:#fff;}
+.pkg-feat .pkg-btn{background:var(--red);border-color:var(--red);color:#fff;}
+.pkg-feat .pkg-btn:hover{filter:brightness(1.12);}
 
+/* ── HOW ── */
+.how{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:20px;overflow:hidden;}
+@media(max-width:1023px){.how{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.how{grid-template-columns:1fr;}}
+.how-c{background:var(--bg-2);padding:30px 26px;min-height:200px;}
+.how-day{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--red);margin-bottom:20px;}
+.how-c h4{font-size:19px;font-weight:600;letter-spacing:-.015em;margin-bottom:11px;}
+.how-c p{font-size:13.5px;line-height:1.58;color:var(--ink-3);}
 
-/* HOW IT WORKS */
-.how-intro{font-weight:400;font-size:clamp(18px,2.6vw,36px);line-height:1.12;max-width:26ch;margin-bottom:clamp(36px,5vw,64px);}
-.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
-.how-card{background:#0E1826;border-radius:18px;padding:26px;border:1px solid rgba(232,238,244,.06);}
-.how-day{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#5E7387;margin-bottom:14px;}
-.how-title{font-size:17px;font-weight:700;margin-bottom:10px;}
-.how-body{font-size:13px;line-height:1.6;color:#8FA3B5;}
-@media(max-width:900px){.how-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:500px){.how-grid{grid-template-columns:1fr;}}
+/* ── BOOK ── */
+.book{background:linear-gradient(150deg,#12202E 0%,var(--panel) 78%);border:1px solid rgba(229,53,43,.2);border-radius:26px;padding:clamp(40px,6vw,96px) clamp(24px,5vw,80px);}
+.book h2{font-size:clamp(36px,7vw,104px);font-weight:800;letter-spacing:-.04em;line-height:.9;text-transform:uppercase;margin:22px 0 28px;}
+.book-row{display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;align-items:flex-start;}
+.book-row p{font-size:clamp(14px,1.15vw,17px);line-height:1.62;color:var(--ink-2);max-width:42ch;}
+.book-ctas{display:flex;flex-wrap:wrap;gap:14px;}
+@media(max-width:600px){.book-ctas{flex-direction:column;width:100%;}.book-ctas .btn,.book-ctas .btn-ghost{width:100%;justify-content:center;}}
 
-/* CTA */
-.cta-section{padding:0 16px clamp(70px,9vw,130px);}
-.cta-inner{max-width:1180px;margin:0 auto;border-top:1px solid rgba(232,238,244,.1);padding-top:clamp(56px,8vw,110px);}
-.cta-headline{font-weight:800;font-size:clamp(52px,10vw,148px);line-height:.88;letter-spacing:-.03em;text-transform:uppercase;margin-bottom:36px;}
-.cta-body{display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between;}
-.cta-copy{max-width:420px;}
-.cta-copy p{font-size:clamp(14px,1.2vw,17px);line-height:1.65;color:#9CB0C4;margin-bottom:12px;}
-.cta-copy p em{color:#E8EEF4;font-style:italic;}
-.cta-copy .cta-note{font-size:clamp(13px,1vw,14px);color:#5E7387;}
-.cta-btn{display:inline-flex;align-items:center;gap:14px;background:#E5352B;color:#fff;border-radius:999px;padding:11px 11px 11px 30px;font-weight:600;font-size:16px;transition:gap .25s;cursor:pointer;border:none;font-family:'Archivo',sans-serif;}
-.cta-btn:hover{gap:22px;}
-.cta-btn-icon{width:44px;height:44px;border-radius:50%;background:#05090F;display:inline-flex;align-items:center;justify-content:center;flex:none;}
+/* ── FOOTER ── */
+.footer{padding:0 0 44px;}
+.foot-mark{font-weight:800;font-size:clamp(40px,12vw,172px);line-height:.82;letter-spacing:-.04em;text-transform:uppercase;color:#0E1D2B;border-top:1px solid var(--line);padding-top:44px;margin-bottom:34px;}
+.foot-nav{display:flex;flex-wrap:wrap;gap:22px;padding-bottom:20px;font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--ink-3);}
+.foot-nav a:hover{color:var(--ink);}
+.foot-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:20px;border-top:1px solid var(--line);font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--ink-4);}
+@media(max-width:640px){.foot-meta{flex-direction:column;gap:8px;}}
 
-/* FOOTER */
-.footer{padding:0 16px 40px;}
-.footer-inner{max-width:1180px;margin:0 auto;}
-.footer-wordmark{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(38px,11vw,160px);line-height:.85;letter-spacing:-.03em;text-transform:uppercase;color:#10202F;border-top:1px solid rgba(232,238,244,.1);padding-top:40px;margin-bottom:32px;}
-.footer-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-top:18px;border-top:1px solid rgba(232,238,244,.1);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#45576B;}
-
-/* WORD REVEAL */
-.word{opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);display:inline;}
-.word-block{display:inline-block;}
+[data-word]{opacity:0;transform:translateY(.32em);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);}
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<!-- HERO -->
-<section class="hero" id="top">
-  <div class="hero-inner">
-    <img class="hero-bg" src="assets/ocean-clean.jpg" alt="">
-    <div class="hero-overlay-v"></div>
-    <div class="hero-overlay-h"></div>
+<nav class="nav" id="nav" aria-label="Primary">
+  <div class="nav-in">
+    <a href="#top" class="wordmark">FLOOD</a>
+    <div class="nav-links">
+      <a href="#problem">The Problem</a>
+      <a href="#fios">FIOS</a>
+      <a href="#builds">What It Builds</a>
+      <a href="#services">Services</a>
+      <a href="#how">How It Works</a>
+    </div>
+    <button class="nav-cta" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">Book a call</button>
+  </div>
+</nav>
 
-    <nav class="nav-wrap">
-      <a href="#problem" class="nav-link nav-hide-mobile">The Problem</a>
-      <a href="#system" class="nav-link nav-hide-mobile">System</a>
-      <span class="nav-dot nav-hide-mobile"></span>
-      <a href="#packages" class="nav-link nav-hide-mobile">Services</a>
-      <button class="nav-cta-pill" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">Book a call</button>
-    </nav>
+<!-- ═══ HERO ═══ -->
+<header class="hero" id="top">
+  <img class="hero-bg" src="assets/ocean-clean.jpg" alt="">
+  <svg class="hero-grain" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/></filter>
+    <rect width="100%" height="100%" filter="url(#g)"/>
+  </svg>
+  <div class="hero-veil"></div>
 
-    <div class="hero-tel-l"><span class="blink"></span>SYSTEMS RUNNING</div>
-    <div class="hero-tel-r"><div>FLOOD INTERNATIONAL</div><div>AI OPERATIONS</div></div>
+  <div class="hero-in wrap">
+    <div class="hero-status"><span class="pulse"></span>FLOOD INTELLIGENCE OPERATING SYSTEM</div>
 
-    <div class="hero-bottom" id="hero-pullup">
-      <div class="hero-acrostic">
-        <div class="acrostic-row"><span class="acrostic-letter">F</span><span class="acrostic-word">OREVER</span></div>
-        <div class="acrostic-row"><span class="acrostic-letter">L</span><span class="acrostic-word">IVING</span></div>
-        <div class="acrostic-row"><span class="acrostic-letter">O</span><span class="acrostic-word">UT</span></div>
-        <div class="acrostic-row"><span class="acrostic-letter">O</span><span class="acrostic-word">UR</span></div>
-        <div class="acrostic-row"><span class="acrostic-letter">D</span><span class="acrostic-word">REAMS</span></div>
-        <div class="acrostic-sub">INTERNATIONAL</div>
+    <div class="hero-grid">
+      <div>
+        <div class="hero-kicker" data-word>F.I.O.S.</div>
+        <h1>
+          <span data-word>The system</span><br>
+          <span data-word>your business</span><br>
+          <span data-word class="fios">runs on.</span>
+        </h1>
+        <p class="hero-sub" data-word>
+          Flood installs an operating system underneath your business — nine departments
+          that watch the market, make the call, run the work, and remember everything.
+          The team you can't afford to hire, running as software.
+        </p>
       </div>
-      <div class="hero-right">
-        <p class="hero-tagline">The team you can't afford to hire.</p>
-        <p class="hero-desc">We build and run the AI systems that handle what you'd otherwise hire people for — content, follow-up, reporting, onboarding. One retainer. No salaries. No management.</p>
-        <div class="hero-cta-wrap">
-          <button class="hero-cta" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
+
+      <div class="hero-side">
+        <ul>
+          <li data-word>Intelligence gathered daily, summarised every Monday</li>
+          <li data-word>Decisions returned with reasoning, risk and alternatives</li>
+          <li data-word>Operations, content and marketing on one system</li>
+          <li data-word>Twelve AI staff sharing a single memory of your business</li>
+        </ul>
+        <button class="btn" data-word onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
+          Book a call
+          <span class="ic" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="marq" aria-hidden="true">
+  <div class="marq-in">
+    <span>INTELLIGENCE</span><i class="s">/</i><span>DECISION ENGINE</span><i class="s">/</i><span>BUSINESS OS</span><i class="s">/</i><span>CONTENT OS</span><i class="s">/</i><span>MARKETING OS</span><i class="s">/</i><span>OPPORTUNITY ENGINE</span><i class="s">/</i><span>AI EMPLOYEES</span><i class="s">/</i><span>ANALYTICS</span><i class="s">/</i><span>KNOWLEDGE BASE</span><i class="s">/</i><span>INTELLIGENCE</span><i class="s">/</i><span>DECISION ENGINE</span><i class="s">/</i><span>BUSINESS OS</span><i class="s">/</i><span>CONTENT OS</span><i class="s">/</i><span>MARKETING OS</span><i class="s">/</i><span>OPPORTUNITY ENGINE</span><i class="s">/</i><span>AI EMPLOYEES</span><i class="s">/</i><span>ANALYTICS</span><i class="s">/</i><span>KNOWLEDGE BASE</span><i class="s">/</i>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ═══ 01 PROBLEM ═══ -->
+<section class="section" id="problem">
+  <div class="wrap">
+    <div class="problem-card">
+      <div class="eyebrow" style="justify-content:center;"><span class="dot"></span>01 / THE PROBLEM</div>
+      <h2 class="display">
+        <span data-word>You're doing the work</span> <span data-word>of three people.</span><br>
+        <span data-word class="quiet">That's not a strategy. It's a liability.</span>
+      </h2>
+      <p class="lede">
+        The pipeline lives in a spreadsheet. The contracts live in email. The campaign calendar
+        lives in your head. The market moves and nobody notices until it has already moved.
+        None of that is a talent problem — it's an infrastructure problem, and it compounds
+        with every project you take on.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 02 WHAT FIOS IS ═══ -->
+<section class="section" id="fios" style="padding-top:0;">
+  <div class="wrap">
+    <div class="fios-head">
+      <div>
+        <div class="eyebrow"><span class="dot"></span>02 / WHAT FIOS IS</div>
+        <h2 class="display">
+          <span data-word>Not a tool.</span><br>
+          <span data-word>An operating system.</span>
+        </h2>
+      </div>
+      <div>
+        <p class="lede">
+          Tools give you another place to check. The Flood Intelligence Operating System gives you
+          one place where the work already lives — nine departments sharing the same data, the same
+          context, and the same memory of your business. Information arrives instead of being
+          searched for. Decisions come with reasoning attached. Nothing gets lost.
+        </p>
+      </div>
+    </div>
+
+    <div class="dept-grid">
+      <div class="dept">
+        <div class="dept-top">
+          <div class="dept-n">001 — INTELLIGENCE</div>
+          <span class="status status-beta">BETA</span>
+        </div>
+        <h3>Information comes to you.</h3>
+        <p>The system watches TikTok trends, Spotify growth, YouTube, Instagram, Billboard, touring, competitors, industry news, AI tooling and marketing shifts — then summarises what changed.</p>
+        <div class="dept-eg">EVERY MONDAY:<br>“HERE'S WHAT CHANGED.”</div>
+      </div>
+      <div class="dept">
+        <div class="dept-top">
+          <div class="dept-n">002 — DECISION ENGINE</div>
+          <span class="status status-beta">BETA</span>
+        </div>
+        <h3>Answers, with reasoning.</h3>
+        <p>Bring a budget and a goal. The system returns an allocation, the reasoning behind it, the risks it sees and the alternatives it rejected — so you can argue with it.</p>
+        <div class="dept-eg">IN: BUDGET + GOAL<br>OUT: PLAN + REASONING</div>
+      </div>
+      <div class="dept">
+        <div class="dept-top">
+          <div class="dept-n">003 — BUSINESS OS</div>
+          <span class="status status-beta">BETA</span>
+        </div>
+        <h3>Everything in one system.</h3>
+        <p>CRM, contracts, invoices, client tracking, lead pipeline, tasks, projects, approvals, calendar and automation. Not ten tools that sync. One system that holds it.</p>
+        <div class="dept-eg">ONE PIPELINE.<br>ONE SOURCE OF TRUTH.</div>
+      </div>
+      <div class="dept">
+        <div class="dept-top">
+          <div class="dept-n">004 — CONTENT OS</div>
+          <span class="status status-beta">BETA</span>
+        </div>
+        <h3>Not creation. Management.</h3>
+        <p>Every video, reel, song, release, campaign, thumbnail, caption, deadline and asset — tracked, versioned and findable. Nothing gets lost between people.</p>
+        <div class="dept-eg">EVERY ASSET.<br>EVERY DEADLINE.</div>
+      </div>
+      <div class="dept">
+        <div class="dept-top">
+          <div class="dept-n">005 — MARKETING OS</div>
+          <span class="status status-beta">BETA</span>
+        </div>
+        <h3>The calendar builds itself.</h3>
+        <p>Instead of “let's post,” the system sequences the week — reel, upload, email, clip, announcement — and assembles the campaign around a release.</p>
+        <div class="dept-eg">MON REEL · TUE YOUTUBE<br>WED EMAIL · FRI DROP</div>
+      </div>
+      <div class="dept">
+        <div class="dept-top">
+          <div class="dept-n">006 — OPPORTUNITY ENGINE</div>
+          <span class="status status-beta">BETA</span>
+        </div>
+        <h3>Matched, not searched.</h3>
+        <p>Scans festivals, brand deals, grants, sync licensing, speaking slots, investors, talent searches and partnerships — and surfaces the ones that fit your business.</p>
+        <div class="dept-eg">“THESE OPPORTUNITIES<br>MATCH YOUR BUSINESS.”</div>
+      </div>
+      <div class="dept">
+        <div class="dept-top">
+          <div class="dept-n">007 — AI EMPLOYEES</div>
+          <span class="status status-beta">BETA</span>
+        </div>
+        <h3>Departments, not a chatbot.</h3>
+        <p>Research, marketing, sales, legal support, finance, executive assistant, project manager, content and brand strategy, release and operations — sharing one context.</p>
+        <div class="dept-eg">TWELVE ROLES.<br>ONE MEMORY.</div>
+      </div>
+      <div class="dept">
+        <div class="dept-top">
+          <div class="dept-n">008 — ANALYTICS</div>
+          <span class="status status-beta">BETA</span>
+        </div>
+        <h3>Insight, not numbers.</h3>
+        <p>Revenue, growth, audience, conversion, ROI, engagement and lifetime value — read together, with forecasting, so the number means something.</p>
+        <div class="dept-eg">NOT A DASHBOARD.<br>A READING.</div>
+      </div>
+      <div class="dept">
+        <div class="dept-top">
+          <div class="dept-n">009 — KNOWLEDGE BASE</div>
+          <span class="status status-beta">BETA</span>
+        </div>
+        <h3>Stored forever. Found instantly.</h3>
+        <p>Every meeting, document, SOP, workflow, lesson and client note. The institutional memory that usually walks out of the door when someone leaves.</p>
+        <div class="dept-eg">SEARCHABLE.<br>PERMANENT.</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span class="key"><span class="swatch" style="background:#E0A33E;"></span>BETA — IN ACTIVE DEVELOPMENT</span>
+      <span style="color:var(--ink-3);">Departments marked beta are being built and refined. What each tier delivers today is set out in Services below.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 03 WHAT IT BUILDS ═══ -->
+<section class="section" id="builds" style="padding-top:0;">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>03 / WHAT IT BUILDS</div>
+    <h2 class="display" style="max-width:20ch;margin-bottom:clamp(36px,5vw,64px);">
+      <span data-word>The system doesn't advise.</span> <span data-word class="quiet">It ships.</span>
+    </h2>
+
+    <div class="builds">
+      <div class="console" role="img" aria-label="The Flood operating system running five automated processes: intelligence brief, lead follow-up, content pipeline, client onboarding and weekly reporting.">
+        <div class="console-hd"><span>FIOS.RUNTIME</span><span class="live">● RUNNING</span></div>
+        <div class="console-row"><span class="n">001</span><span class="t">intelligence brief</span><span class="v">MONDAY</span></div>
+        <div class="console-row"><span class="n">002</span><span class="t">lead follow-up</span><span class="v">3-TOUCH</span></div>
+        <div class="console-row"><span class="n">003</span><span class="t">content pipeline</span><span class="v">30 / MONTH</span></div>
+        <div class="console-row"><span class="n">004</span><span class="t">client onboarding</span><span class="v">ON SIGNUP</span></div>
+        <div class="console-row"><span class="n">005</span><span class="t">weekly reporting</span><span class="v">1 PAGE</span></div>
+      </div>
+
+      <ul class="build-list">
+        <li>
+          <span class="build-ic" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+          <div><h4>A Monday intelligence brief</h4><p>Eleven sources watched, one page delivered. What moved, what it means, what to do about it.</p></div>
+        </li>
+        <li>
+          <span class="build-ic" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>
+          <div><h4>Follow-up that never forgets</h4><p>Every lead gets a three-touch sequence, on schedule, without you remembering to send it.</p></div>
+        </li>
+        <li>
+          <span class="build-ic" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.2L4 18.4V4z"/></svg></span>
+          <div><h4>A content pipeline in your voice</h4><p>Drafted, queued, scheduled and published. You approve. The system does the rest.</p></div>
+        </li>
+        <li>
+          <span class="build-ic" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2M9 7a4 4 0 108 0 4 4 0 00-8 0"/></svg></span>
+          <div><h4>Onboarding that feels bespoke</h4><p>New clients drop into a sequence that makes them feel handled from the first hour.</p></div>
+        </li>
+        <li>
+          <span class="build-ic" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 15l4-6 4 3 5-8"/></svg></span>
+          <div><h4>Custom AI agents for your workflow</h4><p>Not a generic assistant. Agents built against how your business actually operates.</p></div>
+        </li>
+        <li>
+          <span class="build-ic" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E5352B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 5v10l-9 5-9-5V7l9-5z"/></svg></span>
+          <div><h4>A permanent institutional memory</h4><p>Every decision, document and lesson stays searchable long after the person who made it moves on.</p></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 04 SERVICES ═══ -->
+<section class="section" id="services" style="padding-top:0;">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>04 / SERVICES</div>
+    <h2 class="display" style="max-width:22ch;margin-bottom:22px;">
+      <span data-word>Three tiers.</span> <span data-word class="quiet">One system underneath.</span>
+    </h2>
+    <p class="lede" style="margin-bottom:clamp(36px,5vw,64px);">
+      Each tier installs more of FIOS. Scope and pricing are set on the call, against what the
+      work is actually worth to your business.
+    </p>
+
+    <div class="pkgs">
+
+      <div class="pkg">
+        <div class="pkg-n">01</div>
+        <h3>The Operator</h3>
+        <div class="pkg-rep">REPLACES YOUR EA / OPS COORDINATOR</div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Daily briefing — what needs attention, every morning</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Automated 3-touch follow-up on every lead</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Weekly performance report — 1 page, every Monday</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 custom AI agent built for your specific workflow</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly 20-minute check-in call</li>
+        </ul>
+        <div class="pkg-foot">
+          <div class="pkg-note">PRICING ON THE CALL</div>
+          <button class="pkg-btn" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
+            Start here <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="pkg pkg-feat">
+        <div class="pkg-badge">MOST COMMON</div>
+        <div class="pkg-n" style="margin-top:14px;">02</div>
+        <h3>Content Engine</h3>
+        <div class="pkg-rep">REPLACES SM MANAGER + COPYWRITER</div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in The Operator</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>30 posts/month — AI-drafted in your brand voice, ready to approve</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Scheduling and publishing — goes live automatically</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 email automation flow built and running</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly content performance report</li>
+        </ul>
+        <div class="pkg-foot">
+          <div class="pkg-note">PRICING ON THE CALL</div>
+          <button class="pkg-btn" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
+            Get started <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="pkg">
+        <div class="pkg-n">03</div>
+        <h3>The Full Stack</h3>
+        <div class="pkg-rep">REPLACES 3 OPERATIONAL ROLES</div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in Content Engine</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Full email marketing automation — welcome, nurture, re-engagement</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Client onboarding sequence — new customers feel like VIPs automatically</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>3 custom AI agents built for your workflow</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly 30-minute strategy call with Nicholas</li>
+        </ul>
+        <div class="pkg-foot">
+          <div class="pkg-note">PRICING ON THE CALL</div>
+          <button class="pkg-btn" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
+            Scale with this <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 05 HOW IT WORKS ═══ -->
+<section class="section" id="how" style="padding-top:0;">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>05 / HOW IT WORKS</div>
+    <h2 class="display" style="max-width:22ch;margin-bottom:clamp(36px,5vw,60px);">
+      <span data-word>From signed to running</span> <span data-word>in 7 days.</span>
+    </h2>
+    <div class="how">
+      <div class="how-c"><div class="how-day">DAY 0</div><h4>You sign.</h4><p>Payment confirmed. Welcome email in five minutes. Intake form in your inbox — ten minutes to complete.</p></div>
+      <div class="how-c"><div class="how-day">DAY 3</div><h4>We audit.</h4><p>Thirty minutes with Nicholas. We map your operations and confirm the highest-impact function to build first.</p></div>
+      <div class="how-c"><div class="how-day">DAY 7</div><h4>You go live.</h4><p>First system built and running. You approve what needs approving. Everything else runs automatically.</p></div>
+      <div class="how-c"><div class="how-day">DAY 30</div><h4>We review.</h4><p>Thirty-day report. What ran, what improved, what changes in month two. The system compounds.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 06 BOOK ═══ -->
+<section class="section" id="book" style="padding-top:0;">
+  <div class="wrap">
+    <div class="book">
+      <div class="eyebrow"><span class="dot"></span>06 / BOOK</div>
+      <h2>Install the<br>system</h2>
+      <div class="book-row">
+        <p>
+          Thirty minutes. Tell us what you run and where it hurts. We'll map which departments
+          you need, what gets built first, and what it costs.
+        </p>
+        <div class="book-ctas">
+          <button class="btn-ghost" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">See the system live</button>
+          <button class="btn" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
             Book a call
-            <span class="hero-cta-icon">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </span>
+            <span class="ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </button>
         </div>
       </div>
@@ -197,185 +575,18 @@ a{color:inherit;text-decoration:none;}
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-track">
-  <div class="marquee-inner">
-    <span>AI OPERATIONS</span><span class="m-sep">/</span><span>CONTENT ENGINE</span><span class="m-sep">/</span><span>AUTOMATED FOLLOW-UP</span><span class="m-sep">/</span><span>DAILY REPORTING</span><span class="m-sep">/</span><span>CLIENT ONBOARDING</span><span class="m-sep">/</span><span>THE TEAM YOU CAN'T AFFORD TO HIRE</span><span class="m-sep">/</span><span>AI OPERATIONS</span><span class="m-sep">/</span><span>CONTENT ENGINE</span><span class="m-sep">/</span><span>AUTOMATED FOLLOW-UP</span><span class="m-sep">/</span><span>DAILY REPORTING</span><span class="m-sep">/</span><span>CLIENT ONBOARDING</span><span class="m-sep">/</span><span>THE TEAM YOU CAN'T AFFORD TO HIRE</span><span class="m-sep">/</span>
-  </div>
-</div>
+</main>
 
-<!-- PROBLEM -->
-<section class="section" id="problem">
-  <div class="section-inner">
-    <div class="section-card" style="text-align:center;">
-      <div class="section-label" style="justify-content:center;">01 / THE PROBLEM</div>
-      <h2 class="problem-headline" data-pullup>
-        <span class="word">You're doing the work </span><span class="word">of three people. </span><span class="word" style="font-style:italic;font-family:'JetBrains Mono',monospace;color:#9FB4C6;">That's not a strategy. </span><span class="word" style="font-style:italic;font-family:'JetBrains Mono',monospace;color:#9FB4C6;">It's a liability.</span>
-      </h2>
-      <p class="problem-body" data-scrollchars>Every week the operational debt compounds. Follow-ups slip. Content stalls. New clients don't hear back fast enough. You know you need a system — you don't have the time or the person to build one. Hiring solves the function but creates a new problem: salary, benefits, management, turnover. Flood International eliminates that problem entirely.</p>
-    </div>
-  </div>
-</section>
-
-<!-- SYSTEM -->
-<section class="section" id="system" style="padding-top:0;">
-  <div class="section-inner">
-    <div class="system-grid">
-      <div>
-        <div class="section-label">02 / SYSTEM</div>
-        <h2 class="system-headline" data-pullup>
-          <span class="word word-block">Not an agency.</span><br>
-          <span class="word word-block">An operations team.</span>
-        </h2>
-        <p class="system-body">Agencies sell you their time and disappear. We embed into your business and run the daily operations — indefinitely, on retainer. The systems we build belong to your workflow. The output runs every day whether you think about it or not.</p>
-      </div>
-      <div class="console">
-        <div class="console-header"><span>FLOOD.OPERATIONS</span><span class="console-status">● ALL SYSTEMS ACTIVE</span></div>
-        <div class="console-row"><span class="console-name"><span class="console-num">001 </span>daily briefing</span><span class="console-running">RUNNING</span></div>
-        <div class="console-row"><span class="console-name"><span class="console-num">002 </span>follow-up sequences</span><span class="console-running">RUNNING</span></div>
-        <div class="console-row"><span class="console-name"><span class="console-num">003 </span>content engine</span><span class="console-running">RUNNING</span></div>
-        <div class="console-row"><span class="console-name"><span class="console-num">004 </span>client onboarding</span><span class="console-running">RUNNING</span></div>
-        <div class="console-row" style="border-bottom:none;"><span class="console-name"><span class="console-num">005 </span>weekly reporting</span><span class="console-running">RUNNING</span></div>
-        <div class="console-footer">NO SICK DAYS. NO TURNOVER. NO MANAGEMENT.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PACKAGES -->
-<section class="section" id="packages" style="padding-top:0;">
-  <div class="section-inner">
-    <div class="section-label">03 / SERVICES</div>
-    <p class="packages-intro" data-pullup>
-      <span class="word">Three tiers. One system. </span><span class="word">All priced against what you'd pay to hire.</span>
-    </p>
-    <div class="packages-grid">
-
-      <!-- THE OPERATOR -->
-      <div class="pkg">
-        <div class="pkg-header">
-          <div>
-            <div class="pkg-num">01</div>
-            <div class="pkg-name">The Operator</div>
-            <div class="pkg-replaces">REPLACES YOUR EA / OPS COORDINATOR</div>
-          </div>
-          <div class="pkg-price-block">
-            <div class="pkg-price">$1,500</div>
-            <div class="pkg-mo">/MONTH</div>
-          </div>
-        </div>
-        <ul class="pkg-list">
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Daily briefing — what needs attention, every morning</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Automated 3-touch follow-up on every lead</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Weekly performance report — 1 page, every Monday</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 custom AI agent built for your specific workflow</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly 20-minute check-in call</li>
-        </ul>
-        <button class="pkg-link" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
-          Start here <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-
-      <!-- CONTENT ENGINE -->
-      <div class="pkg pkg-featured">
-        <div class="pkg-badge">MOST COMMON</div>
-        <div class="pkg-header" style="margin-top:18px;">
-          <div>
-            <div class="pkg-num">02</div>
-            <div class="pkg-name">Content Engine</div>
-            <div class="pkg-replaces">REPLACES SM MANAGER + COPYWRITER</div>
-          </div>
-          <div class="pkg-price-block">
-            <div class="pkg-price">$2,500</div>
-            <div class="pkg-mo">/MONTH</div>
-          </div>
-        </div>
-        <ul class="pkg-list">
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in The Operator</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>30 posts/month — AI-drafted in your brand voice, ready to approve</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Scheduling and publishing — goes live automatically</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 email automation flow built and running</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly content performance report</li>
-        </ul>
-        <button class="pkg-link" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
-          Get started <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-
-      <!-- FULL STACK -->
-      <div class="pkg">
-        <div class="pkg-header">
-          <div>
-            <div class="pkg-num">03</div>
-            <div class="pkg-name">The Full Stack</div>
-            <div class="pkg-replaces">REPLACES 3 OPERATIONAL ROLES</div>
-          </div>
-          <div class="pkg-price-block">
-            <div class="pkg-price">$4,500</div>
-            <div class="pkg-mo">/MONTH</div>
-          </div>
-        </div>
-        <ul class="pkg-list">
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in Content Engine</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Full email marketing automation — welcome, nurture, re-engagement</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Client onboarding sequence — new customers feel like VIPs automatically</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>3 custom AI agents built for your workflow</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly 30-minute strategy call with Nicholas</li>
-        </ul>
-        <button class="pkg-link" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
-          Scale with this <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section class="section" id="how" style="padding-top:0;">
-  <div class="section-inner">
-    <div class="section-label">04 / HOW IT WORKS</div>
-    <p class="how-intro" data-pullup>
-      <span class="word">From signed to running in 7 days. </span><span class="word" style="color:#5E7387;">No management required.</span>
-    </p>
-    <div class="how-grid">
-      <div class="how-card"><div class="how-day">DAY 0</div><div class="how-title">You sign.</div><p class="how-body">Payment confirmed. Welcome email in 5 minutes. Intake form in your inbox. Takes 10 minutes to complete.</p></div>
-      <div class="how-card"><div class="how-day">DAY 3</div><div class="how-title">We audit.</div><p class="how-body">30-minute call with Nicholas. We map your operations and confirm the highest-impact function to build first.</p></div>
-      <div class="how-card"><div class="how-day">DAY 7</div><div class="how-title">You go live.</div><p class="how-body">First system is built and running. You approve what needs approving. Everything else runs automatically.</p></div>
-      <div class="how-card"><div class="how-day">DAY 30</div><div class="how-title">We review.</div><p class="how-body">30-day performance report. What ran, what improved, what changes in month 2. The retainer continues. The system compounds.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- BOOK CTA -->
-<section class="cta-section" id="book">
-  <div class="cta-inner">
-    <div class="section-label"><span class="label-dot"></span>05 / BOOK</div>
-    <h2 class="cta-headline">One<br>call.</h2>
-    <div class="cta-body">
-      <div class="cta-copy">
-        <p>One question. That's all the first call is: <em>"What's the one operational thing in your business that, if it ran automatically every day, would have the biggest impact?"</em></p>
-        <p class="cta-note">If you can answer that — we can build it. One call. No pitch deck. No commitment.</p>
-      </div>
-      <button class="cta-btn" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
-        Book a call
-        <span class="cta-btn-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </button>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
 <footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-wordmark">Flood<br>Int'l</div>
-    <nav class="footer-legal-nav" aria-label="Legal" style="display:flex;flex-wrap:wrap;gap:20px;padding-bottom:18px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:#8FA3B5;">
+  <div class="wrap">
+    <div class="foot-mark">Flood<br>Int'l</div>
+    <nav class="foot-nav" aria-label="Legal">
       <a href="/privacy">PRIVACY POLICY</a>
       <a href="/terms">TERMS OF SERVICE</a>
       <a href="/cookies">COOKIE POLICY</a>
     </nav>
-    <div class="footer-meta">
-      <span>© 2026 FLOOD INTERNATIONAL™</span>
+    <div class="foot-meta">
+      <span>© 2026 FLOOD INTERNATIONAL, LLC</span>
       <span>THE TEAM YOU CAN'T AFFORD TO HIRE</span>
       <span>LOS ANGELES, CA</span>
     </div>
@@ -384,66 +595,38 @@ a{color:inherit;text-decoration:none;}
 
 <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 <script>
-(function(){
-  // Hero pull-up
-  const heroEl = document.getElementById('hero-pullup');
-  if(heroEl){
-    const rows = heroEl.querySelectorAll('.acrostic-row, .acrostic-sub, .hero-tagline, .hero-desc, .hero-cta-wrap');
-    rows.forEach((r,i)=>{
-      setTimeout(()=>{r.style.opacity='1';r.style.transform='none';},120+i*90);
-    });
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nav = document.getElementById('nav');
 
-  // Section pull-up via IntersectionObserver
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(!e.isIntersecting) return;
-      const words = e.target.querySelectorAll('.word');
-      words.forEach((w,i)=>{
-        w.style.transitionDelay=(i*0.09)+'s';
-        w.style.opacity='1';
-        w.style.transform='none';
-      });
+  addEventListener('scroll', () => {
+    nav.classList.toggle('stuck', scrollY > 24);
+  }, { passive: true });
+
+  const reveal = (root) => {
+    root.querySelectorAll('[data-word]').forEach((el, i) => {
+      el.style.transitionDelay = reduced ? '0s' : (i * 0.07) + 's';
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      reveal(e.target);
       io.unobserve(e.target);
     });
-  },{threshold:0.15});
-  document.querySelectorAll('[data-pullup]').forEach(el=>io.observe(el));
+  }, { threshold: 0.15 });
 
-  // Scroll char reveal
-  const charGroups=[];
-  document.querySelectorAll('[data-scrollchars]').forEach(el=>{
-    const text=el.textContent;
-    el.textContent='';
-    const spans=[];
-    for(const ch of text){
-      const s=document.createElement('span');
-      s.textContent=ch;
-      s.style.opacity='0.18';
-      s.style.transition='opacity .12s linear';
-      if(ch===' ')s.style.whiteSpace='pre';
-      el.appendChild(s);
-      spans.push(s);
+  document.querySelectorAll('section, header').forEach((s) => {
+    if (s.getBoundingClientRect().top < innerHeight) {
+      setTimeout(() => reveal(s), reduced ? 0 : 160);
+    } else {
+      io.observe(s);
     }
-    charGroups.push({el,spans});
   });
-  function updateChars(){
-    const vh=window.innerHeight;
-    const start=vh*0.85,end=vh*0.2;
-    charGroups.forEach(({el,spans})=>{
-      const r=el.getBoundingClientRect();
-      const p=Math.min(1,Math.max(0,(start-r.top)/(start-end+1)));
-      const n=spans.length;
-      for(let i=0;i<n;i++){
-        const cp=i/n;
-        const local=Math.min(1,Math.max(0,(p-cp+0.08)/0.16));
-        spans[i].style.opacity=(0.18+0.82*local).toFixed(3);
-      }
-    });
-  }
-  window.addEventListener('scroll',updateChars,{passive:true});
-  window.addEventListener('resize',updateChars,{passive:true});
-  requestAnimationFrame(updateChars);
-})();
+});
 </script>
 </body>
 </html>
