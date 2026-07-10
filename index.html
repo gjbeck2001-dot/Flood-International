@@ -90,6 +90,23 @@ a{color:inherit;text-decoration:none;}
 .console-footer{padding:13px 20px;border-top:1px solid rgba(232,238,244,.1);font-size:10px;letter-spacing:.12em;color:#3C4E61;}
 @media(max-width:760px){.system-grid{grid-template-columns:1fr;}}
 
+
+/* FIOS DEPARTMENTS */
+.fios-intro{font-weight:400;font-size:clamp(20px,2.6vw,36px);line-height:1.15;letter-spacing:-.02em;max-width:26ch;margin-bottom:clamp(32px,4vw,56px);}
+.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(232,238,244,.1);border:1px solid rgba(232,238,244,.1);border-radius:20px;overflow:hidden;}
+.dept{background:#0A1320;padding:26px;min-height:240px;display:flex;flex-direction:column;transition:background .3s;}
+.dept:hover{background:#0E1826;}
+.dept-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px;}
+.dept-n{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:#E5352B;}
+.dept-status{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.14em;padding:4px 8px;border-radius:999px;white-space:nowrap;flex:none;color:#E0A33E;background:rgba(224,163,62,.1);border:1px solid rgba(224,163,62,.34);}
+.dept h3{font-size:18px;font-weight:600;letter-spacing:-.015em;margin-bottom:11px;color:#E8EEF4;}
+.dept p{font-size:13.5px;line-height:1.58;color:#8FA3B5;margin-bottom:auto;}
+.dept-eg{font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.65;color:#6F869C;border-top:1px solid rgba(232,238,244,.1);margin-top:20px;padding-top:14px;letter-spacing:.04em;}
+.dept-legend{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#6F869C;line-height:1.7;}
+.dept-key{display:inline-flex;align-items:center;gap:8px;}
+.dept-swatch{width:8px;height:8px;border-radius:50%;background:#E0A33E;flex:none;}
+@media(max-width:1023px){.dept-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:680px){.dept-grid{grid-template-columns:1fr;}.dept{min-height:auto;}}
 /* PACKAGES */
 .packages-intro{font-weight:400;font-size:clamp(18px,2.6vw,36px);line-height:1.12;max-width:28ch;margin-bottom:clamp(36px,5vw,64px);}
 .packages-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
@@ -166,6 +183,7 @@ a{color:inherit;text-decoration:none;}
       <a href="#problem" class="nav-link nav-hide-mobile">The Problem</a>
       <a href="#system" class="nav-link nav-hide-mobile">System</a>
       <span class="nav-dot nav-hide-mobile"></span>
+      <a href="#fios" class="nav-link nav-hide-mobile">Departments</a>
       <a href="#packages" class="nav-link nav-hide-mobile">Services</a>
       <button class="nav-cta-pill" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">Book a call</button>
     </nav>
@@ -243,10 +261,90 @@ a{color:inherit;text-decoration:none;}
   </div>
 </section>
 
+<!-- FIOS DEPARTMENTS -->
+<section class="section" id="fios" style="padding-top:0;">
+  <div class="section-inner">
+    <div class="section-label">03 / NINE DEPARTMENTS</div>
+    <p class="fios-intro" data-pullup>
+      <span class="word">The Flood Intelligence Operating System. </span><span class="word" style="color:#5E7387;">Nine departments, one memory of your business.</span>
+    </p>
+
+    <div class="dept-grid">
+      <div class="dept">
+        <div class="dept-top"><div class="dept-n">001 — INTELLIGENCE</div><span class="dept-status">BETA</span></div>
+        <h3>Information comes to you.</h3>
+        <p>Watches TikTok trends, Spotify growth, YouTube, Instagram, Billboard, touring, competitors, industry news, AI tooling and marketing shifts — then summarises what changed.</p>
+        <div class="dept-eg">EVERY MONDAY:<br>“HERE'S WHAT CHANGED.”</div>
+      </div>
+
+      <div class="dept">
+        <div class="dept-top"><div class="dept-n">002 — DECISION ENGINE</div><span class="dept-status">BETA</span></div>
+        <h3>Answers, with reasoning.</h3>
+        <p>Bring a budget and a goal. The system returns an allocation, the reasoning behind it, the risks it sees and the alternatives it rejected — so you can argue with it.</p>
+        <div class="dept-eg">IN: BUDGET + GOAL<br>OUT: PLAN + REASONING</div>
+      </div>
+
+      <div class="dept">
+        <div class="dept-top"><div class="dept-n">003 — BUSINESS OS</div><span class="dept-status">BETA</span></div>
+        <h3>Everything in one system.</h3>
+        <p>CRM, contracts, invoices, client tracking, lead pipeline, tasks, projects, approvals, calendar and automation. Not ten tools that sync. One system that holds it.</p>
+        <div class="dept-eg">ONE PIPELINE.<br>ONE SOURCE OF TRUTH.</div>
+      </div>
+
+      <div class="dept">
+        <div class="dept-top"><div class="dept-n">004 — CONTENT OS</div><span class="dept-status">BETA</span></div>
+        <h3>Not creation. Management.</h3>
+        <p>Every video, reel, song, release, campaign, thumbnail, caption, deadline and asset — tracked, versioned and findable. Nothing gets lost between people.</p>
+        <div class="dept-eg">EVERY ASSET.<br>EVERY DEADLINE.</div>
+      </div>
+
+      <div class="dept">
+        <div class="dept-top"><div class="dept-n">005 — MARKETING OS</div><span class="dept-status">BETA</span></div>
+        <h3>The calendar builds itself.</h3>
+        <p>Instead of “let's post,” the system sequences the week — reel, upload, email, clip, announcement — and assembles the campaign around a release.</p>
+        <div class="dept-eg">MON REEL · TUE YOUTUBE<br>WED EMAIL · FRI DROP</div>
+      </div>
+
+      <div class="dept">
+        <div class="dept-top"><div class="dept-n">006 — OPPORTUNITY ENGINE</div><span class="dept-status">BETA</span></div>
+        <h3>Matched, not searched.</h3>
+        <p>Scans festivals, brand deals, grants, sync licensing, speaking slots, investors, talent searches and partnerships — and surfaces the ones that fit your business.</p>
+        <div class="dept-eg">“THESE OPPORTUNITIES<br>MATCH YOUR BUSINESS.”</div>
+      </div>
+
+      <div class="dept">
+        <div class="dept-top"><div class="dept-n">007 — AI EMPLOYEES</div><span class="dept-status">BETA</span></div>
+        <h3>Departments, not a chatbot.</h3>
+        <p>Research, marketing, sales, legal support, finance, executive assistant, project manager, content and brand strategy, release and operations — sharing one context.</p>
+        <div class="dept-eg">MANY ROLES.<br>ONE MEMORY.</div>
+      </div>
+
+      <div class="dept">
+        <div class="dept-top"><div class="dept-n">008 — ANALYTICS</div><span class="dept-status">BETA</span></div>
+        <h3>Insight, not numbers.</h3>
+        <p>Revenue, growth, audience, conversion, ROI, engagement and lifetime value — read together, with forecasting, so the number means something.</p>
+        <div class="dept-eg">NOT A DASHBOARD.<br>A READING.</div>
+      </div>
+
+      <div class="dept">
+        <div class="dept-top"><div class="dept-n">009 — KNOWLEDGE BASE</div><span class="dept-status">BETA</span></div>
+        <h3>Stored forever. Found instantly.</h3>
+        <p>Every meeting, document, SOP, workflow, lesson and client note. The institutional memory that usually walks out of the door when someone leaves.</p>
+        <div class="dept-eg">SEARCHABLE.<br>PERMANENT.</div>
+      </div>
+    </div>
+
+    <div class="dept-legend">
+      <span class="dept-key"><span class="dept-swatch"></span>BETA — IN ACTIVE DEVELOPMENT</span>
+      <span>What each tier delivers today is set out in Services below.</span>
+    </div>
+  </div>
+</section>
+
 <!-- PACKAGES -->
 <section class="section" id="packages" style="padding-top:0;">
   <div class="section-inner">
-    <div class="section-label">03 / SERVICES</div>
+    <div class="section-label">04 / SERVICES</div>
     <p class="packages-intro" data-pullup>
       <span class="word">Three tiers. One system. </span><span class="word">All priced against what you'd pay to hire.</span>
     </p>
@@ -338,7 +436,7 @@ a{color:inherit;text-decoration:none;}
 <!-- HOW IT WORKS -->
 <section class="section" id="how" style="padding-top:0;">
   <div class="section-inner">
-    <div class="section-label">04 / HOW IT WORKS</div>
+    <div class="section-label">05 / HOW IT WORKS</div>
     <p class="how-intro" data-pullup>
       <span class="word">From signed to running in 7 days. </span><span class="word" style="color:#5E7387;">No management required.</span>
     </p>
@@ -354,7 +452,7 @@ a{color:inherit;text-decoration:none;}
 <!-- BOOK CTA -->
 <section class="cta-section" id="book">
   <div class="cta-inner">
-    <div class="section-label"><span class="label-dot"></span>05 / BOOK</div>
+    <div class="section-label"><span class="label-dot"></span>06 / BOOK</div>
     <h2 class="cta-headline">One<br>call.</h2>
     <div class="cta-body">
       <div class="cta-copy">
