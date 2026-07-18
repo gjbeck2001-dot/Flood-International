@@ -15,6 +15,7 @@
  */
 
 import nodemailer from 'nodemailer';
+import { hasCompleteIntake } from '../lib/crm-db.js';
 
 const NOTION_DB_ID  = process.env.NOTION_DATABASE_ID;
 const SLACK_CHANNEL = process.env.SLACK_CHANNEL_ID;
@@ -45,6 +46,18 @@ export default async function handler(req, res) {
       if (!email) continue;
 
       const hasCompleteRecord = await checkNotionForComplete(email);
+
+      // Phase 2 burn-in: read the same check from Postgres and log any drift.
+      // Decision-making stays on Notion until the burn-in period confirms the
+      // two stay in sync — this never changes behavior on its own.
+      const pgHasComplete = await hasCompleteIntake(email).catch(err => {
+        console.error('[abandonment-cron] Postgres check failed:', err.message);
+        return null;
+      });
+      if (pgHasComplete !== null && pgHasComplete !== hasCompleteRecord) {
+        console.warn(`[abandonment-cron] DRIFT email=${email} notion=${hasCompleteRecord} postgres=${pgHasComplete}`);
+      }
+
       if (!hasCompleteRecord) {
         abandoned++;
         await Promise.allSettled([

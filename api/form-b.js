@@ -8,6 +8,8 @@
  * Reference: [C] Make.com Scenario Build Guide.md — Field Key Troubleshooting
  */
 
+import { insertLead } from './lib/crm-db.js';
+
 const NOTION_DB_ID = process.env.NOTION_DATABASE_ID;
 const SLACK_CHANNEL = process.env.SLACK_CHANNEL_ID;
 
@@ -31,8 +33,11 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Missing required fields: name, email' });
     }
 
+    // writeToPostgres is the Phase 2 burn-in write (CRM migration): Notion stays
+    // the source of truth until the burn-in period confirms no drift.
     const results = await Promise.allSettled([
       writeToNotion({ name, email, phone, brand, tier, website, goal, submitted }),
+      writeToPostgres({ name, email, phone, brand, tier, website, goal, submitted }),
       sendSlackAlert({ name, email, brand, tier, submitted }),
     ]);
 
@@ -93,6 +98,19 @@ async function writeToNotion({ name, email, phone, brand, tier, website, goal, s
   }
 
   return response.json();
+}
+
+// ─── Postgres (Phase 2 burn-in) ────────────────────────────────────────────────
+
+async function writeToPostgres({ name, email, phone, brand, tier, website, goal, submitted }) {
+  const notes = [
+    tier ? `Tier interest: ${tier}` : null,
+    goal ? `Goal: ${goal}` : null,
+    `Submitted via Tally (Form B — Full Intake): ${submitted}`,
+    'Full 49-question intake completed',
+  ].filter(Boolean).join('\n');
+
+  await insertLead({ name, email, phone, company: brand, notes, websiteSocial: website });
 }
 
 async function sendSlackAlert({ name, email, brand, tier, submitted }) {
