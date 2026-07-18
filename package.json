@@ -4,7 +4,7 @@
   "description": "Flood Systems intake pipeline — Form A/B webhook handlers + abandonment detection",
   "type": "module",
   "dependencies": {
-    "nodemailer": "^6.9.13",
+    "nodemailer": "^9.0.3",
     "pg": "^8.22.0"
   },
   "engines": {
