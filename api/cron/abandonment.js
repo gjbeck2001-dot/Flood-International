@@ -7,8 +7,12 @@
  * "Partial submission" detection method:
  * Tally doesn't natively emit abandonment webhooks on free/pro plans.
  * Instead, this cron queries all Form B submissions in the last 12 hours,
- * then checks our Notion CRM for a matching complete record. If none exists,
+ * then checks the Postgres CRM for a matching complete record. If none exists,
  * the person started but didn't finish — we follow up.
+ *
+ * Phase 6 cutover (2026-07-19): the check reads Postgres, the sole source of
+ * truth; the Notion query path is gone. If the DB check fails for a person we
+ * SKIP them — never send an "abandoned" follow-up on unverified state.
  *
  * NOTE: Requires Tally API access token (not just webhook secret).
  * Get it from: tally.so → Settings → API
@@ -17,7 +21,6 @@
 import nodemailer from 'nodemailer';
 import { hasCompleteIntake } from '../lib/crm-db.js';
 
-const NOTION_DB_ID  = process.env.NOTION_DATABASE_ID;
 const SLACK_CHANNEL = process.env.SLACK_CHANNEL_ID;
 const TALLY_FORM_B  = 'ZjQdAV';
 
@@ -45,18 +48,11 @@ export default async function handler(req, res) {
 
       if (!email) continue;
 
-      const hasCompleteRecord = await checkNotionForComplete(email);
-
-      // Phase 2 burn-in: read the same check from Postgres and log any drift.
-      // Decision-making stays on Notion until the burn-in period confirms the
-      // two stay in sync — this never changes behavior on its own.
-      const pgHasComplete = await hasCompleteIntake(email).catch(err => {
+      const hasCompleteRecord = await hasCompleteIntake(email).catch(err => {
         console.error('[abandonment-cron] Postgres check failed:', err.message);
         return null;
       });
-      if (pgHasComplete !== null && pgHasComplete !== hasCompleteRecord) {
-        console.warn(`[abandonment-cron] DRIFT email=${email} notion=${hasCompleteRecord} postgres=${pgHasComplete}`);
-      }
+      if (hasCompleteRecord === null) continue; // unverified state — never follow up on it
 
       if (!hasCompleteRecord) {
         abandoned++;
@@ -92,40 +88,6 @@ async function getTallySubmissions(since) {
   const submissions = data?.data?.submissions || [];
 
   return submissions.filter(s => new Date(s.createdAt) >= new Date(since));
-}
-
-async function checkNotionForComplete(email) {
-  const response = await fetch(`https://api.notion.com/v1/databases/${NOTION_DB_ID}/query`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
-      'Notion-Version': '2022-06-28',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      filter: {
-        and: [
-          {
-            property: 'Email',
-            email: { equals: email },
-          },
-          {
-            property: 'Notes',
-            rich_text: { contains: 'Full 49-question intake completed' },
-          },
-        ],
-      },
-      page_size: 1,
-    }),
-  });
-
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`Notion query failed: ${response.status} — ${body}`);
-  }
-
-  const data = await response.json();
-  return data.results.length > 0;
 }
 
 async function sendAbandonmentSlackAlert({ name, email, submitted }) {

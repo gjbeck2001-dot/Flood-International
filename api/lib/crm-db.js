@@ -1,7 +1,7 @@
 /**
- * Shared Postgres client for the CRM burn-in (Phase 2).
- * Writes go here IN PARALLEL with the existing Notion writes — Notion stays
- * the decision-making source of truth until the burn-in period confirms no drift.
+ * Shared Postgres client for the Flood CRM (Railway).
+ * Phase 6 cutover (2026-07-19): this is the sole source of truth — the
+ * parallel Notion write path is gone.
  * See: 03 OPERATIONS/crm-db/schema.sql (Second Brain Starter vault) for the schema.
  */
 import pg from 'pg';

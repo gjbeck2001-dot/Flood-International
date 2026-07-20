@@ -1,13 +1,17 @@
 /**
  * Flood Systems — Form A Webhook Handler
  * Trigger: Tally Form A (ID: A7QpVB) — Quick Intake popup on floodinternational.com
- * Pipeline: Tally → Notion CRM → Slack Alert → Prospect Email
+ * Pipeline: Tally → Postgres CRM (Railway) → Slack Alert → Prospect Email
+ *
+ * Phase 6 cutover (2026-07-19): Notion write path removed — burn-in ran with
+ * zero drift, the Railway Postgres CRM is the sole source of truth. A failed
+ * CRM write now fails the request (Tally retries on non-2xx) because there is
+ * no second copy anymore.
  */
 
 import nodemailer from 'nodemailer';
 import { insertLead } from './lib/crm-db.js';
 
-const NOTION_DB_ID = process.env.NOTION_DATABASE_ID;
 const SLACK_CHANNEL = process.env.SLACK_CHANNEL_ID;
 
 export default async function handler(req, res) {
@@ -29,10 +33,7 @@ export default async function handler(req, res) {
       }
 
       // Run in parallel — if one fails, others still complete.
-      // writeToPostgres is the Phase 2 burn-in write (CRM migration): Notion stays
-      // the source of truth until the burn-in period confirms no drift.
       const results = await Promise.allSettled([
-              writeToNotion({ name, email, phone, brand, tier, submitted }),
               writeToPostgres({ name, email, phone, brand, tier, submitted }),
               sendSlackAlert({ name, email, brand, tier, submitted }),
               sendConfirmationEmail({ name, email }),
@@ -46,6 +47,12 @@ export default async function handler(req, res) {
               console.error('[form-a] Partial failure:', errors);
       }
 
+      // The CRM write is the only record of the lead — if it failed, fail the
+      // request so Tally retries instead of the lead landing nowhere.
+      if (results[0].status === 'rejected') {
+              return res.status(500).json({ error: 'CRM write failed', errors });
+      }
+
       return res.status(200).json({ ok: true, errors: errors.length ? errors : undefined });
 
   } catch (err) {
@@ -54,59 +61,7 @@ export default async function handler(req, res) {
   }
 }
 
-// ─── Notion ──────────────────────────────────────────────────────────────────
-
-async function writeToNotion({ name, email, phone, brand, tier, submitted }) {
-    const response = await fetch('https://api.notion.com/v1/pages', {
-          method: 'POST',
-          headers: {
-                  'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
-                  'Notion-Version': '2022-06-28',
-                  'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-                  parent: { database_id: NOTION_DB_ID },
-                  properties: {
-                            Name: {
-                                        title: [{ text: { content: name } }],
-                            },
-                            Email: {
-                                        email: email,
-                            },
-                            Phone: {
-                                        phone_number: phone || null,
-                            },
-                            ...(brand && brand !== 'N/A' ? {
-                                        Company: { rich_text: [{ text: { content: brand } }] },
-                            } : {}),
-                            Source: {
-                                        select: { name: 'Website' },
-                            },
-                            'Contact Type': {
-                                        select: { name: 'Lead' },
-                            },
-                            Status: {
-                                        status: { name: 'New' },
-                            },
-                            Notes: {
-                                        rich_text: [{ text: { content: [
-                                            tier ? `Tier interest: ${tier}` : null,
-                                            `Submitted via Tally (Form A — Quick Intake): ${submitted}`,
-                                        ].filter(Boolean).join('\n') } }],
-                            },
-                  },
-          }),
-    });
-
-  if (!response.ok) {
-        const body = await response.text();
-        throw new Error(`Notion write failed: ${response.status} — ${body}`);
-  }
-
-  return response.json();
-}
-
-// ─── Postgres (Phase 2 burn-in) ────────────────────────────────────────────────
+// ─── Postgres CRM ─────────────────────────────────────────────────────────────
 
 async function writeToPostgres({ name, email, phone, brand, tier, submitted }) {
   const notes = [
@@ -134,7 +89,7 @@ async function sendSlackAlert({ name, email, brand, tier, submitted }) {
         `*Tier Interest:* ${tier || 'N/A'}`,
         `*Submitted:* ${date}`,
         '',
-        'View in Notion → <https://notion.so|Client Pipeline>',
+        'CRM: logged to the Flood pipeline (FIELD OS → Pipeline panel)',
       ].join('\n');
 
   const response = await fetch('https://slack.com/api/chat.postMessage', {
