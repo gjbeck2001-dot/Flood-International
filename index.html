@@ -358,6 +358,29 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 .cta-section::after{content:'';position:absolute;inset:0;background:#000;opacity:0;transition:opacity .9s ease;pointer-events:none;}
 .cta-section.dim::after{opacity:.08;}
 .cta-inner{position:relative;z-index:1;}
+
+/* ── 3D-C — BOOT LOADER (WEB OS §3.2) ───────────────────────────────────────
+   FLOOD.OPERATIONS boot screen that covers the WebGL init flash, dismissing
+   on window.load or a 900ms cap, whichever comes first, then a 450ms fade.
+   FAILSAFE: the dismissal is a pure-CSS animation (fill-mode forwards), so
+   the loader clears even if the main script never runs — it can never
+   permanently cover content. JS only shortens it on a fast load. And it is
+   scoped to .js, so a no-JS visitor never receives the overlay at all. */
+.flood-loader{display:none;}
+.js .flood-loader{
+  position:fixed;inset:0;z-index:9999;background:var(--surface-0);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  animation:floodBoot 1.35s cubic-bezier(.16,1,.3,1) forwards;
+}
+.loader-mark{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.3em;color:var(--ink-200);}
+.loader-bar{width:180px;height:2px;background:var(--line-200);overflow:hidden;}
+.loader-bar-fill{display:block;height:100%;width:100%;background:var(--signal);transform:scaleX(0);transform-origin:left center;animation:floodBootFill .9s linear forwards;}
+.loader-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;color:var(--ink-400);}
+@keyframes floodBootFill{to{transform:scaleX(1);}}
+@keyframes floodBoot{0%,66%{opacity:1;}100%{opacity:0;visibility:hidden;}}
+.js .flood-loader.booted{animation:floodBootOut .45s cubic-bezier(.16,1,.3,1) forwards;}
+@keyframes floodBootOut{to{opacity:0;visibility:hidden;}}
+@media (prefers-reduced-motion: reduce){ .js .flood-loader{display:none;} }
 .word-block{display:inline-block;}
 
 /* Every transform introduced by the state layer is opt-out. Colour, focus
@@ -372,6 +395,24 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 </style>
 </head>
 <body>
+
+<!-- BOOT LOADER (3D-C / WEB OS §3.2) — self-dismissing; see CSS failsafe note -->
+<div class="flood-loader" id="flood-loader" aria-hidden="true">
+  <div class="loader-mark">FLOOD.OPERATIONS</div>
+  <div class="loader-bar"><span class="loader-bar-fill"></span></div>
+  <div class="loader-label">initializing</div>
+</div>
+<script>
+/* Fast-path only: dismiss the boot the moment the page finishes loading, if
+   that beats the 900ms cap. The CSS animation dismisses on its own if this
+   never runs — this just makes a cached load feel instant. */
+(function(){
+  var el=document.getElementById('flood-loader'); if(!el) return;
+  var go=function(){ el.classList.add('booted'); };
+  if(document.readyState==='complete'){ setTimeout(go,280); }
+  else { window.addEventListener('load',go,{once:true}); }
+})();
+</script>
 
 <!-- HERO -->
 <section class="hero" id="top">
