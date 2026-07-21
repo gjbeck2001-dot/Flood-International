@@ -26,7 +26,7 @@
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%2305090F"/><text x="16" y="23" font-family="Arial,Helvetica,sans-serif" font-size="19" font-weight="800" fill="%23E8EEF4" text-anchor="middle">F</text><circle cx="25" cy="7.5" r="3" fill="%23E5352B"/></svg>'>
 
 <!-- LCP: the hero background is the largest paint — fetch it first. -->
-<link rel="preload" as="image" href="assets/ocean-clean.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="assets/ocean-clean.webp" type="image/webp" fetchpriority="high">
 
 <script type="application/ld+json">
 {
@@ -353,7 +353,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="hero-inner">
-    <img class="hero-bg" src="assets/ocean-clean.jpg" alt="">
+    <picture>
+      <source srcset="assets/ocean-clean.webp" type="image/webp">
+      <img class="hero-bg" src="assets/ocean-clean.jpg" alt="">
+    </picture>
     <div class="hero-overlay-v"></div>
     <div class="hero-overlay-h"></div>
 
