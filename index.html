@@ -156,6 +156,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 .hero{height:100vh;min-height:600px;padding:var(--s-3);}
 .hero-inner{position:relative;width:100%;height:100%;border-radius:24px;overflow:hidden;background:var(--surface-hero);}
 .hero-bg{position:absolute;inset:-7%;width:114%;height:114%;object-fit:cover;animation:floodDrift 28s ease-in-out infinite alternate;will-change:transform;}
+.hero-webgl{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.4s var(--ease);pointer-events:none;}
+.hero-webgl.on{opacity:1;}
 .hero-overlay-v{position:absolute;inset:0;background:linear-gradient(to bottom,var(--veil-50) 0%,var(--veil-05) 35%,var(--veil-90) 100%);}
 .hero-overlay-h{position:absolute;inset:0;background:linear-gradient(96deg,var(--veil-65) 0%,var(--veil-12) 55%,var(--veil-00) 100%);}
 .hero-tel-l{position:absolute;top:22px;left:24px;z-index:10;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--ink-a50);display:flex;align-items:center;gap:9px;}
@@ -335,6 +337,50 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 
 /* WORD REVEAL */
 .js .word{opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);display:inline;}
+
+/* ── 3D-B — section choreography (WEB OS §3.4), on the existing IO engine.
+   .chor classes are added at RUNTIME only: no-JS and reduced-motion visitors
+   never receive a hidden element, so this layer needs no reveal failsafe.
+   Every property is opacity/transform — compositor-only, zero reflow. */
+.js .chor{opacity:0;transform:translateY(48px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);}
+.js .chor-l{transform:translateX(-48px);}
+.js .chor-r{transform:translateX(48px);}
+.js .chor-rise32{transform:translateY(56px);}
+.js .chor-fade{transform:translateY(10px);}
+.js .chor-scale{transform:scale(1.10);transition-duration:1s;}
+.js .chor-scale96{transform:scale(.90);transition-duration:1s;}
+.js .chor.in{opacity:1;transform:none;}
+.audit-label{display:inline-block;transition:transform .18s ease,color .18s ease;}
+.audit-field:focus-within .audit-label{transform:translateY(-3px);color:var(--ink-100);}
+.how-rule{height:1px;background:var(--line-100);margin:0 0 28px;}
+.js .how-rule{transform-origin:left center;transform:scaleX(0);}
+.cta-section{position:relative;}
+.cta-section::after{content:'';position:absolute;inset:0;background:#000;opacity:0;transition:opacity .9s ease;pointer-events:none;}
+.cta-section.dim::after{opacity:.08;}
+.cta-inner{position:relative;z-index:1;}
+
+/* ── 3D-C — BOOT LOADER (WEB OS §3.2) ───────────────────────────────────────
+   FLOOD.OPERATIONS boot screen that covers the WebGL init flash, dismissing
+   on window.load or a 900ms cap, whichever comes first, then a 450ms fade.
+   FAILSAFE: the dismissal is a pure-CSS animation (fill-mode forwards), so
+   the loader clears even if the main script never runs — it can never
+   permanently cover content. JS only shortens it on a fast load. And it is
+   scoped to .js, so a no-JS visitor never receives the overlay at all. */
+.flood-loader{display:none;}
+.js .flood-loader{
+  position:fixed;inset:0;z-index:9999;background:var(--surface-0);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  animation:floodBoot 1.35s cubic-bezier(.16,1,.3,1) forwards;
+}
+.loader-mark{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.3em;color:var(--ink-200);}
+.loader-bar{width:180px;height:2px;background:var(--line-200);overflow:hidden;}
+.loader-bar-fill{display:block;height:100%;width:100%;background:var(--signal);transform:scaleX(0);transform-origin:left center;animation:floodBootFill .9s linear forwards;}
+.loader-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.26em;color:var(--ink-400);}
+@keyframes floodBootFill{to{transform:scaleX(1);}}
+@keyframes floodBoot{0%,66%{opacity:1;}100%{opacity:0;visibility:hidden;}}
+.js .flood-loader.booted{animation:floodBootOut .45s cubic-bezier(.16,1,.3,1) forwards;}
+@keyframes floodBootOut{to{opacity:0;visibility:hidden;}}
+@media (prefers-reduced-motion: reduce){ .js .flood-loader{display:none;} }
 .word-block{display:inline-block;}
 
 /* Every transform introduced by the state layer is opt-out. Colour, focus
@@ -350,6 +396,24 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 </head>
 <body>
 
+<!-- BOOT LOADER (3D-C / WEB OS §3.2) — self-dismissing; see CSS failsafe note -->
+<div class="flood-loader" id="flood-loader" aria-hidden="true">
+  <div class="loader-mark">FLOOD.OPERATIONS</div>
+  <div class="loader-bar"><span class="loader-bar-fill"></span></div>
+  <div class="loader-label">initializing</div>
+</div>
+<script>
+/* Fast-path only: dismiss the boot the moment the page finishes loading, if
+   that beats the 900ms cap. The CSS animation dismisses on its own if this
+   never runs — this just makes a cached load feel instant. */
+(function(){
+  var el=document.getElementById('flood-loader'); if(!el) return;
+  var go=function(){ el.classList.add('booted'); };
+  if(document.readyState==='complete'){ setTimeout(go,280); }
+  else { window.addEventListener('load',go,{once:true}); }
+})();
+</script>
+
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="hero-inner">
@@ -357,6 +421,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
       <source srcset="assets/ocean-clean.webp" type="image/webp">
       <img class="hero-bg" src="assets/ocean-clean.jpg" alt="">
     </picture>
+    <canvas class="hero-webgl" aria-hidden="true"></canvas>
     <div class="hero-overlay-v"></div>
     <div class="hero-overlay-h"></div>
 
@@ -623,6 +688,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     <p class="how-intro" data-pullup>
       <span class="word">From signed to running in 7 days. </span><span class="word" style="color:var(--ink-400);">No management required.</span>
     </p>
+    <div class="how-rule" aria-hidden="true"></div>
     <div class="how-grid">
       <div class="how-card"><div class="how-day">DAY 0</div><div class="how-title">You sign.</div><p class="how-body">Payment confirmed. Welcome email in 5 minutes. Intake form in your inbox. Takes 10 minutes to complete.</p></div>
       <div class="how-card"><div class="how-day">DAY 3</div><div class="how-title">We audit.</div><p class="how-body">30-minute call with Nicholas. We map your operations and confirm the highest-impact function to build first.</p></div>
@@ -938,6 +1004,245 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     window.addEventListener('resize',onScroll,{passive:true});
     requestAnimationFrame(updateChars);
   }
+})();
+</script>
+
+<script>
+/* ── 3D-B — SECTION CHOREOGRAPHY (WEB OS §3.4) ──────────────────────────────
+   Each section composes itself as it arrives; the composition order is the
+   argument. Built on the same IntersectionObserver engine as the existing
+   reveals — the spec's GSAP stack loses to the file again (fourth time).
+   Rules enforced here: fire at 20% entry, opacity/transform only, nothing
+   animates on exit (unobserve after first fire), scrubs are decorative.
+   All .chor classes are added at runtime, so no-JS never hides content;
+   the whole layer is one try/catch — a failure degrades to Phase-4 behavior. */
+(function(){
+  'use strict';
+  var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (REDUCE) return;
+  try {
+    var q = function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+    var mk = function(el,cls,delay){
+      if(!el) return el;
+      el.classList.add('chor'); if(cls) el.classList.add(cls);
+      if(delay) el.style.transitionDelay = delay+'ms';
+      return el;
+    };
+    var groups = [];
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        io.unobserve(e.target);
+        groups.forEach(function(g){
+          if(g[0]!==e.target) return;
+          requestAnimationFrame(function(){
+            g[1].forEach(function(el){ el && el.classList.add('in'); });
+            if(g[2]) g[2]();
+          });
+        });
+      });
+    },{threshold:0.2});
+    var grp = function(container, els, extra){
+      if(!container || !els.length) return;
+      groups.push([container, els, extra]); io.observe(container);
+    };
+
+    /* Marquee: 34s→28s while in view. playbackRate is seamless — changing
+       animation-duration mid-flight would visibly jump the strip. */
+    var mq = document.querySelector('.marquee-inner');
+    if (mq && mq.getAnimations) {
+      var mio = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          var a = mq.getAnimations()[0];
+          if (a) a.playbackRate = e.isIntersecting ? 34/28 : 1;
+        });
+      },{threshold:0.01});
+      mio.observe(mq.parentElement);
+    }
+
+    /* §02 System: copy from left, console from right, then the machine
+       boots — RUNNING labels stream in at 90ms intervals. */
+    var sys = document.querySelector('.system-grid');
+    if (sys && sys.children.length >= 2) {
+      var sysEls = [ mk(sys.children[0],'chor-l'), mk(sys.children[1],'chor-r',160) ];
+      q('.console-running',sys).forEach(function(el,i){ sysEls.push(mk(el,'chor-fade',560+i*140)); });
+      grp(sys, sysEls);
+    }
+
+    /* §03 Departments: rows stagger 60ms; numbers count 001→NNN.
+       Enumeration reads as inventory. */
+    var deptGrid = document.querySelector('.dept-grid');
+    if (deptGrid) {
+      var depts = q('.dept',deptGrid);
+      depts.forEach(function(el,i){ mk(el,null,Math.floor(i/3)*100); });
+      grp(deptGrid, depts, function(){
+        q('.dept-n',deptGrid).forEach(function(el){
+          var m = /^(\d{3})/.exec(el.textContent); if(!m) return;
+          var target = parseInt(m[1],10), rest = el.textContent.slice(3);
+          var t0 = performance.now(), dur = 900;
+          (function step(){
+            var p = Math.min(1,(performance.now()-t0)/dur);
+            var v = Math.max(1, Math.round(1+(target-1)*p));
+            el.textContent = ('00'+v).slice(-3) + rest;
+            if (p<1) requestAnimationFrame(step);
+          })();
+        });
+      });
+    }
+
+    /* §04 Services: cards rise 32px; the featured card leads by 120ms —
+       motion order is the recommendation order. */
+    var firstPkg = document.querySelector('.pkg');
+    if (firstPkg) {
+      var pkgWrap = firstPkg.parentElement;
+      var pkgs = q('.pkg',pkgWrap);
+      pkgs.forEach(function(el){ mk(el,'chor-rise32', el.classList.contains('pkg-featured') ? 0 : 180); });
+      grp(pkgWrap, pkgs);
+    }
+
+    /* §05 How: connector rule draws L→R scrubbed to scroll (decorative —
+       reuses the rAF-throttle pattern from the char scrub); cards fade in
+       behind it. */
+    var howRule = document.querySelector('.how-rule');
+    var howCards = q('.how-card');
+    howCards.forEach(function(el,i){ mk(el,null,180+i*100); });
+    if (howCards.length) grp(howCards[0].parentElement, howCards);
+    if (howRule) {
+      var ruleQueued = false;
+      var drawRule = function(){
+        var vh = window.innerHeight, r = howRule.getBoundingClientRect();
+        var p = Math.min(1, Math.max(0, (vh*0.85 - r.top) / (vh*0.5)));
+        howRule.style.transform = 'scaleX('+p.toFixed(4)+')';
+      };
+      var onRule = function(){ if(ruleQueued) return; ruleQueued = true;
+        requestAnimationFrame(function(){ ruleQueued = false; drawRule(); }); };
+      window.addEventListener('scroll', onRule, {passive:true});
+      window.addEventListener('resize', onRule, {passive:true});
+      requestAnimationFrame(drawRule);
+    }
+
+    /* §06 Founder: photo settles 1.06→1.00, name and role rise after the
+       quote (quote words are already on the existing pull-up engine).
+       Slow settle reads as composure. */
+    var fGrid = document.querySelector('.founder-grid');
+    if (fGrid) {
+      var fEls = [ mk(fGrid.querySelector('.founder-photo img'),'chor-scale') ];
+      fEls.push(mk(fGrid.querySelector('.founder-name'),null,380));
+      fEls.push(mk(fGrid.querySelector('.founder-role'),null,520));
+      grp(fGrid, fEls.filter(Boolean));
+    }
+
+    /* §08 CTA: headline settles 0.96→1.00 while the section darkens 8%
+       (::after overlay — opacity, not background paint). Narrowing. */
+    var cta = document.querySelector('.cta-section');
+    if (cta) {
+      var ctaEls = [ mk(cta.querySelector('.cta-headline'),'chor-scale96') ];
+      grp(cta, ctaEls.filter(Boolean), function(){ cta.classList.add('dim'); });
+    }
+  } catch (err) {
+    /* Degrade to Phase-4 behavior: strip every runtime-hidden state. */
+    q('.chor').forEach(function(el){ el.classList.add('in'); });
+    console.error('[3D-B]', err);
+  }
+})();
+</script>
+
+<script>
+/* ── FLOOD SURFACE — raw WebGL water hero (3D-A) ─────────────────────────────
+   No library: one fullscreen triangle + a fragment shader (~ few KB vs 150KB
+   for Three.js, which would break the hero perf budget for a single plane).
+   Purely additive: the canvas sits OVER the static hero at opacity 0 and only
+   fades in once WebGL has compiled and is proven to run. Every failure rung —
+   reduced-motion, mobile/touch, no WebGL context, shader compile fail, or a
+   sustained sub-24fps — leaves the canvas hidden and the existing photographic
+   hero showing. The fallback is not a downgrade; it is the shipped hero. */
+(function(){
+  var cv = document.querySelector('.hero-webgl');
+  if(!cv) return;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mobile = matchMedia('(max-width:680px)').matches || ('ontouchstart' in window);
+  if(reduce || mobile) return;                          // rung 1+2 → static hero
+
+  var gl = cv.getContext('webgl',{antialias:false,alpha:true,depth:false,
+                                  powerPreference:'low-power',failIfMajorPerformanceCaveat:true});
+  if(!gl) return;                                       // rung 3 → static hero
+
+  var VS='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  var FS=[
+  'precision highp float;',
+  'uniform vec2 u_res;uniform float u_time;uniform vec2 u_ptr;uniform float u_scroll;',
+  'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+  'float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);',
+  ' return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);}',
+  'float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<4;i++){v+=a*noise(p);p*=2.02;a*=.5;}return v;}',
+  'void main(){',
+  ' vec2 uv=gl_FragCoord.xy/u_res.xy;',
+  ' vec2 p=uv;p.x*=u_res.x/u_res.y;',
+  ' float t=u_time*0.024;',
+  ' vec2 q=vec2(fbm(p*2.4+t),fbm(p*2.4-t+5.));',
+  ' float h=fbm(p*3.0+q*1.1+vec2(0.,t*1.1));',
+  ' float e=0.0025;',
+  ' float hx=fbm((p+vec2(e,0.))*3.0+q*1.1+vec2(0.,t*1.1))-h;',
+  ' float hy=fbm((p+vec2(0.,e))*3.0+q*1.1+vec2(0.,t*1.1))-h;',
+  ' vec3 n=normalize(vec3(-hx,-hy,e*1.0));',
+  ' vec3 L=normalize(vec3(0.42+u_ptr.x*0.28,0.5+u_ptr.y*0.28,0.8));',
+  ' float spec=pow(max(dot(n,L),0.),48.);',
+  ' float band=smoothstep(.20,.02,abs(uv.x-(.62+u_ptr.x*.14)));',
+  ' float fres=pow(1.-max(n.z,0.),3.);',
+  ' vec3 base=vec3(0.02,0.035,0.06);',
+  ' vec3 col=base+fres*vec3(0.02,0.035,0.055)+spec*band*vec3(0.55,0.62,0.70)*0.75;',
+  ' col*=1.0-u_scroll*0.55;',                           // scroll dive darkens
+  ' gl_FragColor=vec4(col,1.0);',
+  '}'].join('\n');
+
+  function mk(t,src){var sh=gl.createShader(t);gl.shaderSource(sh,src);gl.compileShader(sh);
+    return gl.getShaderParameter(sh,gl.COMPILE_STATUS)?sh:null;}
+  var vs=mk(gl.VERTEX_SHADER,VS), fs=mk(gl.FRAGMENT_SHADER,FS);
+  if(!vs||!fs) return;                                  // rung 4 → static hero
+  var pr=gl.createProgram();gl.attachShader(pr,vs);gl.attachShader(pr,fs);gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS)) return;
+  gl.useProgram(pr);
+
+  var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  var uRes=gl.getUniformLocation(pr,'u_res'),uT=gl.getUniformLocation(pr,'u_time'),
+      uP=gl.getUniformLocation(pr,'u_ptr'),uS=gl.getUniformLocation(pr,'u_scroll');
+
+  var dpr=Math.min(devicePixelRatio||1,1.5), W=0,H=0;
+  function size(){var r=cv.getBoundingClientRect();
+    W=Math.max(1,r.width*dpr|0);H=Math.max(1,r.height*dpr|0);
+    if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H;}
+    gl.viewport(0,0,W,H);}
+  size(); addEventListener('resize',size,{passive:true});
+
+  var ptr={x:0,y:0,tx:0,ty:0}, scroll=0;
+  addEventListener('pointermove',function(e){
+    ptr.tx=(e.clientX/innerWidth-.5)*2; ptr.ty=(0.5-e.clientY/innerHeight)*2;},{passive:true});
+  addEventListener('scroll',function(){
+    scroll=Math.min(1,Math.max(0,(scrollY||pageYOffset)/innerHeight));},{passive:true});
+
+  var start=performance.now(), frames=0, t0=start, raf=0, alive=true;
+  function stop(){alive=false;cancelAnimationFrame(raf);cv.classList.remove('on');}
+  function loop(now){
+    if(!alive)return;
+    raf=requestAnimationFrame(loop);
+    ptr.x+=(ptr.tx-ptr.x)*0.03; ptr.y+=(ptr.ty-ptr.y)*0.03;
+    gl.uniform2f(uRes,W,H); gl.uniform1f(uT,(now-start)/1000);
+    gl.uniform2f(uP,ptr.x,ptr.y); gl.uniform1f(uS,scroll);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+    frames++;
+    if(now-t0>=2000){                                   // FPS watchdog
+      var fps=frames*1000/(now-t0);
+      if(fps<24){stop();return;}                        // rung 5 → static hero
+      frames=0; t0=now;
+    }
+  }
+  cv.classList.add('on'); raf=requestAnimationFrame(loop);
+  addEventListener('visibilitychange',function(){         // pause offscreen
+    if(document.hidden){cancelAnimationFrame(raf);} else if(alive){t0=performance.now();frames=0;raf=requestAnimationFrame(loop);}
+  });
 })();
 </script>
 </body>
