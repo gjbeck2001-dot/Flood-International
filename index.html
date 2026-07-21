@@ -342,13 +342,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
    .chor classes are added at RUNTIME only: no-JS and reduced-motion visitors
    never receive a hidden element, so this layer needs no reveal failsafe.
    Every property is opacity/transform — compositor-only, zero reflow. */
-.js .chor{opacity:0;transform:translateY(24px);transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1);}
-.js .chor-l{transform:translateX(-24px);}
-.js .chor-r{transform:translateX(24px);}
-.js .chor-rise32{transform:translateY(32px);}
-.js .chor-fade{transform:none;}
-.js .chor-scale{transform:scale(1.06);transition-duration:.9s;}
-.js .chor-scale96{transform:scale(.96);transition-duration:.9s;}
+.js .chor{opacity:0;transform:translateY(48px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);}
+.js .chor-l{transform:translateX(-48px);}
+.js .chor-r{transform:translateX(48px);}
+.js .chor-rise32{transform:translateY(56px);}
+.js .chor-fade{transform:translateY(10px);}
+.js .chor-scale{transform:scale(1.10);transition-duration:1s;}
+.js .chor-scale96{transform:scale(.90);transition-duration:1s;}
 .js .chor.in{opacity:1;transform:none;}
 .audit-label{display:inline-block;transition:transform .18s ease,color .18s ease;}
 .audit-field:focus-within .audit-label{transform:translateY(-3px);color:var(--ink-100);}
@@ -1023,8 +1023,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
        boots — RUNNING labels stream in at 90ms intervals. */
     var sys = document.querySelector('.system-grid');
     if (sys && sys.children.length >= 2) {
-      var sysEls = [ mk(sys.children[0],'chor-l'), mk(sys.children[1],'chor-r',120) ];
-      q('.console-running',sys).forEach(function(el,i){ sysEls.push(mk(el,'chor-fade',480+i*90)); });
+      var sysEls = [ mk(sys.children[0],'chor-l'), mk(sys.children[1],'chor-r',160) ];
+      q('.console-running',sys).forEach(function(el,i){ sysEls.push(mk(el,'chor-fade',560+i*140)); });
       grp(sys, sysEls);
     }
 
@@ -1033,12 +1033,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     var deptGrid = document.querySelector('.dept-grid');
     if (deptGrid) {
       var depts = q('.dept',deptGrid);
-      depts.forEach(function(el,i){ mk(el,null,Math.floor(i/3)*60); });
+      depts.forEach(function(el,i){ mk(el,null,Math.floor(i/3)*100); });
       grp(deptGrid, depts, function(){
         q('.dept-n',deptGrid).forEach(function(el){
           var m = /^(\d{3})/.exec(el.textContent); if(!m) return;
           var target = parseInt(m[1],10), rest = el.textContent.slice(3);
-          var t0 = performance.now(), dur = 600;
+          var t0 = performance.now(), dur = 900;
           (function step(){
             var p = Math.min(1,(performance.now()-t0)/dur);
             var v = Math.max(1, Math.round(1+(target-1)*p));
@@ -1055,7 +1055,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     if (firstPkg) {
       var pkgWrap = firstPkg.parentElement;
       var pkgs = q('.pkg',pkgWrap);
-      pkgs.forEach(function(el){ mk(el,'chor-rise32', el.classList.contains('pkg-featured') ? 0 : 120); });
+      pkgs.forEach(function(el){ mk(el,'chor-rise32', el.classList.contains('pkg-featured') ? 0 : 180); });
       grp(pkgWrap, pkgs);
     }
 
@@ -1064,7 +1064,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
        behind it. */
     var howRule = document.querySelector('.how-rule');
     var howCards = q('.how-card');
-    howCards.forEach(function(el,i){ mk(el,null,120+i*60); });
+    howCards.forEach(function(el,i){ mk(el,null,180+i*100); });
     if (howCards.length) grp(howCards[0].parentElement, howCards);
     if (howRule) {
       var ruleQueued = false;
@@ -1086,8 +1086,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     var fGrid = document.querySelector('.founder-grid');
     if (fGrid) {
       var fEls = [ mk(fGrid.querySelector('.founder-photo img'),'chor-scale') ];
-      fEls.push(mk(fGrid.querySelector('.founder-name'),null,260));
-      fEls.push(mk(fGrid.querySelector('.founder-role'),null,360));
+      fEls.push(mk(fGrid.querySelector('.founder-name'),null,380));
+      fEls.push(mk(fGrid.querySelector('.founder-role'),null,520));
       grp(fGrid, fEls.filter(Boolean));
     }
 
