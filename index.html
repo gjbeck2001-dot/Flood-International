@@ -64,6 +64,8 @@
   --ink-300:#8CA1B4; /* tertiary - meta, labels, card sub-copy | 7.48:1 */
   --ink-400:#6E8598; /* quaternary - micro-meta, placeholder, fine print | 5.20:1 */
   /* --- spacing scale: 4px base. every spatial value is a multiple --- */
+  --ease:cubic-bezier(.16,1,.3,1);       /* expo-out - the one easing family */
+  --t-fast:180ms;                        /* state changes: hover, focus, press */
   --s-3:12px;  --s-4:16px;  --s-7:48px;
   /* 4px-base scale. Only the rungs actually in use are defined -- an
      unreferenced token is indistinguishable from a comment, and unused
@@ -95,7 +97,8 @@
   --veil-12:rgba(5,9,15,.12);
   --veil-05:rgba(5,9,15,.05);
   --veil-00:rgba(5,9,15,0); /* gradient transparent stop */
-  --signal-line:rgba(229,53,43,.28); /* featured card border */
+  --signal-line:rgba(229,53,43,.28);
+  --signal-dim:rgba(229,53,43,.14); /* focus ring / hover bloom */ /* featured card border */
   --status-line:rgba(224,163,62,.34);
   --status-dim:rgba(224,163,62,.1);
 }
@@ -112,9 +115,26 @@ a{color:inherit;text-decoration:none;}
 .nav-wrap{position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:20;background:var(--surface-0);border-radius:0 0 22px 22px;padding:14px 28px;display:flex;align-items:center;gap:clamp(14px,2.4vw,36px);white-space:nowrap;}
 .nav-link{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;color:var(--ink-a75);transition:color .2s;}
 .nav-link:hover{color:var(--ink-100);}
+
+/* FOCUS SYSTEM (Phase 3)
+   The page had zero :focus-visible rules. Every button and link relied on
+   whatever the browser drew by default -- inconsistent across engines and
+   near-invisible on --surface-0. Both conversion paths (Calendly and the
+   gap-audit form) were keyboard-traversable with no reliable indication of
+   position. WCAG 2.4.7. :focus-visible keeps mouse users unaffected. */
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--signal);
+  outline-offset:3px;
+  border-radius:4px;
+}
+.nav-cta-pill:focus-visible,.hero-cta:focus-visible,.cta-btn:focus-visible,
+.audit-submit:focus-visible{border-radius:999px;}
+.audit-input:focus-visible,.audit-textarea:focus-visible{outline-offset:1px;border-radius:10px;}
 .nav-dot{width:5px;height:5px;background:var(--signal);border-radius:50%;flex:none;}
 .nav-cta-pill{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--white);background:var(--signal);padding:8px 18px;border-radius:999px;transition:opacity .2s;cursor:pointer;}
-.nav-cta-pill:hover{opacity:.85;}
+.nav-cta-pill:hover{opacity:.85;box-shadow:0 0 0 6px var(--signal-dim);}
+.nav-cta-pill:active{transform:translateY(1px);}
+.nav-cta-pill{transition:opacity var(--t-fast) var(--ease),box-shadow var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);}
 @media(max-width:680px){
   .nav-wrap{padding:12px 18px;gap:14px;}
   .nav-hide-mobile{display:none;}
@@ -152,6 +172,7 @@ a{color:inherit;text-decoration:none;}
 .hero-cta-wrap{opacity:0;transform:translateY(18px);transition:opacity .8s .16s cubic-bezier(.16,1,.3,1),transform .8s .16s cubic-bezier(.16,1,.3,1);}
 .hero-cta{display:inline-flex;align-items:center;gap:14px;background:var(--signal);color:var(--white);border-radius:999px;padding:10px 10px 10px 26px;font-weight:600;font-size:clamp(13px,1.1vw,16px);transition:gap .25s;cursor:pointer;border:none;font-family:'Archivo',sans-serif;}
 .hero-cta:hover{gap:20px;}
+.hero-cta:active{transform:translateY(1px);}
 .hero-cta-icon{width:40px;height:40px;border-radius:50%;background:var(--surface-0);display:inline-flex;align-items:center;justify-content:center;flex:none;}
 @media(max-width:680px){
   .hero-bottom{grid-template-columns:1fr;padding-bottom:32px;}
@@ -223,8 +244,10 @@ a{color:inherit;text-decoration:none;}
 /* PACKAGES */
 .packages-intro{font-weight:400;font-size:clamp(18px,2.6vw,36px);line-height:1.12;letter-spacing:-.02em;max-width:28ch;margin-bottom:clamp(36px,5vw,64px);}
 .packages-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-.pkg{background:var(--surface-2);border-radius:18px;padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;border:1px solid var(--line-300);position:relative;}
+.pkg{transition:border-color var(--t-fast) var(--ease),transform var(--t-fast) var(--ease);
+  background:var(--surface-2);border-radius:18px;padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;border:1px solid var(--line-300);position:relative;}
 .pkg-featured{background:var(--surface-3);border-color:var(--signal-line);}
+.pkg:hover{border-color:var(--line-100);transform:translateY(-3px);}
 .pkg-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--signal);border-radius:0 0 10px 10px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--white);white-space:nowrap;}
 .pkg-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;}
 .pkg-num{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--ink-400);margin-bottom:7px;}
@@ -271,6 +294,7 @@ a{color:inherit;text-decoration:none;}
 .cta-copy .cta-note{font-size:clamp(13px,1vw,14px);color:var(--ink-400);}
 .cta-btn{display:inline-flex;align-items:center;gap:14px;background:var(--signal);color:var(--white);border-radius:999px;padding:11px 11px 11px 30px;font-weight:600;font-size:16px;transition:gap .25s;cursor:pointer;border:none;font-family:'Archivo',sans-serif;}
 .cta-btn:hover{gap:22px;}
+.cta-btn:active{transform:translateY(1px);}
 .cta-btn-icon{width:44px;height:44px;border-radius:50%;background:var(--surface-0);display:inline-flex;align-items:center;justify-content:center;flex:none;}
 
 /* GAP AUDIT (lead magnet) */
@@ -285,12 +309,14 @@ a{color:inherit;text-decoration:none;}
 .audit-field{margin-bottom:16px;}
 .audit-label{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:var(--ink-300);margin-bottom:7px;text-transform:uppercase;}
 .audit-input,.audit-textarea{width:100%;background:var(--surface-0);border:1px solid var(--line-120);border-radius:10px;padding:12px 14px;color:var(--ink-100);font-family:'Archivo',sans-serif;font-size:16px;transition:border-color .2s;}/* 16px min: below that iOS Safari auto-zooms on focus */
-.audit-input:focus,.audit-textarea:focus{outline:none;border-color:var(--signal);}
+.audit-input:focus,.audit-textarea:focus{outline:none;border-color:var(--signal);
+  box-shadow:0 0 0 3px var(--signal-dim);}
 .audit-input::placeholder,.audit-textarea::placeholder{color:var(--ink-400);}
 .audit-textarea{resize:vertical;min-height:88px;line-height:1.5;}
 .audit-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;}
 .audit-submit{display:inline-flex;align-items:center;gap:12px;background:var(--signal);color:var(--white);border-radius:999px;padding:12px 28px;font-weight:600;font-size:15px;cursor:pointer;border:none;font-family:'Archivo',sans-serif;transition:gap .25s,opacity .2s;margin-top:4px;}
 .audit-submit:hover:not(:disabled){gap:18px;}
+.audit-submit:active:not(:disabled){transform:translateY(1px);}
 .audit-submit:disabled{opacity:.55;cursor:default;}
 .audit-status{margin-top:14px;font-size:14px;line-height:1.55;min-height:1px;}
 .audit-status.err{color:var(--signal);}
@@ -309,6 +335,16 @@ a{color:inherit;text-decoration:none;}
 /* WORD REVEAL */
 .word{opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);display:inline;}
 .word-block{display:inline-block;}
+
+/* Every transform introduced by the state layer is opt-out. Colour, focus
+   rings and the layout itself are untouched -- reduced motion is a different
+   complete experience, not a degraded one. */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;scroll-behavior:auto !important;}
+  .pkg:hover,.hero-cta:active,.cta-btn:active,.nav-cta-pill:active,
+  .audit-submit:active:not(:disabled){transform:none;}
+}
 </style>
 </head>
 <body>
