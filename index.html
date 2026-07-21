@@ -337,6 +337,27 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 
 /* WORD REVEAL */
 .js .word{opacity:0;transform:translateY(0.3em);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1);display:inline;}
+
+/* ── 3D-B — section choreography (WEB OS §3.4), on the existing IO engine.
+   .chor classes are added at RUNTIME only: no-JS and reduced-motion visitors
+   never receive a hidden element, so this layer needs no reveal failsafe.
+   Every property is opacity/transform — compositor-only, zero reflow. */
+.js .chor{opacity:0;transform:translateY(24px);transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .45s cubic-bezier(.16,1,.3,1);}
+.js .chor-l{transform:translateX(-24px);}
+.js .chor-r{transform:translateX(24px);}
+.js .chor-rise32{transform:translateY(32px);}
+.js .chor-fade{transform:none;}
+.js .chor-scale{transform:scale(1.06);transition-duration:.9s;}
+.js .chor-scale96{transform:scale(.96);transition-duration:.9s;}
+.js .chor.in{opacity:1;transform:none;}
+.audit-label{display:inline-block;transition:transform .18s ease,color .18s ease;}
+.audit-field:focus-within .audit-label{transform:translateY(-3px);color:var(--ink-100);}
+.how-rule{height:1px;background:var(--line-100);margin:0 0 28px;}
+.js .how-rule{transform-origin:left center;transform:scaleX(0);}
+.cta-section{position:relative;}
+.cta-section::after{content:'';position:absolute;inset:0;background:#000;opacity:0;transition:opacity .9s ease;pointer-events:none;}
+.cta-section.dim::after{opacity:.08;}
+.cta-inner{position:relative;z-index:1;}
 .word-block{display:inline-block;}
 
 /* Every transform introduced by the state layer is opt-out. Colour, focus
@@ -626,6 +647,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     <p class="how-intro" data-pullup>
       <span class="word">From signed to running in 7 days. </span><span class="word" style="color:var(--ink-400);">No management required.</span>
     </p>
+    <div class="how-rule" aria-hidden="true"></div>
     <div class="how-grid">
       <div class="how-card"><div class="how-day">DAY 0</div><div class="how-title">You sign.</div><p class="how-body">Payment confirmed. Welcome email in 5 minutes. Intake form in your inbox. Takes 10 minutes to complete.</p></div>
       <div class="how-card"><div class="how-day">DAY 3</div><div class="how-title">We audit.</div><p class="how-body">30-minute call with Nicholas. We map your operations and confirm the highest-impact function to build first.</p></div>
@@ -940,6 +962,146 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     window.addEventListener('scroll',onScroll,{passive:true});
     window.addEventListener('resize',onScroll,{passive:true});
     requestAnimationFrame(updateChars);
+  }
+})();
+</script>
+
+<script>
+/* ── 3D-B — SECTION CHOREOGRAPHY (WEB OS §3.4) ──────────────────────────────
+   Each section composes itself as it arrives; the composition order is the
+   argument. Built on the same IntersectionObserver engine as the existing
+   reveals — the spec's GSAP stack loses to the file again (fourth time).
+   Rules enforced here: fire at 20% entry, opacity/transform only, nothing
+   animates on exit (unobserve after first fire), scrubs are decorative.
+   All .chor classes are added at runtime, so no-JS never hides content;
+   the whole layer is one try/catch — a failure degrades to Phase-4 behavior. */
+(function(){
+  'use strict';
+  var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (REDUCE) return;
+  try {
+    var q = function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+    var mk = function(el,cls,delay){
+      if(!el) return el;
+      el.classList.add('chor'); if(cls) el.classList.add(cls);
+      if(delay) el.style.transitionDelay = delay+'ms';
+      return el;
+    };
+    var groups = [];
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        io.unobserve(e.target);
+        groups.forEach(function(g){
+          if(g[0]!==e.target) return;
+          requestAnimationFrame(function(){
+            g[1].forEach(function(el){ el && el.classList.add('in'); });
+            if(g[2]) g[2]();
+          });
+        });
+      });
+    },{threshold:0.2});
+    var grp = function(container, els, extra){
+      if(!container || !els.length) return;
+      groups.push([container, els, extra]); io.observe(container);
+    };
+
+    /* Marquee: 34s→28s while in view. playbackRate is seamless — changing
+       animation-duration mid-flight would visibly jump the strip. */
+    var mq = document.querySelector('.marquee-inner');
+    if (mq && mq.getAnimations) {
+      var mio = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          var a = mq.getAnimations()[0];
+          if (a) a.playbackRate = e.isIntersecting ? 34/28 : 1;
+        });
+      },{threshold:0.01});
+      mio.observe(mq.parentElement);
+    }
+
+    /* §02 System: copy from left, console from right, then the machine
+       boots — RUNNING labels stream in at 90ms intervals. */
+    var sys = document.querySelector('.system-grid');
+    if (sys && sys.children.length >= 2) {
+      var sysEls = [ mk(sys.children[0],'chor-l'), mk(sys.children[1],'chor-r',120) ];
+      q('.console-running',sys).forEach(function(el,i){ sysEls.push(mk(el,'chor-fade',480+i*90)); });
+      grp(sys, sysEls);
+    }
+
+    /* §03 Departments: rows stagger 60ms; numbers count 001→NNN.
+       Enumeration reads as inventory. */
+    var deptGrid = document.querySelector('.dept-grid');
+    if (deptGrid) {
+      var depts = q('.dept',deptGrid);
+      depts.forEach(function(el,i){ mk(el,null,Math.floor(i/3)*60); });
+      grp(deptGrid, depts, function(){
+        q('.dept-n',deptGrid).forEach(function(el){
+          var m = /^(\d{3})/.exec(el.textContent); if(!m) return;
+          var target = parseInt(m[1],10), rest = el.textContent.slice(3);
+          var t0 = performance.now(), dur = 600;
+          (function step(){
+            var p = Math.min(1,(performance.now()-t0)/dur);
+            var v = Math.max(1, Math.round(1+(target-1)*p));
+            el.textContent = ('00'+v).slice(-3) + rest;
+            if (p<1) requestAnimationFrame(step);
+          })();
+        });
+      });
+    }
+
+    /* §04 Services: cards rise 32px; the featured card leads by 120ms —
+       motion order is the recommendation order. */
+    var firstPkg = document.querySelector('.pkg');
+    if (firstPkg) {
+      var pkgWrap = firstPkg.parentElement;
+      var pkgs = q('.pkg',pkgWrap);
+      pkgs.forEach(function(el){ mk(el,'chor-rise32', el.classList.contains('pkg-featured') ? 0 : 120); });
+      grp(pkgWrap, pkgs);
+    }
+
+    /* §05 How: connector rule draws L→R scrubbed to scroll (decorative —
+       reuses the rAF-throttle pattern from the char scrub); cards fade in
+       behind it. */
+    var howRule = document.querySelector('.how-rule');
+    var howCards = q('.how-card');
+    howCards.forEach(function(el,i){ mk(el,null,120+i*60); });
+    if (howCards.length) grp(howCards[0].parentElement, howCards);
+    if (howRule) {
+      var ruleQueued = false;
+      var drawRule = function(){
+        var vh = window.innerHeight, r = howRule.getBoundingClientRect();
+        var p = Math.min(1, Math.max(0, (vh*0.85 - r.top) / (vh*0.5)));
+        howRule.style.transform = 'scaleX('+p.toFixed(4)+')';
+      };
+      var onRule = function(){ if(ruleQueued) return; ruleQueued = true;
+        requestAnimationFrame(function(){ ruleQueued = false; drawRule(); }); };
+      window.addEventListener('scroll', onRule, {passive:true});
+      window.addEventListener('resize', onRule, {passive:true});
+      requestAnimationFrame(drawRule);
+    }
+
+    /* §06 Founder: photo settles 1.06→1.00, name and role rise after the
+       quote (quote words are already on the existing pull-up engine).
+       Slow settle reads as composure. */
+    var fGrid = document.querySelector('.founder-grid');
+    if (fGrid) {
+      var fEls = [ mk(fGrid.querySelector('.founder-photo img'),'chor-scale') ];
+      fEls.push(mk(fGrid.querySelector('.founder-name'),null,260));
+      fEls.push(mk(fGrid.querySelector('.founder-role'),null,360));
+      grp(fGrid, fEls.filter(Boolean));
+    }
+
+    /* §08 CTA: headline settles 0.96→1.00 while the section darkens 8%
+       (::after overlay — opacity, not background paint). Narrowing. */
+    var cta = document.querySelector('.cta-section');
+    if (cta) {
+      var ctaEls = [ mk(cta.querySelector('.cta-headline'),'chor-scale96') ];
+      grp(cta, ctaEls.filter(Boolean), function(){ cta.classList.add('dim'); });
+    }
+  } catch (err) {
+    /* Degrade to Phase-4 behavior: strip every runtime-hidden state. */
+    q('.chor').forEach(function(el){ el.classList.add('in'); });
+    console.error('[3D-B]', err);
   }
 })();
 </script>
