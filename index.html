@@ -114,6 +114,14 @@ a{color:inherit;text-decoration:none;}
   /* Phase 1 fix: the primary CTA was hidden on the primary device.
      Sized down so it sits beside "Free audit" without wrapping at 320px. */
   .nav-cta-pill{font-size:10px;letter-spacing:.1em;padding:7px 14px;}
+  /* The telemetry markers sit at top:22px — the same band as the centered
+     nav. At 390px that collided by 77px (left) and 90px (right); restoring
+     the CTA widened the nav and made it worse. Drop them below the nav bar
+     rather than hiding them: SYSTEMS RUNNING is the brand's live signal and
+     is worth more on mobile than it costs. */
+  .hero-tel-l,.hero-tel-r{top:66px;font-size:9px;letter-spacing:.12em;}
+  .hero-tel-l{left:18px;}
+  .hero-tel-r{right:18px;}
 }
 
 /* HERO */
