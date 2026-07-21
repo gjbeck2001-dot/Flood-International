@@ -56,13 +56,11 @@ export default async function handler(req, res) {
     };
     const referrer = clean(b.referrer, MAX.url);
 
-    // `source` is the CRM's attribution column — keep the values coarse and
-    // stable so pipeline reports can group on them. Detail goes in notes.
-    const source = utm.source
-      ? `Gap Audit — ${utm.source}`
-      : referrer
-        ? 'Gap Audit — referral'
-        : 'Gap Audit — direct';
+    // The CRM schema CHECK-constrains `source` to a fixed set
+    // ('Instagram','TikTok',…,'Website') — free-form values are rejected by
+    // Postgres. Every gap-audit lead arrives via the site, so 'Website' is
+    // the honest value; per-channel attribution lives in notes (utm_* lines).
+    const source = 'Website';
 
     const notes = [
       'FREE GAP AUDIT REQUEST (lead magnet)',

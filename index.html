@@ -5,6 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Flood International — AI Operations</title>
 <meta name="description" content="We build and run the AI systems that replace what you'd otherwise hire people to do. The team you can't afford to hire.">
+
+<!-- Canonical + social cards. Every shared link previously rendered as a
+     blank card — an OG block shipped once (2026-07-09) but was lost in the
+     same-day revert and never restored. -->
+<link rel="canonical" href="https://www.floodinternational.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Flood International">
+<meta property="og:title" content="Flood International — AI Operations">
+<meta property="og:description" content="We build and run the AI systems that handle what you'd otherwise hire people for — content, follow-up, reporting, onboarding. One retainer. No salaries.">
+<meta property="og:url" content="https://www.floodinternational.com/">
+<meta property="og:image" content="https://www.floodinternational.com/assets/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Flood International — AI Operations">
+<meta name="twitter:description" content="The team you can't afford to hire. AI operations on one retainer — no salaries, no management, no turnover.">
+<meta name="twitter:image" content="https://www.floodinternational.com/assets/og-card.jpg">
+
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%2305090F"/><text x="16" y="23" font-family="Arial,Helvetica,sans-serif" font-size="19" font-weight="800" fill="%23E8EEF4" text-anchor="middle">F</text><circle cx="25" cy="7.5" r="3" fill="%23E5352B"/></svg>'>
+
+<!-- LCP: the hero background is the largest paint — fetch it first. -->
+<link rel="preload" as="image" href="assets/ocean-clean.jpg" fetchpriority="high">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Flood International",
+  "url": "https://www.floodinternational.com/",
+  "description": "AI operations on retainer — content systems, automated follow-up, daily reporting, and client onboarding for businesses that can't afford to hire an ops team.",
+  "founder": { "@type": "Person", "name": "Nicholas King" },
+  "areaServed": "US",
+  "address": { "@type": "PostalAddress", "addressLocality": "Los Angeles", "addressRegion": "CA", "addressCountry": "US" },
+  "makesOffer": [
+    { "@type": "Offer", "name": "The Operator", "price": "997", "priceCurrency": "USD", "description": "Daily briefing, automated 3-touch follow-up, weekly performance report, one custom AI agent. Monthly retainer, 3-month minimum." },
+    { "@type": "Offer", "name": "Content Engine", "price": "2500", "priceCurrency": "USD", "description": "Everything in The Operator plus 30 AI-drafted posts a month, scheduling and publishing, one email automation flow. Monthly retainer, 3-month minimum." },
+    { "@type": "Offer", "name": "The Full Stack", "price": "5000", "priceCurrency": "USD", "description": "Everything in Content Engine plus full email marketing automation, client onboarding sequence, three custom AI agents. From $5,000/month, 3-month minimum." }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -184,7 +225,7 @@ a{color:inherit;text-decoration:none;}
 .audit-form{background:#0E1826;border:1px solid rgba(232,238,244,.06);border-radius:18px;padding:clamp(22px,3vw,34px);}
 .audit-field{margin-bottom:16px;}
 .audit-label{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#8FA3B5;margin-bottom:7px;text-transform:uppercase;}
-.audit-input,.audit-textarea{width:100%;background:#05090F;border:1px solid rgba(232,238,244,.12);border-radius:10px;padding:12px 14px;color:#E8EEF4;font-family:'Archivo',sans-serif;font-size:15px;transition:border-color .2s;}
+.audit-input,.audit-textarea{width:100%;background:#05090F;border:1px solid rgba(232,238,244,.12);border-radius:10px;padding:12px 14px;color:#E8EEF4;font-family:'Archivo',sans-serif;font-size:16px;transition:border-color .2s;}/* 16px min: below that iOS Safari auto-zooms on focus */
 .audit-input:focus,.audit-textarea:focus{outline:none;border-color:#E5352B;}
 .audit-input::placeholder,.audit-textarea::placeholder{color:#41556A;}
 .audit-textarea{resize:vertical;min-height:88px;line-height:1.5;}
