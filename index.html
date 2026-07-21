@@ -173,6 +173,33 @@ a{color:inherit;text-decoration:none;}
 .cta-btn:hover{gap:22px;}
 .cta-btn-icon{width:44px;height:44px;border-radius:50%;background:#05090F;display:inline-flex;align-items:center;justify-content:center;flex:none;}
 
+/* GAP AUDIT (lead magnet) */
+.audit-section{padding:0 16px clamp(60px,8vw,110px);}
+.audit-inner{max-width:1180px;margin:0 auto;border-top:1px solid rgba(232,238,244,.1);padding-top:clamp(56px,8vw,110px);}
+.audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,72px);align-items:start;}
+.audit-headline{font-weight:800;font-size:clamp(38px,6.4vw,88px);line-height:.92;letter-spacing:-.03em;text-transform:uppercase;margin-bottom:24px;}
+.audit-copy p{font-size:clamp(14px,1.2vw,17px);line-height:1.65;color:#9CB0C4;margin-bottom:14px;}
+.audit-copy strong{color:#E8EEF4;font-weight:600;}
+.audit-note{font-size:clamp(12px,1vw,13px);color:#5E7387;font-family:'JetBrains Mono',monospace;line-height:1.6;}
+.audit-form{background:#0E1826;border:1px solid rgba(232,238,244,.06);border-radius:18px;padding:clamp(22px,3vw,34px);}
+.audit-field{margin-bottom:16px;}
+.audit-label{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#8FA3B5;margin-bottom:7px;text-transform:uppercase;}
+.audit-input,.audit-textarea{width:100%;background:#05090F;border:1px solid rgba(232,238,244,.12);border-radius:10px;padding:12px 14px;color:#E8EEF4;font-family:'Archivo',sans-serif;font-size:15px;transition:border-color .2s;}
+.audit-input:focus,.audit-textarea:focus{outline:none;border-color:#E5352B;}
+.audit-input::placeholder,.audit-textarea::placeholder{color:#41556A;}
+.audit-textarea{resize:vertical;min-height:88px;line-height:1.5;}
+.audit-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;}
+.audit-submit{display:inline-flex;align-items:center;gap:12px;background:#E5352B;color:#fff;border-radius:999px;padding:12px 28px;font-weight:600;font-size:15px;cursor:pointer;border:none;font-family:'Archivo',sans-serif;transition:gap .25s,opacity .2s;margin-top:4px;}
+.audit-submit:hover:not(:disabled){gap:18px;}
+.audit-submit:disabled{opacity:.55;cursor:default;}
+.audit-status{margin-top:14px;font-size:14px;line-height:1.55;min-height:1px;}
+.audit-status.err{color:#E5352B;}
+.audit-status.ok{color:#5BBF8A;}
+.audit-done{display:none;}
+.audit-done h3{font-size:clamp(20px,2.2vw,28px);font-weight:700;margin-bottom:12px;}
+.audit-done p{font-size:15px;line-height:1.65;color:#9CB0C4;}
+@media(max-width:900px){.audit-grid{grid-template-columns:1fr;}}
+
 /* FOOTER */
 .footer{padding:0 16px 40px;}
 .footer-inner{max-width:1180px;margin:0 auto;}
@@ -199,7 +226,8 @@ a{color:inherit;text-decoration:none;}
       <span class="nav-dot nav-hide-mobile"></span>
       <a href="#fios" class="nav-link nav-hide-mobile">Departments</a>
       <a href="#packages" class="nav-link nav-hide-mobile">Services</a>
-      <button class="nav-cta-pill" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">Book a call</button>
+      <a href="#audit" class="nav-link">Free audit</a>
+      <button class="nav-cta-pill nav-hide-mobile" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">Book a call</button>
     </nav>
 
     <div class="hero-tel-l"><span class="blink"></span>SYSTEMS RUNNING</div>
@@ -483,10 +511,71 @@ a{color:inherit;text-decoration:none;}
   </div>
 </section>
 
+<!-- GAP AUDIT (lead magnet) -->
+<section class="audit-section" id="audit">
+  <div class="audit-inner">
+    <div class="section-label"><span class="label-dot"></span>07 / FREE GAP AUDIT</div>
+    <div class="audit-grid">
+      <div>
+        <h2 class="audit-headline">See the<br>gaps first.</h2>
+        <div class="audit-copy">
+          <p>Not ready for a call? Fine. <strong>Let me look at your operation and tell you what's broken — free, no call required.</strong></p>
+          <p>You'll get a one-page read on where attention is leaking, what's running on you personally instead of on a system, and the single highest-leverage thing to fix first.</p>
+          <p>I do these by hand. That's the limit and the point — it's a real read on your business, not a generated template.</p>
+          <p class="audit-note">NO CALL REQUIRED · NO PITCH ATTACHED · 2 BUSINESS DAYS</p>
+        </div>
+      </div>
+
+      <div>
+        <form class="audit-form" id="audit-form" novalidate>
+          <div class="audit-field">
+            <label class="audit-label" for="af-name">Your name *</label>
+            <input class="audit-input" id="af-name" name="name" type="text" required maxlength="120" autocomplete="name" placeholder="Nicholas King">
+          </div>
+          <div class="audit-field">
+            <label class="audit-label" for="af-email">Email *</label>
+            <input class="audit-input" id="af-email" name="email" type="email" required maxlength="160" autocomplete="email" placeholder="you@company.com">
+          </div>
+          <div class="audit-field">
+            <label class="audit-label" for="af-company">Brand / company</label>
+            <input class="audit-input" id="af-company" name="company" type="text" maxlength="160" autocomplete="organization" placeholder="Flood International">
+          </div>
+          <div class="audit-field">
+            <label class="audit-label" for="af-link">Website or main social</label>
+            <input class="audit-input" id="af-link" name="link" type="text" maxlength="300" placeholder="instagram.com/yourbrand">
+          </div>
+          <div class="audit-field">
+            <label class="audit-label" for="af-challenge">What feels most broken right now?</label>
+            <textarea class="audit-textarea" id="af-challenge" name="challenge" maxlength="1200" placeholder="The thing that keeps landing back on your plate."></textarea>
+          </div>
+
+          <!-- honeypot: hidden from humans, catches bots -->
+          <div class="audit-hp" aria-hidden="true">
+            <label for="af-hp">Do not fill this in</label>
+            <input id="af-hp" name="website_url_confirm" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button class="audit-submit" id="af-submit" type="submit">
+            Send me the audit
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <div class="audit-status" id="af-status" role="status" aria-live="polite"></div>
+        </form>
+
+        <div class="audit-form audit-done" id="audit-done">
+          <h3>Got it.</h3>
+          <p>Your audit is queued. It lands in your inbox within 2 business days — check for a confirmation email now.</p>
+          <p style="margin-top:12px;">If there's something specific you're stuck on, reply to that email and tell me. I'll aim the audit at it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- BOOK CTA -->
 <section class="cta-section" id="book">
   <div class="cta-inner">
-    <div class="section-label"><span class="label-dot"></span>07 / BOOK</div>
+    <div class="section-label"><span class="label-dot"></span>08 / BOOK</div>
     <h2 class="cta-headline">One<br>call.</h2>
     <div class="cta-body">
       <div class="cta-copy">
@@ -518,7 +607,112 @@ a{color:inherit;text-decoration:none;}
   </div>
 </footer>
 
+<!-- ═══ ANALYTICS ═══════════════════════════════════════════════════════════
+     Vercel Web Analytics. Cookieless and privacy-first, so it needs no
+     consent banner and adds nothing to the cookie policy. Before 2026-07-20
+     this site had NO analytics of any kind — traffic was completely
+     unmeasurable, which made paid acquisition unbuyable.
+
+     AD PIXELS: add them here when ad accounts exist. Both set cookies, so
+     turning either on REQUIRES updating /cookies before launch.
+       Meta:     https://developers.facebook.com/docs/meta-pixel/get-started
+       LinkedIn: https://www.linkedin.com/help/lms/answer/a418880
+     ═══════════════════════════════════════════════════════════════════════ -->
+<script defer src="/_vercel/insights/script.js"></script>
+
 <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<script>
+/* ═══ UTM CAPTURE + GAP AUDIT FORM ══════════════════════════════════════════
+   UTMs are read on first landing and held in sessionStorage, so attribution
+   survives a visitor scrolling, navigating to /terms and coming back. Without
+   this, a lead that arrives via ?utm_source=linkedin and submits three
+   clicks later is recorded as "direct" — the exact failure that makes ad
+   spend unattributable.
+   ════════════════════════════════════════════════════════════════════════ */
+(function(){
+  'use strict';
+  var KEY = 'flood_attr';
+  var PARAMS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+
+  function readAttr(){
+    var stored = {};
+    try { stored = JSON.parse(sessionStorage.getItem(KEY) || '{}'); } catch(e){}
+
+    var qs = new URLSearchParams(window.location.search), fresh = {}, found = false;
+    PARAMS.forEach(function(p){
+      var v = qs.get(p);
+      if (v) { fresh[p] = v.slice(0,120); found = true; }
+    });
+
+    // First touch wins: only overwrite if this visit carries its own UTMs.
+    if (found) {
+      if (document.referrer && document.referrer.indexOf(location.host) === -1) {
+        fresh.referrer = document.referrer.slice(0,300);
+      }
+      try { sessionStorage.setItem(KEY, JSON.stringify(fresh)); } catch(e){}
+      return fresh;
+    }
+
+    if (!stored.referrer && document.referrer && document.referrer.indexOf(location.host) === -1) {
+      stored.referrer = document.referrer.slice(0,300);
+      try { sessionStorage.setItem(KEY, JSON.stringify(stored)); } catch(e){}
+    }
+    return stored;
+  }
+
+  var attr = readAttr();
+
+  var form   = document.getElementById('audit-form');
+  var done   = document.getElementById('audit-done');
+  var status = document.getElementById('af-status');
+  var submit = document.getElementById('af-submit');
+  if (!form) return;
+
+  function setStatus(msg, kind){
+    status.textContent = msg || '';
+    status.className = 'audit-status' + (kind ? ' ' + kind : '');
+  }
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    setStatus('');
+
+    var data = Object.fromEntries(new FormData(form).entries());
+
+    if (!String(data.name || '').trim() || !String(data.email || '').trim()) {
+      return setStatus('Name and email are required.', 'err');
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(data.email).trim())) {
+      return setStatus('That email address looks wrong — mind checking it?', 'err');
+    }
+
+    PARAMS.forEach(function(p){ if (attr[p]) data[p] = attr[p]; });
+    if (attr.referrer) data.referrer = attr.referrer;
+
+    submit.disabled = true;
+    submit.firstChild.nodeValue = 'Sending… ';
+
+    fetch('/api/gap-audit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, body: j }; }); })
+    .then(function(res){
+      if (!res.ok) throw new Error(res.body && res.body.error || 'Request failed');
+      form.style.display = 'none';
+      done.style.display = 'block';
+      done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    })
+    .catch(function(err){
+      console.error('[gap-audit]', err);
+      setStatus((err.message || 'Something went wrong') + " — or email king@floodinternational.com directly.", 'err');
+      submit.disabled = false;
+      submit.firstChild.nodeValue = 'Send me the audit ';
+    });
+  });
+})();
+</script>
 <script>
 (function(){
   // Hero pull-up
