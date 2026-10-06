@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flood International — AI Operations</title>
-<meta name="description" content="We build and run the AI systems that replace what you'd otherwise hire people to do. The team you can't afford to hire.">
+<title>Flood International | Service Coordinator for Trade Shops on Jobber</title>
+<meta name="description" content="Flood is the service coordinator for HVAC, plumbing and electrical shops on Jobber. Missed calls get a text back, a no gets worked back to a booking, and every job gets followed up. LA and the Inland Empire.">
 
 <!-- Canonical + social cards. Every shared link previously rendered as a
      blank card — an OG block shipped once (2026-07-09) but was lost in the
@@ -12,15 +12,15 @@
 <link rel="canonical" href="https://www.floodinternational.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Flood International">
-<meta property="og:title" content="Flood International — AI Operations">
-<meta property="og:description" content="We build and run the AI systems that handle what you'd otherwise hire people for — content, follow-up, reporting, onboarding. One retainer. No salaries.">
+<meta property="og:title" content="Flood International | Service Coordinator for Trade Shops on Jobber">
+<meta property="og:description" content="Flood is the service coordinator for HVAC, plumbing and electrical shops on Jobber. Missed calls get a text back, a no gets worked back to a booking, and every job gets followed up. LA and the Inland Empire.">
 <meta property="og:url" content="https://www.floodinternational.com/">
 <meta property="og:image" content="https://www.floodinternational.com/assets/og-card.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Flood International — AI Operations">
-<meta name="twitter:description" content="The team you can't afford to hire. AI operations on one retainer — no salaries, no management, no turnover.">
+<meta name="twitter:title" content="Flood International | Service Coordinator for Trade Shops on Jobber">
+<meta name="twitter:description" content="Flood is the service coordinator for HVAC, plumbing and electrical shops on Jobber. Missed calls get a text back, a no gets worked back to a booking, and every job gets followed up. LA and the Inland Empire.">
 <meta name="twitter:image" content="https://www.floodinternational.com/assets/og-card.jpg">
 
 <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%2305090F"/><text x="16" y="23" font-family="Arial,Helvetica,sans-serif" font-size="19" font-weight="800" fill="%23E8EEF4" text-anchor="middle">F</text><circle cx="25" cy="7.5" r="3" fill="%23E5352B"/></svg>'>
@@ -34,14 +34,13 @@
   "@type": "ProfessionalService",
   "name": "Flood International",
   "url": "https://www.floodinternational.com/",
-  "description": "AI operations on retainer — content systems, automated follow-up, daily reporting, and client onboarding for businesses that can't afford to hire an ops team.",
+  "description": "Service coordination for HVAC, plumbing and electrical shops on Jobber: missed-call text-back, booking confirmations, reschedules, job reports, review requests and a monthly recovered-revenue report.",
   "founder": { "@type": "Person", "name": "Nicholas King" },
   "areaServed": "US",
   "address": { "@type": "PostalAddress", "addressLocality": "Los Angeles", "addressRegion": "CA", "addressCountry": "US" },
   "makesOffer": [
-    { "@type": "Offer", "name": "The Operator", "price": "997", "priceCurrency": "USD", "description": "Daily briefing, automated 3-touch follow-up, weekly performance report, one custom AI agent. Monthly retainer, 3-month minimum." },
-    { "@type": "Offer", "name": "Content Engine", "price": "2500", "priceCurrency": "USD", "description": "Everything in The Operator plus 30 AI-drafted posts a month, scheduling and publishing, one email automation flow. Monthly retainer, 3-month minimum." },
-    { "@type": "Offer", "name": "The Full Stack", "price": "5000", "priceCurrency": "USD", "description": "Everything in Content Engine plus full email marketing automation, client onboarding sequence, three custom AI agents. From $5,000/month, 3-month minimum." }
+    { "@type": "Offer", "name": "Service Coordinator, founding rate", "price": "599", "priceCurrency": "USD", "description": "For HVAC, plumbing and electrical shops on Jobber. $2,500 one-time setup + $599/month for the first 10 shops, 3-month minimum then month to month. Usage billed at cost." },
+    { "@type": "Offer", "name": "Service Coordinator, standard rate", "price": "1497", "priceCurrency": "USD", "description": "$2,500 one-time setup + $1,497/month after the first 10 shops. Usage billed at cost." }
   ]
 }
 </script>
@@ -392,6 +391,70 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
   .pkg:hover,.hero-cta:active,.cta-btn:active,.nav-cta-pill:active,
   .audit-submit:active:not(:disabled){transform:none;}
 }
+/* ===== TRADES HOMEPAGE (2026-10) ===== */
+.hero-headline{font-weight:800;font-size:clamp(40px,6.6vw,104px);line-height:.92;letter-spacing:-.035em;color:#E8EEF4;max-width:13ch;transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);}
+.hero-headline em{color:var(--signal);font-style:italic;}
+.hero-kicker{font-family:'JetBrains Mono',monospace;font-size:clamp(9px,1vw,12px);letter-spacing:.28em;color:rgba(232,238,244,.6);margin-bottom:18px;transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1);}
+@media(max-width:680px){
+  .hero-right{display:flex;}
+  .hero-tagline{display:none;}
+  .hero-tel-r{display:none;}
+}
+
+/* feature cards reuse .dept-grid / .dept */
+.dept-grid.features .dept{min-height:200px;}
+
+/* example text thread */
+.thread{border:1px solid rgba(232,238,244,.16);border-radius:18px;background:#0A1320;overflow:hidden;}
+.thread-head{display:flex;justify-content:space-between;gap:12px;padding:14px 20px;border-bottom:1px solid rgba(232,238,244,.1);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;color:#6F869C;}
+.thread-body{padding:20px;display:flex;flex-direction:column;gap:12px;}
+.t-event{align-self:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--status);background:rgba(224,163,62,.1);border:1px solid rgba(224,163,62,.3);border-radius:999px;padding:5px 12px;text-align:center;}
+.t-event.ok{color:var(--live);background:rgba(91,191,138,.1);border-color:rgba(91,191,138,.3);}
+.t-msg{max-width:82%;font-size:13.5px;line-height:1.5;padding:10px 14px;border-radius:16px;}
+.t-out{align-self:flex-end;background:var(--signal);color:#fff;border-bottom-right-radius:4px;}
+.t-in{align-self:flex-start;background:#16263A;color:#E8EEF4;border-bottom-left-radius:4px;}
+.t-time{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#5E7387;letter-spacing:.08em;}
+.t-time.r{align-self:flex-end;}
+.thread-foot{padding:12px 20px;border-top:1px solid rgba(232,238,244,.1);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;color:#5E7387;}
+
+/* sample report */
+.report{background:#0E1826;border:1px solid rgba(232,238,244,.08);border-radius:20px;overflow:hidden;}
+.report-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:18px 24px;border-bottom:1px solid rgba(232,238,244,.08);font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;color:#8FA3B5;}
+.report-tag{color:var(--status);}
+.report-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(232,238,244,.08);}
+.report-cell{background:#0E1826;padding:24px;}
+.report-num{font-size:clamp(28px,3.4vw,46px);font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:10px;}
+.report-num.hl{color:var(--live);}
+.report-lbl{font-size:13px;line-height:1.45;color:#8FA3B5;}
+.report-foot{padding:14px 24px;border-top:1px solid rgba(232,238,244,.08);font-size:12.5px;line-height:1.6;color:#6F869C;}
+@media(max-width:820px){.report-grid{grid-template-columns:1fr 1fr;}}
+
+/* fit lists */
+.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.fit-card{background:#0E1826;border-radius:18px;padding:clamp(24px,3vw,36px);border:1px solid rgba(232,238,244,.06);}
+.fit-card h3{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;margin-bottom:20px;font-weight:500;}
+.fit-yes h3{color:var(--live);}
+.fit-no h3{color:#8FA3B5;}
+.fit-card ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
+.fit-card li{font-size:15px;line-height:1.5;color:#C9D6E2;display:flex;gap:10px;}
+.fit-card li::before{content:'+';color:var(--live);font-family:'JetBrains Mono',monospace;flex:none;}
+.fit-no li{color:#8FA3B5;}
+.fit-no li::before{content:'\2212';color:#5E7387;}
+@media(max-width:760px){.fit-grid{grid-template-columns:1fr;}}
+
+/* single pricing card */
+.price-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:6px;}
+.price-side{background:#0A1320;border-radius:18px;padding:clamp(22px,3vw,34px);border:1px solid rgba(232,238,244,.06);display:flex;flex-direction:column;gap:14px;}
+.price-side p{font-size:14px;line-height:1.6;color:#8FA3B5;}
+.price-side strong{color:#E8EEF4;font-weight:600;}
+.pkg-setup{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;color:#8FA3B5;margin-top:6px;}
+@media(max-width:900px){.price-wrap{grid-template-columns:1fr;}}
+
+.footer-cross{font-size:13px;color:#8FA3B5;padding-bottom:22px;}
+.footer-cross a{color:#E8EEF4;border-bottom:1px solid rgba(232,238,244,.3);}
+.footer-note{font-size:11px;line-height:1.6;color:#45576B;padding-top:14px;}
+
+.js .hero-headline,.js .hero-kicker{opacity:0;transform:translateY(0.35em);}
 </style>
 </head>
 <body>
@@ -427,29 +490,24 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 
     <nav class="nav-wrap">
       <a href="#problem" class="nav-link nav-hide-mobile">The Problem</a>
-      <a href="#system" class="nav-link nav-hide-mobile">System</a>
+      <a href="#what" class="nav-link nav-hide-mobile">What It Does</a>
       <span class="nav-dot nav-hide-mobile"></span>
-      <a href="#fios" class="nav-link nav-hide-mobile">Departments</a>
-      <a href="#packages" class="nav-link nav-hide-mobile">Services</a>
+      <a href="#pricing" class="nav-link nav-hide-mobile">Pricing</a>
       <a href="#audit" class="nav-link">Free audit</a>
       <button class="nav-cta-pill" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">Book a call</button>
     </nav>
 
-    <div class="hero-tel-l"><span class="blink"></span>SYSTEMS RUNNING</div>
-    <div class="hero-tel-r"><div>FLOOD INTERNATIONAL</div><div>AI OPERATIONS</div></div>
+    <div class="hero-tel-l"><span class="blink"></span>HVAC / PLUMBING / ELECTRICAL</div>
+    <div class="hero-tel-r"><div>FLOOD INTERNATIONAL</div><div>SERVICE COORDINATOR</div></div>
 
     <div class="hero-bottom" id="hero-pullup">
-      <div class="hero-acrostic">
-        <div class="acrostic-row"><span class="acrostic-letter">F</span><span class="acrostic-word">OREVER</span></div>
-        <div class="acrostic-row"><span class="acrostic-letter">L</span><span class="acrostic-word">IVING</span></div>
-        <div class="acrostic-row"><span class="acrostic-letter">O</span><span class="acrostic-word">UT</span></div>
-        <div class="acrostic-row"><span class="acrostic-letter">O</span><span class="acrostic-word">UR</span></div>
-        <div class="acrostic-row"><span class="acrostic-letter">D</span><span class="acrostic-word">REAMS</span></div>
-        <div class="acrostic-sub">INTERNATIONAL</div>
+      <div>
+        <div class="hero-kicker">FOR TRADE SHOPS ON JOBBER</div>
+        <h1 class="hero-headline">Every missed call is a job <em>someone else</em> books.</h1>
       </div>
       <div class="hero-right">
-        <p class="hero-tagline">The team you can't afford to hire.</p>
-        <p class="hero-desc">We build and run the AI systems that handle what you'd otherwise hire people for — content, follow-up, reporting, onboarding. One retainer. No salaries. No management.</p>
+        <p class="hero-tagline">Your front office, covered.</p>
+        <p class="hero-desc">Flood is the service coordinator for HVAC, plumbing and electrical shops. Missed calls get a text back. A "no" gets worked back to a booking. Every finished job gets followed up. It runs on your Jobber account, you keep your number, and your office stays in charge.</p>
         <div class="hero-cta-wrap">
           <button class="hero-cta" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
             Book a call
@@ -466,7 +524,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 <!-- MARQUEE -->
 <div class="marquee-track">
   <div class="marquee-inner">
-    <span>AI OPERATIONS</span><span class="m-sep">/</span><span>CONTENT ENGINE</span><span class="m-sep">/</span><span>AUTOMATED FOLLOW-UP</span><span class="m-sep">/</span><span>DAILY REPORTING</span><span class="m-sep">/</span><span>CLIENT ONBOARDING</span><span class="m-sep">/</span><span>THE TEAM YOU CAN'T AFFORD TO HIRE</span><span class="m-sep">/</span><span>AI OPERATIONS</span><span class="m-sep">/</span><span>CONTENT ENGINE</span><span class="m-sep">/</span><span>AUTOMATED FOLLOW-UP</span><span class="m-sep">/</span><span>DAILY REPORTING</span><span class="m-sep">/</span><span>CLIENT ONBOARDING</span><span class="m-sep">/</span><span>THE TEAM YOU CAN'T AFFORD TO HIRE</span><span class="m-sep">/</span>
+    <span>MISSED-CALL TEXT-BACK</span><span class="m-sep">/</span><span>BOOKING CONFIRMATIONS</span><span class="m-sep">/</span><span>RESCHEDULE RECOVERY</span><span class="m-sep">/</span><span>JOB REPORTS</span><span class="m-sep">/</span><span>REVIEW REQUESTS</span><span class="m-sep">/</span><span>EMERGENCY PAGING</span><span class="m-sep">/</span><span>REPEAT-JOB FOLLOW-UP</span><span class="m-sep">/</span><span>MONTHLY RECOVERED-REVENUE REPORT</span><span class="m-sep">/</span><span>MISSED-CALL TEXT-BACK</span><span class="m-sep">/</span><span>BOOKING CONFIRMATIONS</span><span class="m-sep">/</span><span>RESCHEDULE RECOVERY</span><span class="m-sep">/</span><span>JOB REPORTS</span><span class="m-sep">/</span><span>REVIEW REQUESTS</span><span class="m-sep">/</span><span>EMERGENCY PAGING</span><span class="m-sep">/</span><span>REPEAT-JOB FOLLOW-UP</span><span class="m-sep">/</span><span>MONTHLY RECOVERED-REVENUE REPORT</span><span class="m-sep">/</span>
   </div>
 </div>
 
@@ -476,207 +534,137 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     <div class="section-card" style="text-align:center;">
       <div class="section-label" style="justify-content:center;">01 / THE PROBLEM</div>
       <h2 class="problem-headline" data-pullup>
-        <span class="word">You're doing the work </span><span class="word">of three people. </span><span class="word" style="font-style:italic;font-family:'JetBrains Mono',monospace;color:var(--ink-200);">That's not a strategy. </span><span class="word" style="font-style:italic;font-family:'JetBrains Mono',monospace;color:var(--ink-200);">It's a liability.</span>
+        <span class="word">You're on the tools. </span><span class="word">The phone keeps ringing. </span><span class="word" style="font-style:italic;font-family:'JetBrains Mono',monospace;color:var(--ink-200);">Nobody picks up.</span>
       </h2>
-      <p class="problem-body" data-scrollchars>Every week the operational debt compounds. Follow-ups slip. Content stalls. New clients don't hear back fast enough. You know you need a system — you don't have the time or the person to build one. Hiring solves the function but creates a new problem: salary, benefits, management, turnover. Flood International eliminates that problem entirely.</p>
+      <p class="problem-body" data-scrollchars>A call comes in while you're under a house. It goes to voicemail, and the customer calls the next shop on Google. A booked customer goes quiet or cancels, and nobody asks them to rebook. A finished job never gets a review request or a reminder for next season. None of it shows up on a report. It just never turns into revenue.</p>
     </div>
   </div>
 </section>
 
-<!-- SYSTEM -->
-<section class="section section--flush" id="system">
+<!-- WHAT IT DOES -->
+<section class="section section--flush" id="what">
   <div class="section-inner">
-    <div class="system-grid">
-      <div>
-        <div class="section-label">02 / SYSTEM</div>
-        <h2 class="system-headline" data-pullup>
-          <span class="word word-block">Not an agency.</span><br>
-          <span class="word word-block">An operations team.</span>
-        </h2>
-        <p class="system-body">Agencies sell you their time and disappear. We embed into your business and run the daily operations — indefinitely, on retainer. The systems we build belong to your workflow. The output runs every day whether you think about it or not.</p>
-      </div>
-      <div class="console">
-        <div class="console-header"><span>FLOOD.OPERATIONS</span><span class="console-status">● ALL SYSTEMS ACTIVE</span></div>
-        <div class="console-row"><span class="console-name"><span class="console-num">001 </span>daily briefing</span><span class="console-running">RUNNING</span></div>
-        <div class="console-row"><span class="console-name"><span class="console-num">002 </span>follow-up sequences</span><span class="console-running">RUNNING</span></div>
-        <div class="console-row"><span class="console-name"><span class="console-num">003 </span>content engine</span><span class="console-running">RUNNING</span></div>
-        <div class="console-row"><span class="console-name"><span class="console-num">004 </span>client onboarding</span><span class="console-running">RUNNING</span></div>
-        <div class="console-row" style="border-bottom:none;"><span class="console-name"><span class="console-num">005 </span>weekly reporting</span><span class="console-running">RUNNING</span></div>
-        <div class="console-footer">NO SICK DAYS. NO TURNOVER. NO MANAGEMENT.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FIOS DEPARTMENTS -->
-<section class="section section--flush" id="fios">
-  <div class="section-inner">
-    <div class="section-label">03 / NINE DEPARTMENTS</div>
+    <div class="section-label">02 / WHAT IT DOES</div>
     <p class="fios-intro" data-pullup>
-      <span class="word">The Flood Intelligence Operating System. </span><span class="word" style="color:var(--ink-400);">Nine departments, one memory of your business.</span>
+      <span class="word">The front-office work that slips when you're busy. </span><span class="word" style="color:var(--ink-400);">Handled every day, on your Jobber account.</span>
     </p>
 
-    <div class="dept-grid">
+    <div class="dept-grid features">
       <div class="dept">
-        <div class="dept-top"><div class="dept-n">001 — INTELLIGENCE</div><span class="dept-status">BETA</span></div>
-        <h3>Information comes to you.</h3>
-        <p>Watches TikTok trends, Spotify growth, YouTube, Instagram, Billboard, touring, competitors, industry news, AI tooling and marketing shifts — then summarises what changed.</p>
-        <div class="dept-eg">EVERY MONDAY:<br>“HERE'S WHAT CHANGED.”</div>
+        <div class="dept-top"><div class="dept-n">01 / MISSED CALLS</div></div>
+        <h3>A text back in seconds.</h3>
+        <p>When a call goes unanswered, the caller gets a text from your business number asking what they need. Their answer lands in Jobber as a new request.</p>
       </div>
-
       <div class="dept">
-        <div class="dept-top"><div class="dept-n">002 — DECISION ENGINE</div><span class="dept-status">BETA</span></div>
-        <h3>Answers, with reasoning.</h3>
-        <p>Bring a budget and a goal. The system returns an allocation, the reasoning behind it, the risks it sees and the alternatives it rejected — so you can argue with it.</p>
-        <div class="dept-eg">IN: BUDGET + GOAL<br>OUT: PLAN + REASONING</div>
+        <div class="dept-top"><div class="dept-n">02 / BOOKINGS</div></div>
+        <h3>Confirmed, with the tech's name.</h3>
+        <p>Customers get a confirmation when the visit is booked, then a reminder the day before to reply YES or NO. No reply gets a second text, then a call task for your office. Nothing auto-cancels.</p>
       </div>
-
       <div class="dept">
-        <div class="dept-top"><div class="dept-n">003 — BUSINESS OS</div><span class="dept-status">BETA</span></div>
-        <h3>Everything in one system.</h3>
-        <p>CRM, contracts, invoices, client tracking, lead pipeline, tasks, projects, approvals, calendar and automation. Not ten tools that sync. One system that holds it.</p>
-        <div class="dept-eg">ONE PIPELINE.<br>ONE SOURCE OF TRUTH.</div>
+        <div class="dept-top"><div class="dept-n">03 / RESCHEDULES</div></div>
+        <h3>A "no" worked back to a booking.</h3>
+        <p>When a customer can't make it, they get offered a new time and a booking link right away, before they forget or call someone else.</p>
       </div>
-
       <div class="dept">
-        <div class="dept-top"><div class="dept-n">004 — CONTENT OS</div><span class="dept-status">BETA</span></div>
-        <h3>Not creation. Management.</h3>
-        <p>Every video, reel, song, release, campaign, thumbnail, caption, deadline and asset — tracked, versioned and findable. Nothing gets lost between people.</p>
-        <div class="dept-eg">EVERY ASSET.<br>EVERY DEADLINE.</div>
+        <div class="dept-top"><div class="dept-n">04 / JOB REPORTS</div></div>
+        <h3>Drafted for your office.</h3>
+        <p>When a visit is marked complete, a clean report is drafted from the tech's notes and photos. Your office approves it from a link before it goes to the customer.</p>
       </div>
-
       <div class="dept">
-        <div class="dept-top"><div class="dept-n">005 — MARKETING OS</div><span class="dept-status">BETA</span></div>
-        <h3>The calendar builds itself.</h3>
-        <p>Instead of “let's post,” the system sequences the week — reel, upload, email, clip, announcement — and assembles the campaign around a release.</p>
-        <div class="dept-eg">MON REEL · TUE YOUTUBE<br>WED EMAIL · FRI DROP</div>
+        <div class="dept-top"><div class="dept-n">05 / REVIEWS + REPEAT WORK</div></div>
+        <h3>The follow-up nobody has time for.</h3>
+        <p>Every customer gets a review request the day after. A low score triggers a same-day call-back task for the owner. Unpaid invoices get a reminder, and past customers hear from you when a tune-up is due.</p>
       </div>
-
       <div class="dept">
-        <div class="dept-top"><div class="dept-n">006 — OPPORTUNITY ENGINE</div><span class="dept-status">BETA</span></div>
-        <h3>Matched, not searched.</h3>
-        <p>Scans festivals, brand deals, grants, sync licensing, speaking slots, investors, talent searches and partnerships — and surfaces the ones that fit your business.</p>
-        <div class="dept-eg">“THESE OPPORTUNITIES<br>MATCH YOUR BUSINESS.”</div>
-      </div>
-
-      <div class="dept">
-        <div class="dept-top"><div class="dept-n">007 — AI EMPLOYEES</div><span class="dept-status">BETA</span></div>
-        <h3>Departments, not a chatbot.</h3>
-        <p>Research, marketing, sales, legal support, finance, executive assistant, project manager, content and brand strategy, release and operations — sharing one context.</p>
-        <div class="dept-eg">MANY ROLES.<br>ONE MEMORY.</div>
-      </div>
-
-      <div class="dept">
-        <div class="dept-top"><div class="dept-n">008 — ANALYTICS</div><span class="dept-status">BETA</span></div>
-        <h3>Insight, not numbers.</h3>
-        <p>Revenue, growth, audience, conversion, ROI, engagement and lifetime value — read together, with forecasting, so the number means something.</p>
-        <div class="dept-eg">NOT A DASHBOARD.<br>A READING.</div>
-      </div>
-
-      <div class="dept">
-        <div class="dept-top"><div class="dept-n">009 — KNOWLEDGE BASE</div><span class="dept-status">BETA</span></div>
-        <h3>Stored forever. Found instantly.</h3>
-        <p>Every meeting, document, SOP, workflow, lesson and client note. The institutional memory that usually walks out of the door when someone leaves.</p>
-        <div class="dept-eg">SEARCHABLE.<br>PERMANENT.</div>
+        <div class="dept-top"><div class="dept-n">06 / REPORTING</div></div>
+        <h3>One number every month.</h3>
+        <p>A monthly report shows the jobs recovered and what they were worth. Plus a customer report: your best customers, your top zip codes, and who's due for service.</p>
       </div>
     </div>
 
     <div class="dept-legend">
-      <span class="dept-key"><span class="dept-swatch"></span>BETA — IN ACTIVE DEVELOPMENT</span>
-      <span>What each tier delivers today is set out in Services below.</span>
+      <span>Texts go out in English and Spanish. Emergency replies like "gas smell" or "burst pipe" page your on-call tech within a minute.</span>
     </div>
   </div>
 </section>
 
-<!-- PACKAGES -->
-<section class="section section--flush" id="packages">
+<!-- EXAMPLE -->
+<section class="section section--flush" id="example">
   <div class="section-inner">
-    <div class="section-label">04 / SERVICES</div>
-    <p class="packages-intro" data-pullup>
-      <span class="word">Three tiers. One system. </span><span class="word">All priced against what you'd pay to hire.</span>
+    <div class="system-grid">
+      <div>
+        <div class="section-label">03 / WHAT THE CUSTOMER SEES</div>
+        <h2 class="system-headline" data-pullup>
+          <span class="word word-block">Not another app.</span><br>
+          <span class="word word-block">A coordinator on your line.</span>
+        </h2>
+        <p class="system-body">Your customers never download anything. They get a text from your business number, they answer, and the job shows up in Jobber. Urgent jobs jump the line. Your techs keep working, and your office takes it from there.</p>
+      </div>
+      <div class="thread" aria-label="Example text conversation">
+        <div class="thread-head"><span>DESERT AIR HEATING &amp; COOLING</span><span>TUE 2:14 PM</span></div>
+        <div class="thread-body">
+          <div class="t-event">MISSED CALL / (951) 555-0142</div>
+          <div class="t-msg t-out">Desert Air here, this is our automated assistant. Sorry we missed your call. Book here: desertair.com/book or reply with what you need. Emergency? Reply EMERGENCY. Reply STOP to opt out.</div>
+          <div class="t-time r">2:14 PM</div>
+          <div class="t-msg t-in">AC is not cooling and it's 98 in here. Can someone come out today?</div>
+          <div class="t-time">2:16 PM</div>
+          <div class="t-msg t-out">Got it. Our team will call you within 30 minutes. If anyone is in danger, call 911.</div>
+          <div class="t-time r">2:16 PM</div>
+          <div class="t-event ok">PRIORITY CALL-BACK TASK FOR YOUR OFFICE</div>
+        </div>
+        <div class="thread-foot">EXAMPLE CONVERSATION. THE SHOP AND NUMBER ARE FICTIONAL.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAMPLE REPORT -->
+<section class="section section--flush" id="report">
+  <div class="section-inner">
+    <div class="section-label">04 / THE MONTHLY REPORT</div>
+    <p class="fios-intro" data-pullup>
+      <span class="word">Every month you see what came back. </span><span class="word" style="color:var(--ink-400);">In dollars, not activity.</span>
     </p>
-    <div class="packages-grid">
-
-      <!-- THE OPERATOR -->
-      <div class="pkg">
-        <div class="pkg-header">
-          <div>
-            <div class="pkg-num">01</div>
-            <div class="pkg-name">The Operator</div>
-            <div class="pkg-replaces">REPLACES YOUR EA / OPS COORDINATOR</div>
-          </div>
-          <div class="pkg-price-block">
-            <div class="pkg-price">$997</div>
-            <div class="pkg-mo">/MONTH</div>
-            <div class="pkg-min">3-MONTH MINIMUM</div>
-          </div>
-        </div>
-        <ul class="pkg-list">
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Daily briefing — what needs attention, every morning</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Automated 3-touch follow-up on every lead</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Weekly performance report — 1 page, every Monday</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 custom AI agent built for your specific workflow</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly 20-minute check-in call</li>
-        </ul>
-        <button class="pkg-link" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
-          Start here <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
+    <div class="report">
+      <div class="report-head"><span>DAY-30 REPORT / RECOVERED REVENUE</span><span class="report-tag">SAMPLE REPORT</span></div>
+      <div class="report-grid">
+        <div class="report-cell"><div class="report-num">31</div><div class="report-lbl">Missed calls that got a text back</div></div>
+        <div class="report-cell"><div class="report-num">9</div><div class="report-lbl">Jobs recovered: text-backs, reschedules and rescued no-replies</div></div>
+        <div class="report-cell"><div class="report-num hl">$4,860</div><div class="report-lbl">Recovered revenue, from Jobber invoices</div></div>
+        <div class="report-cell"><div class="report-num">$3,099</div><div class="report-lbl">What the shop paid in month one</div></div>
       </div>
+      <div class="report-foot">This is a sample to show the format. The numbers are illustrative, not a client result. A job only counts once the visit is completed in Jobber, so the number is one you never have to argue with.</div>
+    </div>
+  </div>
+</section>
 
-      <!-- CONTENT ENGINE -->
-      <div class="pkg pkg-featured">
-        <div class="pkg-badge">MOST COMMON</div>
-        <div class="pkg-header" style="margin-top:18px;">
-          <div>
-            <div class="pkg-num">02</div>
-            <div class="pkg-name">Content Engine</div>
-            <div class="pkg-replaces">REPLACES SM MANAGER + COPYWRITER</div>
-          </div>
-          <div class="pkg-price-block">
-            <div class="pkg-price">$2,500</div>
-            <div class="pkg-mo">/MONTH</div>
-            <div class="pkg-min">3-MONTH MINIMUM</div>
-          </div>
-        </div>
-        <ul class="pkg-list">
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in The Operator</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>30 posts/month — AI-drafted in your brand voice, ready to approve</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Scheduling and publishing — goes live automatically</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>1 email automation flow built and running</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly content performance report</li>
+<!-- WHO IT'S FOR -->
+<section class="section section--flush" id="fit">
+  <div class="section-inner">
+    <div class="section-label">05 / WHO IT'S FOR</div>
+    <p class="fios-intro" data-pullup>
+      <span class="word">Built for one kind of shop. </span><span class="word" style="color:var(--ink-400);">If that's you, it fits.</span>
+    </p>
+    <div class="fit-grid">
+      <div class="fit-card fit-yes">
+        <h3>A GOOD FIT</h3>
+        <ul>
+          <li>HVAC, plumbing or electrical</li>
+          <li>5 to 20 techs</li>
+          <li>You already run the shop on Jobber</li>
+          <li>The owner is still in the field, with 1 or 2 people in the office</li>
+          <li>Los Angeles or the Inland Empire</li>
         </ul>
-        <button class="pkg-link" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
-          Get started <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
       </div>
-
-      <!-- FULL STACK -->
-      <div class="pkg">
-        <div class="pkg-header">
-          <div>
-            <div class="pkg-num">03</div>
-            <div class="pkg-name">The Full Stack</div>
-            <div class="pkg-replaces">REPLACES 3 OPERATIONAL ROLES</div>
-          </div>
-          <div class="pkg-price-block">
-            <div class="pkg-from">FROM</div>
-            <div class="pkg-price">$5,000</div>
-            <div class="pkg-mo">/MONTH</div>
-            <div class="pkg-min">3-MONTH MINIMUM</div>
-          </div>
-        </div>
-        <ul class="pkg-list">
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Everything in Content Engine</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Full email marketing automation — welcome, nurture, re-engagement</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Client onboarding sequence — new customers feel like VIPs automatically</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>3 custom AI agents built for your workflow</li>
-          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly 30-minute strategy call with Nicholas</li>
+      <div class="fit-card fit-no">
+        <h3>NOT A FIT RIGHT NOW</h3>
+        <ul>
+          <li>Owner-operators with 1 to 4 techs</li>
+          <li>Larger shops running ServiceTitan</li>
+          <li>Shops on Housecall Pro</li>
+          <li>Shops with no scheduling software yet</li>
         </ul>
-        <button class="pkg-link" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
-          Scale with this <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
       </div>
-
     </div>
   </div>
 </section>
@@ -684,16 +672,63 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 <!-- HOW IT WORKS -->
 <section class="section section--flush" id="how">
   <div class="section-inner">
-    <div class="section-label">05 / HOW IT WORKS</div>
+    <div class="section-label">06 / HOW IT WORKS</div>
     <p class="how-intro" data-pullup>
-      <span class="word">From signed to running in 7 days. </span><span class="word" style="color:var(--ink-400);">No management required.</span>
+      <span class="word">One call to start. </span><span class="word" style="color:var(--ink-400);">Nothing new for your techs to learn.</span>
     </p>
     <div class="how-rule" aria-hidden="true"></div>
     <div class="how-grid">
-      <div class="how-card"><div class="how-day">DAY 0</div><div class="how-title">You sign.</div><p class="how-body">Payment confirmed. Welcome email in 5 minutes. Intake form in your inbox. Takes 10 minutes to complete.</p></div>
-      <div class="how-card"><div class="how-day">DAY 3</div><div class="how-title">We audit.</div><p class="how-body">30-minute call with Nicholas. We map your operations and confirm the highest-impact function to build first.</p></div>
-      <div class="how-card"><div class="how-day">DAY 7</div><div class="how-title">You go live.</div><p class="how-body">First system is built and running. You approve what needs approving. Everything else runs automatically.</p></div>
-      <div class="how-card"><div class="how-day">DAY 30</div><div class="how-title">We review.</div><p class="how-body">30-day performance report. What ran, what improved, what changes in month 2. The retainer continues. The system compounds.</p></div>
+      <div class="how-card"><div class="how-day">STEP 1</div><div class="how-title">We talk.</div><p class="how-body">A 30-minute call. We look at how calls, bookings and follow-up work in your shop today, and where jobs slip through.</p></div>
+      <div class="how-card"><div class="how-day">STEP 2</div><div class="how-title">We connect.</div><p class="how-body">You fill in one onboarding form: hours, techs, on-call roster, review link. We connect Jobber and forward unanswered calls to your texting line. You keep your number, and calls still ring your shop first.</p></div>
+      <div class="how-card"><div class="how-day">STEP 3</div><div class="how-title">You go live.</div><p class="how-body">US carriers have to register every business texting line. We file it the day you sign, and texting turns on once it's approved, usually 1 to 3 weeks.</p></div>
+      <div class="how-card"><div class="how-day">EVERY MONTH</div><div class="how-title">You see the number.</div><p class="how-body">Your report lands on the 3rd business day of every month: jobs recovered, revenue recovered, and how this month compares with the last 3, 6 and 12.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section section--flush" id="pricing">
+  <div class="section-inner">
+    <div class="section-label">07 / PRICING</div>
+    <p class="packages-intro" data-pullup>
+      <span class="word">One price. </span><span class="word">Founding rate for the first 10 shops.</span>
+    </p>
+    <div class="price-wrap">
+      <div class="pkg pkg-featured">
+        <div class="pkg-badge">FOUNDING SHOPS</div>
+        <div class="pkg-header" style="margin-top:18px;">
+          <div>
+            <div class="pkg-num">SERVICE COORDINATOR</div>
+            <div class="pkg-name">Founding rate</div>
+            <div class="pkg-replaces">FIRST 10 SHOPS ONLY</div>
+          </div>
+          <div class="pkg-price-block">
+            <div class="pkg-price">$599</div>
+            <div class="pkg-mo">/MONTH</div>
+            <div class="pkg-setup">+ $2,500 ONE-TIME SETUP</div>
+          </div>
+        </div>
+        <ul class="pkg-list">
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Missed-call text-back on your business number</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Booking confirmations and day-before YES/NO reminders</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Reschedule and no-reply follow-up</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Job reports drafted for office approval</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Review requests, invoice reminders and tune-up follow-up</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Emergency paging to your on-call tech, English and Spanish</li>
+          <li><svg class="pkg-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Monthly recovered-revenue report and customer report</li>
+        </ul>
+        <button class="pkg-link" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
+          Book a call <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(-45deg)"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+      <div class="price-side">
+        <p><strong>3-month minimum,</strong> then month to month with 30 days' notice.</p>
+        <p><strong>Your $599 stays locked</strong> for as long as you stay subscribed.</p>
+        <p><strong>Phone, text and email usage is billed at cost</strong> to your card. No markup.</p>
+        <p><strong>Support by written ticket,</strong> answered within one business day.</p>
+        <p><strong>You own your customer data.</strong> Export it any time.</p>
+        <p><strong>After the first 10 shops,</strong> the standard rate is $2,500 setup + $1,497 a month.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -701,17 +736,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 <!-- FOUNDER -->
 <section class="section section--flush" id="founder">
   <div class="section-inner">
-    <div class="section-label">06 / WHO RUNS THIS</div>
+    <div class="section-label">08 / WHO RUNS THIS</div>
     <div class="founder-grid">
       <div class="founder-photo">
         <img src="assets/nicholas-king.jpg" alt="Nicholas King, founder of Flood International" width="416" height="669" loading="lazy">
       </div>
       <div class="founder-body">
         <blockquote class="founder-quote" data-pullup>
-          <span class="word">I ran a studio and a label. </span><span class="word">One project I executive-produced and financed featured AzChike, BlueBucksClan, 1TakeJay and Rucci. </span><span class="word" style="color:var(--ink-200);font-style:italic;font-family:'JetBrains Mono',monospace;">Flood International is the system I built after learning that talent was never the missing piece.</span>
+          <span class="word">I install every shop myself, and I read every support ticket. </span><span class="word" style="color:var(--ink-200);font-style:italic;font-family:'JetBrains Mono',monospace;">Your techs should be on jobs, not on the phone.</span>
         </blockquote>
         <div class="founder-name">Nicholas King</div>
-        <div class="founder-role">FOUNDER — FLOOD INTERNATIONAL, LLC</div>
+        <div class="founder-role">FOUNDER / FLOOD INTERNATIONAL, LLC / LOS ANGELES</div>
       </div>
     </div>
   </div>
@@ -720,14 +755,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 <!-- GAP AUDIT (lead magnet) -->
 <section class="audit-section" id="audit">
   <div class="audit-inner">
-    <div class="section-label"><span class="label-dot"></span>07 / FREE GAP AUDIT</div>
+    <div class="section-label"><span class="label-dot"></span>09 / FREE MISSED-JOB CHECK</div>
     <div class="audit-grid">
       <div>
         <h2 class="audit-headline">See the<br>gaps first.</h2>
         <div class="audit-copy">
-          <p>Not ready for a call? Fine. <strong>Let me look at your operation and tell you what's broken — free, no call required.</strong></p>
-          <p>You'll get a one-page read on where attention is leaking, what's running on you personally instead of on a system, and the single highest-leverage thing to fix first.</p>
-          <p>I do these by hand. That's the limit and the point — it's a real read on your business, not a generated template.</p>
+          <p>Not ready for a call? Fine. <strong>Send me your shop and I'll show you where jobs are slipping. Free, no call required.</strong></p>
+          <p>I'll look at what a customer sees when they call after hours or search for you: your Google listing, your reviews, how they book, and how fast anyone gets back to them. You get a one-page read and the one thing to fix first.</p>
+          <p>I do these by hand. That's the limit and the point. It's a real read on your shop, not a template.</p>
           <p class="audit-note">NO CALL REQUIRED · NO PITCH ATTACHED · 2 BUSINESS DAYS</p>
         </div>
       </div>
@@ -743,16 +778,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
             <input class="audit-input" id="af-email" name="email" type="email" required maxlength="160" autocomplete="email" placeholder="you@company.com">
           </div>
           <div class="audit-field">
-            <label class="audit-label" for="af-company">Brand / company</label>
-            <input class="audit-input" id="af-company" name="company" type="text" maxlength="160" autocomplete="organization" placeholder="Flood International">
+            <label class="audit-label" for="af-company">Shop name</label>
+            <input class="audit-input" id="af-company" name="company" type="text" maxlength="160" autocomplete="organization" placeholder="Desert Air Heating &amp; Cooling">
           </div>
           <div class="audit-field">
-            <label class="audit-label" for="af-link">Website or main social</label>
-            <input class="audit-input" id="af-link" name="link" type="text" maxlength="300" placeholder="instagram.com/yourbrand">
+            <label class="audit-label" for="af-link">Website or Google listing</label>
+            <input class="audit-input" id="af-link" name="link" type="text" maxlength="300" placeholder="desertair.com">
           </div>
           <div class="audit-field">
             <label class="audit-label" for="af-challenge">What feels most broken right now?</label>
-            <textarea class="audit-textarea" id="af-challenge" name="challenge" maxlength="1200" placeholder="The thing that keeps landing back on your plate."></textarea>
+            <textarea class="audit-textarea" id="af-challenge" name="challenge" maxlength="1200" placeholder="Missed calls, no-shows, nobody following up..."></textarea>
           </div>
 
           <!-- honeypot: hidden from humans, catches bots -->
@@ -781,12 +816,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 <!-- BOOK CTA -->
 <section class="cta-section" id="book">
   <div class="cta-inner">
-    <div class="section-label"><span class="label-dot"></span>08 / BOOK</div>
+    <div class="section-label"><span class="label-dot"></span>10 / BOOK</div>
     <h2 class="cta-headline">One<br>call.</h2>
     <div class="cta-body">
       <div class="cta-copy">
-        <p>One question. That's all the first call is: <em>"What's the one operational thing in your business that, if it ran automatically every day, would have the biggest impact?"</em></p>
-        <p class="cta-note">If you can answer that — we can build it. One call. No pitch deck. No commitment.</p>
+        <p>Start with one question: <em>"How many calls did your shop miss last month?"</em></p>
+        <p class="cta-note">If you don't know, that's the first thing we'll find out together. 30 minutes. No commitment.</p>
       </div>
       <button class="cta-btn" onclick="Calendly.initPopupWidget({url:'https://calendly.com/king-floodinternational/30min'});return false;">
         Book a call
@@ -800,16 +835,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-wordmark">Flood<br>Int'l</div>
+    <p class="footer-cross">Also from Flood: <a href="/content">Content Engine retainers for brands</a></p>
     <nav class="footer-legal-nav" aria-label="Legal" style="display:flex;flex-wrap:wrap;gap:20px;padding-bottom:18px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--ink-300);">
+      <a href="mailto:king@floodinternational.com">KING@FLOODINTERNATIONAL.COM</a>
       <a href="/privacy">PRIVACY POLICY</a>
       <a href="/terms">TERMS OF SERVICE</a>
       <a href="/cookies">COOKIE POLICY</a>
     </nav>
     <div class="footer-meta">
       <span>© 2026 FLOOD INTERNATIONAL™</span>
-      <span>THE TEAM YOU CAN'T AFFORD TO HIRE</span>
+      <span>SERVICE COORDINATION FOR THE TRADES</span>
       <span>LOS ANGELES, CA</span>
     </div>
+    <p class="footer-note">Jobber is a trademark of its owner. Flood International is independent and not affiliated with or endorsed by Jobber.</p>
   </div>
 </footer>
 
@@ -929,7 +967,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
      opacity:0 until JS ran. */
   const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const showAll = () => {
-    document.querySelectorAll('.acrostic-row,.acrostic-sub,.hero-tagline,.hero-desc,.hero-cta-wrap,.word')
+    document.querySelectorAll('.hero-kicker,.hero-headline,.hero-tagline,.hero-desc,.hero-cta-wrap,.word')
       .forEach(el=>{el.style.opacity='1';el.style.transform='none';el.style.transitionDelay='0s';});
   };
   if(REDUCE){ showAll(); }
@@ -940,7 +978,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
   // Hero pull-up
   const heroEl = document.getElementById('hero-pullup');
   if(heroEl && !REDUCE){
-    const rows = heroEl.querySelectorAll('.acrostic-row, .acrostic-sub, .hero-tagline, .hero-desc, .hero-cta-wrap');
+    const rows = heroEl.querySelectorAll('.hero-kicker, .hero-headline, .hero-tagline, .hero-desc, .hero-cta-wrap');
     rows.forEach((r,i)=>{
       setTimeout(()=>{r.style.opacity='1';r.style.transform='none';},120+i*90);
     });
