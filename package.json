@@ -5,8 +5,7 @@
   "type": "module",
   "dependencies": {
     "@vercel/functions": "^2.2.13",
-    "nodemailer": "^9.0.3",
-    "pg": "^8.22.0"
+    "nodemailer": "^9.0.3"
   },
   "engines": {
     "node": ">=18.x"

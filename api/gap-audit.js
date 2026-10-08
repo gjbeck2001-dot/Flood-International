@@ -2,8 +2,8 @@
  * Flood Systems — Free Gap Audit (lead magnet)
  *
  * Trigger: the /#audit form on floodinternational.com (same-origin POST).
- * Pipeline: form → Postgres CRM (Railway) + Telegram alert + owner email
- *           (any one = captured) → confirmation email to the visitor
+ * Pipeline: form → Telegram alert + owner email (either one = captured)
+ *           → confirmation email to the visitor. No CRM (dropped 2026-10-08).
  *
  * Why this exists: before 2026-07-20 the only conversion action on the site
  * was "Book a call" — a 30-minute commitment from a cold visitor. Everyone
@@ -14,12 +14,11 @@
  * FIOS deliverable templates). Nothing here promises automated delivery.
  *
  * Attribution: utm_* params are captured client-side and folded into the
- * CRM row, so "which post produced this lead" is answerable.
+ * alert + owner email, so "which post produced this lead" is answerable.
  */
 
 import nodemailer from 'nodemailer';
 import { waitUntil } from '@vercel/functions';
-import { insertLead } from './lib/crm-db.js';
 import { notifyLead } from './lib/notify.js';
 
 const MAX = { name: 120, email: 160, company: 160, url: 300, challenge: 1200, utm: 120 };
@@ -58,12 +57,6 @@ export default async function handler(req, res) {
     };
     const referrer = clean(b.referrer, MAX.url);
 
-    // The CRM schema CHECK-constrains `source` to a fixed set
-    // ('Instagram','TikTok',…,'Website') — free-form values are rejected by
-    // Postgres. Every gap-audit lead arrives via the site, so 'Website' is
-    // the honest value; per-channel attribution lives in notes (utm_* lines).
-    const source = 'Website';
-
     const notes = [
       'FREE GAP AUDIT REQUEST (lead magnet)',
       challenge ? `\nWhat they say is broken:\n${challenge}` : null,
@@ -74,69 +67,49 @@ export default async function handler(req, res) {
       utm.content  ? `utm_content: ${utm.content}`   : null,
       referrer     ? `referrer: ${referrer}`         : null,
       `Submitted: ${new Date().toISOString()}`,
-      '\nOwed: 1-page gap report. Deliver with the flood-demo skill.',
+      '\nOwed: 1-page missed-job read within 2 business days.',
     ].filter(Boolean).join('\n');
 
-    // Three independent records: CRM row, Telegram alert, owner email.
-    // Until 2026-10-08 the CRM write alone decided the status code — and the
-    // Railway CRM went dark (~09-30), so every submission 500'd and the lead
-    // was gone. Now the lead counts as captured if ANY record lands; we only
-    // 500 when all three fail. There's no Tally retry on this form, so a 500
-    // means the visitor leaves — losing them is worse than a missing CRM row.
-    const crm = await insertLead({
-      name,
-      email,
-      company,
-      source,
-      notes,
-      websiteSocial: link || null,
-    }).then(() => 'saved', (e) => {
-      console.error('[gap-audit] CRM write failed:', e.message);
-      return `FAILED (${e.code || e.message})`;
-    });
-    const crmOk = crm === 'saved';
-
-    // Telegram is fast (<1s); Gmail SMTP can take 20s+ on a cold connection
-    // (measured 2026-10-08: 27.7s total). So the visitor waits only for the
-    // CRM + Telegram; emails finish after the response via waitUntil.
-    // Only when both fast records fail do we block on the owner email.
+    // Two independent records: Telegram alert + owner email. The Railway CRM
+    // died ~09-30 and was dropped here 2026-10-08 (ruling R3); the prospect
+    // system of record is the vault company notes. Telegram is fast (<1s);
+    // Gmail SMTP can take 20s+ cold (measured 27.7s), so the visitor waits
+    // only for Telegram and the emails finish via waitUntil. If Telegram
+    // fails we block on the owner email; 500 only if both fail.
     const alert = await notifyLead({
-        title: '🔍 New missed-job check request',
-        fields: {
-          Name: name,
-          Email: email,
-          Shop: company,
-          Link: link,
-          Source: utm.source || (referrer ? 'referral' : 'direct'),
-          Campaign: utm.campaign,
-          Says: challenge ? challenge.slice(0, 220) : '',
-          CRM: crm,
-        },
-        footer: crmOk
-          ? 'Owes: 1-page missed-job read. CRM: Flood pipeline.'
-          : 'CRM is DOWN — this alert + the owner email are the only record. Owes: 1-page missed-job read.',
-      });
+      title: '🔍 New missed-job check request',
+      fields: {
+        Name: name,
+        Email: email,
+        Shop: company,
+        Link: link,
+        Source: utm.source || (referrer ? 'referral' : 'direct'),
+        Campaign: utm.campaign,
+        Says: challenge ? challenge.slice(0, 220) : '',
+      },
+      footer: 'Owes: 1-page missed-job read. Log it in the shop\'s company note.',
+    });
     const alertOk = alert.telegram === 'sent' || alert.slack === 'sent';
 
-    const ownerCopy = sendOwnerCopy({ name, email, company, link, notes, crm })
+    const ownerCopy = sendOwnerCopy({ name, email, company, link, notes })
       .then(() => 'sent', (e) => `failed: ${e.message}`);
     const confirm = () => sendConfirmationEmail({ name, email })
       .catch((e) => console.error('[gap-audit] confirmation email failed:', e.message));
 
-    if (crmOk || alertOk) {
+    if (alertOk) {
       waitUntil(Promise.all([
-        ownerCopy.then((o) => console.log('[gap-audit] records', JSON.stringify({ crm, telegram: alert.telegram, ownerCopy: o }))),
+        ownerCopy.then((o) => console.log('[gap-audit] records', JSON.stringify({ telegram: alert.telegram, ownerCopy: o }))),
         confirm(),
       ]));
       return res.status(200).json({ ok: true });
     }
 
     const owner = await ownerCopy;
-    console.log('[gap-audit] records', JSON.stringify({ crm, telegram: alert.telegram, ownerCopy: owner }));
+    console.log('[gap-audit] records', JSON.stringify({ telegram: alert.telegram, ownerCopy: owner }));
     if (owner !== 'sent') {
       // Nothing durable landed — tell the visitor so they use the fallback
       // email shown in the form's error state.
-      throw new Error('no record captured (CRM, alert and owner email all failed)');
+      throw new Error('no record captured (alert and owner email both failed)');
     }
     waitUntil(confirm());
     return res.status(200).json({ ok: true });
@@ -158,20 +131,19 @@ function mailer() {
   };
 }
 
-/** Full lead to Nicholas's inbox — the record of last resort when the CRM is down. */
-async function sendOwnerCopy({ name, email, company, link, notes, crm }) {
+/** Full lead to Nicholas's inbox — the durable record alongside the Telegram alert. */
+async function sendOwnerCopy({ name, email, company, link, notes }) {
   const { user, transporter } = mailer();
   await transporter.sendMail({
     from: `"Flood site" <${user}>`,
     to: process.env.LEAD_INBOX || user,
     replyTo: email,
-    subject: `Missed-job check request — ${company || name}${crm === 'saved' ? '' : ' [CRM DOWN]'}`,
+    subject: `Missed-job check request — ${company || name}`,
     text: [
       `Name: ${name}`,
       `Email: ${email}`,
       `Shop: ${company || '—'}`,
       `Link: ${link || '—'}`,
-      `CRM: ${crm}`,
       '',
       notes,
     ].join('\n'),
