@@ -11,7 +11,9 @@ const { Pool } = pg;
 let pool;
 function getPool() {
   if (!pool) {
-    pool = new Pool({ connectionString: process.env.CRM_DATABASE_URL, max: 3 });
+    // Fail fast: a dead/paused Railway host must not eat the whole function
+    // timeout, or gap-audit's alert + email fallbacks never get to run.
+    pool = new Pool({ connectionString: process.env.CRM_DATABASE_URL, max: 3, connectionTimeoutMillis: 5000 });
   }
   return pool;
 }
