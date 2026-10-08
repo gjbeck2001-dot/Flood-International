@@ -4,6 +4,7 @@
   "description": "Flood Systems intake pipeline — Form A/B webhook handlers + abandonment detection",
   "type": "module",
   "dependencies": {
+    "@vercel/functions": "^2.2.13",
     "nodemailer": "^9.0.3",
     "pg": "^8.22.0"
   },

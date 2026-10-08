@@ -18,6 +18,7 @@
  */
 
 import nodemailer from 'nodemailer';
+import { waitUntil } from '@vercel/functions';
 import { insertLead } from './lib/crm-db.js';
 import { notifyLead } from './lib/notify.js';
 
@@ -95,8 +96,11 @@ export default async function handler(req, res) {
     });
     const crmOk = crm === 'saved';
 
-    const [alert, ownerCopy] = await Promise.all([
-      notifyLead({
+    // Telegram is fast (<1s); Gmail SMTP can take 20s+ on a cold connection
+    // (measured 2026-10-08: 27.7s total). So the visitor waits only for the
+    // CRM + Telegram; emails finish after the response via waitUntil.
+    // Only when both fast records fail do we block on the owner email.
+    const alert = await notifyLead({
         title: '🔍 New missed-job check request',
         fields: {
           Name: name,
@@ -111,23 +115,30 @@ export default async function handler(req, res) {
         footer: crmOk
           ? 'Owes: 1-page missed-job read. CRM: Flood pipeline.'
           : 'CRM is DOWN — this alert + the owner email are the only record. Owes: 1-page missed-job read.',
-      }),
-      sendOwnerCopy({ name, email, company, link, notes, crm })
-        .then(() => 'sent', (e) => `failed: ${e.message}`),
-    ]);
+      });
     const alertOk = alert.telegram === 'sent' || alert.slack === 'sent';
-    const ownerOk = ownerCopy === 'sent';
-    console.log('[gap-audit] records', JSON.stringify({ crm, telegram: alert.telegram, ownerCopy }));
 
-    if (!crmOk && !alertOk && !ownerOk) {
+    const ownerCopy = sendOwnerCopy({ name, email, company, link, notes, crm })
+      .then(() => 'sent', (e) => `failed: ${e.message}`);
+    const confirm = () => sendConfirmationEmail({ name, email })
+      .catch((e) => console.error('[gap-audit] confirmation email failed:', e.message));
+
+    if (crmOk || alertOk) {
+      waitUntil(Promise.all([
+        ownerCopy.then((o) => console.log('[gap-audit] records', JSON.stringify({ crm, telegram: alert.telegram, ownerCopy: o }))),
+        confirm(),
+      ]));
+      return res.status(200).json({ ok: true });
+    }
+
+    const owner = await ownerCopy;
+    console.log('[gap-audit] records', JSON.stringify({ crm, telegram: alert.telegram, ownerCopy: owner }));
+    if (owner !== 'sent') {
       // Nothing durable landed — tell the visitor so they use the fallback
       // email shown in the form's error state.
       throw new Error('no record captured (CRM, alert and owner email all failed)');
     }
-
-    await sendConfirmationEmail({ name, email })
-      .catch((e) => console.error('[gap-audit] confirmation email failed:', e.message));
-
+    waitUntil(confirm());
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('[gap-audit] Fatal:', err);
