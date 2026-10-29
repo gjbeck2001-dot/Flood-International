@@ -33,13 +33,42 @@ const INDUSTRIES = ['Aesthetics & med-spas', 'Luxury real estate', 'Exotic & lux
 const LOCATIONS = ['1', '2', '3', '4+'];
 
 const clean = (v, max) => String(v ?? '').trim().slice(0, max);
-const isEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+// One plain address only: no separators that nodemailer would read as a second recipient.
+const isEmail = (e) => /^[^\s@,;<>"()]+@[^\s@,;<>"()]+\.[^\s@,;<>"()]{2,}$/.test(e);
+
+// Only our own pages may post (browsers always send Origin on fetch POST).
+// Production + this project's Vercel previews + local dev.
+const ALLOWED_ORIGIN = /^(https:\/\/(www\.)?floodinternational\.com|https:\/\/flood-international[a-z0-9-]*\.vercel\.app|http:\/\/(localhost|127\.0\.0\.1)(:\d+)?)$/;
+
+// Best-effort limits so the confirmation email can't be used to mail strangers
+// in bulk (security review 2026-10-29). In-memory, so they hold per warm
+// instance only; a Vercel Firewall rate-limit rule is the durable version.
+const hits = new Map();
+function overLimit(key, max, windowMs) {
+  const now = Date.now();
+  const recent = (hits.get(key) || []).filter((t) => now - t < windowMs);
+  recent.push(now);
+  hits.set(key, recent);
+  if (hits.size > 5000) hits.clear();
+  return recent.length > max;
+}
+// Greeting uses the first name, letters only, so a visitor can't put a
+// sentence (or a phone number) into an email sent from our account.
+const firstName = (n) => (String(n).trim().split(/\s+/)[0] || '').replace(/[^\p{L}'-]/gu, '').slice(0, 30);
 
 export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
+    if (!ALLOWED_ORIGIN.test(String(req.headers.origin || ''))) {
+      return res.status(403).json({ error: 'Please use the form on floodinternational.com.' });
+    }
+    const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+    if (overLimit(`ip:${ip}`, 5, 10 * 60 * 1000)) {
+      return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+    }
+
     const b = req.body || {};
 
     // Honeypot — real users never fill a hidden field. Return 200 so bots
@@ -67,6 +96,9 @@ export default async function handler(req, res) {
     // Nick ruled 2026-10-29: the business phone is required (the two calls need it).
     if (!phone) return res.status(400).json({ error: 'Business phone is required.' });
     if (!isEmail(email)) return res.status(400).json({ error: 'That email address looks wrong.' });
+    if (overLimit(`email:${email}`, 2, 24 * 60 * 60 * 1000)) {
+      return res.status(429).json({ error: 'We already have a request for this email. Reply to our email if you need anything.' });
+    }
 
     const utm = {
       source:   clean(b.utm_source, MAX.utm),
@@ -183,7 +215,7 @@ async function sendConfirmationEmail({ name, email }) {
     to: email,
     subject: `Your ${CHECK_NAME.toLowerCase()}: what happens next`,
     html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;color:#1A1410;line-height:1.6;">
-  <p>Hi ${escapeHtml(name)},</p>
+  <p>Hi${firstName(name) ? ' ' + escapeHtml(firstName(name)) : ''},</p>
   <p>Thanks for requesting a ${escapeHtml(CHECK_NAME.toLowerCase())}. Here is what happens next.</p>
   <p>Our first contact comes within 2 business days. Over the 7 days from then, we will contact your business 4 times: a weekday morning call, a weekday lunch call, an evening website form or text, and a weekend message. We say who we are every time; we never pose as a client. We don't record anything, and we text only a number you list for texting, once. We only count a reply as late against your own listed hours or any reply time you promise.</p>
   <p>Within 2 business days of the last contact we send you one page showing when each reply came, or didn't. No call required and no pitch attached. If it's useful and you want to talk about it, that happens after you've seen it.</p>

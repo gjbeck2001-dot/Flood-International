@@ -194,7 +194,8 @@ section{padding:clamp(96px,12vw,168px) 0}
 .check-form{transform:rotate(.8deg);display:grid;gap:16px}
 .check-form label{display:grid;gap:6px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe)}
 .check-form input,.check-form select{font:400 16px var(--sans);color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--rule);padding:8px 0;letter-spacing:0;text-transform:none}
-.check-form input:focus{outline:none;border-bottom-color:var(--amber)}
+.check-form input:focus,.check-form select:focus{outline:none;border-bottom-color:var(--amber)}
+.check-form input:focus-visible,.check-form select:focus-visible,.btn:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 .check-form .btn{justify-content:center;margin-top:10px}
 .form-msg{font-size:14px;color:var(--sienna);min-height:1.4em}
 @media (max-width:960px){.check-form{transform:none}}
@@ -255,6 +256,7 @@ footer a:hover{color:var(--cream)}
   footer a{margin:0 18px 0 0}
 }
 </style>
+<noscript><style>.rv{opacity:1;transform:none}</style></noscript>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
