@@ -37,8 +37,17 @@ const clean = (v, max) => String(v ?? '').trim().slice(0, max);
 const isEmail = (e) => /^[^\s@,;<>"()]+@[^\s@,;<>"()]+\.[^\s@,;<>"()]{2,}$/.test(e);
 
 // Only our own pages may post (browsers always send Origin on fetch POST).
-// Production + this project's Vercel previews + local dev.
-const ALLOWED_ORIGIN = /^(https:\/\/(www\.)?floodinternational\.com|https:\/\/flood-international[a-z0-9-]*\.vercel\.app|http:\/\/(localhost|127\.0\.0\.1)(:\d+)?)$/;
+// Exact origins only: production, plus this deployment's own Vercel URLs
+// (VERCEL_URL / VERCEL_BRANCH_URL, set by Vercel per deployment), plus local
+// dev outside production. A look-alike *.vercel.app host does not pass.
+// Abuse limits below are by IP and email, independent of this header.
+function allowedOrigins() {
+  const list = ['https://floodinternational.com', 'https://www.floodinternational.com'];
+  for (const h of [process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL]) if (h) list.push(`https://${h}`);
+  return list;
+}
+const isAllowedOrigin = (o) => allowedOrigins().includes(o)
+  || (process.env.VERCEL_ENV !== 'production' && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o));
 
 // Best-effort limits so the confirmation email can't be used to mail strangers
 // in bulk (security review 2026-10-29). In-memory, so they hold per warm
@@ -77,17 +86,35 @@ function firstSent(records) {
   });
 }
 
-// Duplicate guard: in-memory, so per warm instance (same limits as overLimit).
-const seen = new Map();
-function isDuplicate(...keys) {
+// Lead state per submission (in-memory, per warm instance):
+//   pending   -> delivery running; a duplicate waits for its outcome
+//   captured  -> at least one record channel confirmed; duplicates get the same 200
+//   uncertain -> a channel timed out, so it may still land; duplicates get the
+//                same 202 and nothing is re-sent (no double delivery)
+//   failed    -> every channel confirmed failure; the entry is removed so a retry
+//                is a fresh attempt
+// Rejected requests (400/403/429) never create an entry.
+const LEAD_TTL_MS = 10 * 60 * 1000;
+const leads = new Map();
+function findLead(keys) {
   const now = Date.now();
-  for (const [k, t] of seen) if (now - t > 10 * 60 * 1000) seen.delete(k);
-  const live = keys.filter(Boolean);
-  if (live.some((k) => seen.has(k))) return true;
-  live.forEach((k) => seen.set(k, now));
-  return false;
+  for (const [k, v] of leads) if (now - v.at > LEAD_TTL_MS) leads.delete(k);
+  for (const k of keys) if (leads.has(k)) return leads.get(k);
+  return null;
 }
-function forgetDuplicate(...keys) { keys.filter(Boolean).forEach((k) => seen.delete(k)); }
+// Captured sends per email in the last 24 h (failed or uncertain attempts don't count).
+const capturedByEmail = new Map();
+function capturedCount(email) {
+  const now = Date.now();
+  const recent = (capturedByEmail.get(email) || []).filter((t) => now - t < 24 * 60 * 60 * 1000);
+  capturedByEmail.set(email, recent);
+  if (capturedByEmail.size > 5000) capturedByEmail.clear();
+  return recent.length;
+}
+// A channel result is 'sent', 'timeout: ...' (may still land) or 'failed: ...'.
+const isTimeout = (v) => typeof v === 'string' && v.startsWith('timeout');
+const UNCERTAIN_MSG = "We may have your request, but we couldn't confirm it. Please don't send it again: we'll email you to confirm. If you haven't heard from us, email king@floodinternational.com.";
+const FAILED_MSG = 'Something broke on our end. Please email king@floodinternational.com.';
 
 const firstName = (n) => (String(n).trim().split(/\s+/)[0] || '').replace(/[^\p{L}'-]/gu, '').slice(0, 30);
 
@@ -96,7 +123,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    if (!ALLOWED_ORIGIN.test(String(req.headers.origin || ''))) {
+    if (!isAllowedOrigin(String(req.headers.origin || ''))) {
       return res.status(403).json({ error: 'Please use the form on floodinternational.com.' });
     }
     const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
@@ -135,14 +162,28 @@ export default async function handler(req, res) {
     if (!LOCATIONS.includes(locations)) return res.status(400).json({ error: 'Please choose your number of locations.' });
 
     // Retries and double clicks: the same form submission, or the same
-    // business sent again within 10 minutes, is acknowledged once and not re-sent.
-    if (isDuplicate(submissionId ? `sid:${submissionId}` : null, `lead:${email}|${digits}`)) {
-      console.log('[gap-audit] duplicate submission acknowledged, not re-sent');
-      return res.status(200).json({ ok: true, duplicate: true });
+    // business again within 10 minutes, gets the original's outcome and is
+    // never re-sent. A pending original is awaited, not assumed.
+    const keys = [submissionId ? `sid:${submissionId}` : null, `lead:${email}|${digits}`].filter(Boolean);
+    const prior = findLead(keys);
+    if (prior) {
+      const outcome = prior.state === 'pending' ? await prior.outcome : prior.state;
+      console.log('[gap-audit] duplicate submission, original outcome:', outcome);
+      return respond(res, outcome, true);
     }
-    if (overLimit(`email:${email}`, 2, 24 * 60 * 60 * 1000)) {
+    if (capturedCount(email) >= 2) {
       return res.status(429).json({ error: 'We already have a request for this email. Reply to our email if you need anything.' });
     }
+    let settle;
+    const entry = { state: 'pending', at: Date.now(), outcome: new Promise((r) => { settle = r; }) };
+    keys.forEach((k) => leads.set(k, entry));
+    const finish = (outcome) => {
+      if (outcome === 'failed') keys.forEach((k) => { if (leads.get(k) === entry) leads.delete(k); });
+      else entry.state = outcome;
+      if (outcome === 'captured') capturedByEmail.set(email, [...(capturedByEmail.get(email) || []), Date.now()]);
+      settle(outcome);
+      return outcome;
+    };
 
     const utm = {
       source:   clean(b.utm_source, MAX.utm),
@@ -168,12 +209,8 @@ export default async function handler(req, res) {
       '\nOwed: 4 contacts over 7 days (morning call, lunch call, evening form/text, weekend message), then the 1-page reply-time report.',
     ].filter(Boolean).join('\n');
 
-    // Two independent records: Telegram alert + owner email. The Railway CRM
-    // died ~09-30 and was dropped here 2026-10-08 (ruling R3); the prospect
-    // system of record is the vault company notes. Telegram is fast (<1s);
-    // Gmail SMTP can take 20s+ cold (measured 27.7s), so the visitor waits
-    // only for Telegram and the emails finish via waitUntil. If Telegram
-    // fails we block on the owner email; 500 only if both fail.
+    // Record channels: Telegram alert, Slack (if configured) and the owner
+    // email. The prospect system of record is the vault company notes.
     const channels = alertChannels({
       title: `🔍 New ${CHECK_NAME.toLowerCase()} request`,
       fields: {
@@ -198,27 +235,40 @@ export default async function handler(req, res) {
       telegram: channels.telegram,
       slack: channels.slack,
       ownerCopy: withTimeout(sendOwnerCopy({ name, email, company, link, notes }), TIMEOUT_MS.ownerEmail, 'owner email')
-        .then(() => 'sent', (e) => `failed: ${e.message}`),
+        .then(() => 'sent', (e) => (isTransportTimeout(e) ? `timeout: ${e.message}` : `failed: ${e.message}`)),
     };
     const allRecords = Promise.all(Object.entries(records).map(([k, p]) => p.then((v) => [k, v])))
       .then((pairs) => { const r = Object.fromEntries(pairs); console.log('[gap-audit] records', JSON.stringify(r)); return r; });
     const captured = await firstSent(records);
 
     if (!captured) {
-      await allRecords;
-      forgetDuplicate(submissionId ? `sid:${submissionId}` : null, `lead:${email}|${digits}`);   // let a retry through
-      throw new Error('no record captured (every channel failed or timed out)');
+      const r = await allRecords;
+      // Nothing confirmed. If any channel only timed out it may still land, so
+      // this is "uncertain": tell the visitor not to resend, and send nothing more.
+      const outcome = Object.values(r).some(isTimeout) ? 'uncertain' : 'failed';
+      console.error('[gap-audit] no record confirmed:', outcome);
+      return respond(res, finish(outcome));
     }
+    finish('captured');
     waitUntil(Promise.all([
       allRecords,
       withTimeout(sendConfirmationEmail({ name, email }), TIMEOUT_MS.confirmEmail, 'confirmation email')
         .catch((e) => console.error('[gap-audit] confirmation email failed:', e.message)),
     ]));
-    return res.status(200).json({ ok: true });
+    return respond(res, 'captured');
   } catch (err) {
     console.error('[gap-audit] Fatal:', err);
-    return res.status(500).json({ error: 'Something broke on our end. Please email king@floodinternational.com and we will reply the same business day.' });
+    return res.status(500).json({ error: FAILED_MSG });
   }
+}
+
+// A timeout (ours or the transport's) means the send may still have landed.
+const isTransportTimeout = (e) => /timed? ?out|ETIMEDOUT|ESOCKET|ECONNRESET/i.test(`${e?.code || ''} ${e?.message || ''}`);
+
+function respond(res, outcome, duplicate = false) {
+  if (outcome === 'captured') return res.status(200).json({ ok: true, ...(duplicate ? { duplicate: true } : {}) });
+  if (outcome === 'uncertain') return res.status(202).json({ ok: false, pending: true, message: UNCERTAIN_MSG });
+  return res.status(500).json({ error: FAILED_MSG });
 }
 
 function mailer() {
@@ -226,9 +276,15 @@ function mailer() {
   if (!user || !process.env.GMAIL_APP_PASSWORD) throw new Error('GMAIL creds not set');
   return {
     user,
+    // Transport-level limits, so a stalled SMTP connection is actually closed
+    // (not just stopped being waited on) before the outer timeout fires.
     transporter: nodemailer.createTransport({
       service: 'gmail',
       auth: { user, pass: process.env.GMAIL_APP_PASSWORD },
+      // 80% of the outer limit (20 s of 25 s), connection/greeting capped at 10 s.
+      connectionTimeout: Math.min(10000, Math.floor(TIMEOUT_MS.ownerEmail * 0.8)),
+      greetingTimeout: Math.min(10000, Math.floor(TIMEOUT_MS.ownerEmail * 0.8)),
+      socketTimeout: Math.floor(TIMEOUT_MS.ownerEmail * 0.8),
     }),
   };
 }

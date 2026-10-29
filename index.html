@@ -323,7 +323,7 @@ footer a:hover{color:var(--cream)}
       <h2>How fast does your business <em>really</em> reply?</h2>
       <p class="lede">Over one week we contact your business 4 times: a morning call, a lunch call, an evening form or text, and a weekend message. We say who we are every time; we never pose as a client. We don't record anything, and we text only a number you list for texting, once. We only count a reply as late against your own listed hours. Within 2 business days of the last contact you get one page showing when each reply came, or didn't. No pitch attached. Your first contact comes within 2 business days of your request.</p>
     </div>
-    <form class="sheet check-form rv" id="checkForm" novalidate>
+    <form class="sheet check-form rv" id="checkForm" method="post" action="/api/gap-audit" novalidate>
       <div class="hd"><span>Free reply-time check</span><span>Over 7 days</span></div>
       <label>Your name<input name="name" autocomplete="name" required></label>
       <label>Email<input name="email" type="email" autocomplete="email" required></label>
@@ -335,8 +335,9 @@ footer a:hover{color:var(--cream)}
       <label>Where do most inquiries come in?<input name="challenge" placeholder="Phone, website form, Instagram DMs..."></label>
       <input type="hidden" name="submission_id" value="">
       <input name="website_url_confirm" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
-      <button class="btn btn-solid" type="submit">Request my free check <span class="arr">→</span></button>
+      <button class="btn btn-solid" type="submit" disabled>Request my free check <span class="arr">→</span></button>
       <p class="form-msg" role="status" aria-live="polite"></p>
+      <noscript><p class="form-msg">This form needs JavaScript. Email <a href="mailto:king@floodinternational.com?subject=Free%20reply-time%20check">king@floodinternational.com</a> with your business name and phone, and we'll set up your check.</p></noscript>
     </form>
   </div>
 </section>
@@ -518,6 +519,7 @@ footer a:hover{color:var(--cream)}
 })();
 (function(){
   var f=document.getElementById('checkForm'); if(!f) return;
+  f.querySelector('button[type=submit]').disabled=false;   // enabled only once this handler exists
   var msg=f.querySelector('.form-msg'), btn=f.querySelector('button');
   f.addEventListener('submit',function(e){
     e.preventDefault();
@@ -535,7 +537,8 @@ footer a:hover{color:var(--cream)}
     fetch('/api/gap-audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)})
       .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})})
       .then(function(x){
-        if(x.ok){f.reset();msg.textContent='Got it. Your first contact comes within 2 business days. Check your email for what happens next.';}
+        if(x.j&&x.j.pending){msg.textContent=x.j.message;}   // uncertain: keep the button disabled so it isn't sent twice
+        else if(x.ok){f.reset();msg.textContent='Got it. Your first contact comes within 2 business days. Check your email for what happens next.';}
         else{msg.textContent=((x.j&&x.j.error)||'Something went wrong.')+(/king@floodinternational\.com/.test((x.j&&x.j.error)||'')?'':FALLBACK);btn.disabled=false;}
       })
       .catch(function(){msg.textContent='We could not reach our server.'+FALLBACK;btn.disabled=false;});

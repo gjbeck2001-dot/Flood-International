@@ -51,15 +51,20 @@ export function withTimeout(promise, ms, label) {
  * lands first instead of waiting for the slowest.
  */
 export function alertChannels({ title, fields, footer }, { timeoutMs = 6000 } = {}) {
+  // The fetch itself is aborted at the limit (not just stopped being awaited).
+  // A timeout is reported as 'timeout: ...' because the message may still land.
+  const outcome = (e) => (e?.name === 'TimeoutError' || e?.name === 'AbortError' || /timed out/.test(e?.message || '')
+    ? `timeout: ${e.message}` : `failed: ${e.message}`);
+  const signal = () => AbortSignal.timeout(timeoutMs);
   return {
-    telegram: withTimeout(sendTelegram({ title, fields, footer }), timeoutMs, 'telegram')
-      .then(() => 'sent', e => `failed: ${e.message}`),
-    slack: withTimeout(sendSlack({ title, fields, footer }), timeoutMs, 'slack')
-      .then(r => r, e => `failed: ${e.message}`),
+    telegram: withTimeout(sendTelegram({ title, fields, footer }, signal()), timeoutMs + 250, 'telegram')
+      .then(() => 'sent', outcome),
+    slack: withTimeout(sendSlack({ title, fields, footer }, signal()), timeoutMs + 250, 'slack')
+      .then(r => r, outcome),
   };
 }
 
-async function sendTelegram({ title, fields, footer }) {
+async function sendTelegram({ title, fields, footer }, signal) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_ALLOWED_CHAT_ID;
   if (!token || !chatId) throw new Error('TELEGRAM_BOT_TOKEN/CHAT_ID not set');
@@ -73,6 +78,7 @@ async function sendTelegram({ title, fields, footer }) {
 
   const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: 'POST',
+    signal,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       chat_id: chatId,
@@ -87,7 +93,7 @@ async function sendTelegram({ title, fields, footer }) {
   return data;
 }
 
-async function sendSlack({ title, fields, footer }) {
+async function sendSlack({ title, fields, footer }, signal) {
   const token = process.env.SLACK_BOT_TOKEN;
   const channel = process.env.SLACK_CHANNEL_ID;
   // Not configured is a valid state, not an error — don't log noise for it.
@@ -104,6 +110,7 @@ async function sendSlack({ title, fields, footer }) {
 
   const res = await fetch('https://slack.com/api/chat.postMessage', {
     method: 'POST',
+    signal,
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
