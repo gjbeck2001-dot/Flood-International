@@ -32,7 +32,9 @@ const INDUSTRIES = ['Aesthetics & med-spas', 'Luxury real estate', 'Exotic & lux
   'Wellness, fitness & recovery', 'Custom homes', 'Luxury events', 'Other'];
 const LOCATIONS = ['1', '2', '3', '4+'];
 
-const clean = (v, max) => String(v ?? '').trim().slice(0, max);
+// Strings and numbers only: an object or array from a malformed JSON body
+// becomes '' instead of reaching String(), which can throw on it.
+const clean = (v, max) => (typeof v === 'string' || typeof v === 'number' ? String(v) : '').trim().slice(0, max);
 // One plain address only: no separators that nodemailer would read as a second recipient.
 const isEmail = (e) => /^[^\s@,;<>"()]+@[^\s@,;<>"()]+\.[^\s@,;<>"()]{2,}$/.test(e);
 
@@ -51,7 +53,9 @@ const isAllowedOrigin = (o) => allowedOrigins().includes(o)
 
 // Best-effort limits so the confirmation email can't be used to mail strangers
 // in bulk (security review 2026-10-29). In-memory, so they hold per warm
-// instance only; a Vercel Firewall rate-limit rule is the durable version.
+// instance only. Durable: the Vercel Firewall rule "Lead form rate limit"
+// (5 per IP per 10 min, added 2026-10-29). Not durable: the duplicate and
+// per-email limits below; persistent storage was ruled "not now" 2026-10-29.
 const hits = new Map();
 function overLimit(key, max, windowMs) {
   const now = Date.now();
@@ -113,7 +117,8 @@ function capturedCount(email) {
 }
 // A channel result is 'sent', 'timeout: ...' (may still land) or 'failed: ...'.
 const isTimeout = (v) => typeof v === 'string' && v.startsWith('timeout');
-const UNCERTAIN_MSG = "We may have your request, but we couldn't confirm it. Please don't send it again: we'll email you to confirm. If you haven't heard from us, email king@floodinternational.com.";
+// No follow-up is promised: when nothing confirmed, we may not know this visitor exists (ruled 2026-10-29).
+const UNCERTAIN_MSG = "We couldn't confirm your request went through. Please don't send the form again. Email king@floodinternational.com with your business name and we'll make sure it's set up.";
 const FAILED_MSG = 'Something broke on our end. Please email king@floodinternational.com.';
 
 const firstName = (n) => (String(n).trim().split(/\s+/)[0] || '').replace(/[^\p{L}'-]/gu, '').slice(0, 30);
@@ -122,6 +127,9 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
+  // Set once this request reserves its lead entry; the catch below uses it so
+  // an unexpected error can never leave the entry pending (a retry would wait forever).
+  let release = null;
   try {
     if (!isAllowedOrigin(String(req.headers.origin || ''))) {
       return res.status(403).json({ error: 'Please use the form on floodinternational.com.' });
@@ -153,6 +161,13 @@ export default async function handler(req, res) {
     const industry  = clean(b.industry, MAX.industry);
     const locations = clean(b.locations, 4);
     const submissionId = clean(b.submission_id, 64);
+    const utm = {
+      source:   clean(b.utm_source, MAX.utm),
+      medium:   clean(b.utm_medium, MAX.utm),
+      campaign: clean(b.utm_campaign, MAX.utm),
+      content:  clean(b.utm_content, MAX.utm),
+    };
+    const referrer = clean(b.referrer, MAX.url);
 
     if (!name || !email) return res.status(400).json({ error: 'Name and email are required.' });
     if (!isEmail(email)) return res.status(400).json({ error: 'That email address looks wrong.' });
@@ -177,21 +192,20 @@ export default async function handler(req, res) {
     let settle;
     const entry = { state: 'pending', at: Date.now(), outcome: new Promise((r) => { settle = r; }) };
     keys.forEach((k) => leads.set(k, entry));
+    let settled = false;
+    let started = false;   // true once any record channel has been started
     const finish = (outcome) => {
+      if (settled) return entry.state === 'pending' ? 'failed' : entry.state;
+      settled = true;
       if (outcome === 'failed') keys.forEach((k) => { if (leads.get(k) === entry) leads.delete(k); });
       else entry.state = outcome;
       if (outcome === 'captured') capturedByEmail.set(email, [...(capturedByEmail.get(email) || []), Date.now()]);
       settle(outcome);
       return outcome;
     };
-
-    const utm = {
-      source:   clean(b.utm_source, MAX.utm),
-      medium:   clean(b.utm_medium, MAX.utm),
-      campaign: clean(b.utm_campaign, MAX.utm),
-      content:  clean(b.utm_content, MAX.utm),
-    };
-    const referrer = clean(b.referrer, MAX.url);
+    // Nothing sent yet: drop the entry so a retry is a fresh attempt. Something
+    // may have been sent: 'uncertain', so a retry is answered and nothing is re-sent.
+    release = () => finish(started ? 'uncertain' : 'failed');
 
     const notes = [
       `${CHECK_NAME.toUpperCase()} REQUEST (lead magnet)`,
@@ -227,6 +241,7 @@ export default async function handler(req, res) {
       },
       footer: 'Owes: 4 contacts over 7 days + 1-page reply-time report. Log it in the company note.',
     }, { timeoutMs: TIMEOUT_MS.alert });
+    started = true;
 
     // All three record channels start now, each with its own timeout. The
     // visitor gets success as soon as ANY one confirms the lead was captured;
@@ -258,6 +273,7 @@ export default async function handler(req, res) {
     return respond(res, 'captured');
   } catch (err) {
     console.error('[gap-audit] Fatal:', err);
+    if (release) return respond(res, release());
     return res.status(500).json({ error: FAILED_MSG });
   }
 }
