@@ -232,7 +232,7 @@ footer a:hover{color:var(--cream)}
 /* Visible by default; .js-rv (set by the head script) hides until revealed. A 2.5 s safety net shows everything if the reveal script never runs. */
 .js-rv .rv{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
 .js-rv .rv.in,.rv-done .rv{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+@media (prefers-reduced-motion:reduce){.rv,.js-rv .rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
 
 /* responsive */
 @media (max-width:960px){
