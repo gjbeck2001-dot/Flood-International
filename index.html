@@ -229,8 +229,9 @@ footer a{text-decoration:none;margin-left:22px}
 footer a:hover{color:var(--cream)}
 
 /* reveal */
-.rv{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
-.rv.in{opacity:1;transform:none}
+/* Visible by default; .js-rv (set by the head script) hides until revealed. A 2.5 s safety net shows everything if the reveal script never runs. */
+.js-rv .rv{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
+.js-rv .rv.in,.rv-done .rv{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
 
 /* responsive */
@@ -256,7 +257,7 @@ footer a:hover{color:var(--cream)}
   footer a{margin:0 18px 0 0}
 }
 </style>
-<noscript><style>.rv{opacity:1;transform:none}</style></noscript>
+<script>document.documentElement.classList.add('js-rv');setTimeout(function(){if(!window.__rvReady)document.documentElement.classList.add('rv-done')},2500);</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
@@ -332,6 +333,7 @@ footer a:hover{color:var(--cream)}
       <label>Locations<select name="locations" required><option value="">Choose one</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4+">4+</option></select></label>
       <label>Website or Instagram<input name="link" placeholder="https://"></label>
       <label>Where do most inquiries come in?<input name="challenge" placeholder="Phone, website form, Instagram DMs..."></label>
+      <input type="hidden" name="submission_id" value="">
       <input name="website_url_confirm" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
       <button class="btn btn-solid" type="submit">Request my free check <span class="arr">→</span></button>
       <p class="form-msg" role="status" aria-live="polite"></p>
@@ -363,7 +365,7 @@ footer a:hover{color:var(--cream)}
       <article class="part rv">
         <div class="big">3</div>
         <div><h3>Leads going cold?</h3><p class="unit">Text &amp; email follow-up · 3 workflows</p></div>
-        <p>We build follow-up for new inquiries, reminders and rebooking (review requests are one example workflow), and turn it on after you approve and test it.</p>
+        <p>We build up to 3 follow-ups in one text and email platform you approve: new inquiries, reminders and rebooking (review requests are one example). Each goes live after you approve and test it, with written documentation of how it works.</p>
       </article>
       <article class="part rv">
         <div class="big">50</div>
@@ -373,12 +375,12 @@ footer a:hover{color:var(--cream)}
       <article class="part rv">
         <div class="big">8</div>
         <div><h3>No time to post?</h3><p class="unit">Content · 8 clips</p></div>
-        <p>We cut 8 short clips from your footage, with captions, post copy and one round of changes. Phone video works.</p>
+        <p>We cut 8 short clips from your footage, with captions, post copy and one round of changes, ready for you to post from your accounts. Phone video works.</p>
       </article>
       <article class="part rv">
         <div class="big">1</div>
         <div><h3>Not sure what's working?</h3><p class="unit">Reporting · 1 plan, weekly updates</p></div>
-        <p>A plan each month, an update each week and a results review at the end.</p>
+        <p>A plan each month, an update each week and a results review at the end. The review counts the work (prospects researched, outreach drafted, inquiries reviewed and flagged, clips delivered) and the results you report back (replies, consults booked, new clients).</p>
       </article>
     </div>
 
@@ -395,7 +397,7 @@ footer a:hover{color:var(--cream)}
     <div class="rv">
       <p class="chapter">The agreement</p>
       <h2>Everything in writing, <em>before you pay.</em></h2>
-      <p class="lede">You sign one page with the price and every number before any money moves. If $3,000 a month doesn't make sense for your business, we'll tell you on the call.</p>
+      <p class="lede">Before any money moves, you sign a short written agreement: the scope with the price and every monthly number, our standard terms, and a data processing addendum. If $3,000 a month doesn't make sense for your business, we'll tell you on the call.</p>
     </div>
     <div class="sheet rv" aria-label="Summary of the agreement terms">
       <div class="hd"><span>Statement of work</span><span>Flood International LLC</span></div>
@@ -458,7 +460,7 @@ footer a:hover{color:var(--cream)}
     </div>
     <ol class="steps rv">
       <li><span>1</span><h3>Talk</h3><p>A 15-minute call. We look at how you get clients today and tell you honestly if this fits.</p></li>
-      <li><span>2</span><h3>Sign</h3><p>One page with the price and every monthly number. Nothing is paid before you sign.</p></li>
+      <li><span>2</span><h3>Sign</h3><p>A short written agreement with the price and every monthly number. Nothing is paid before you sign.</p></li>
       <li><span>3</span><h3>Start</h3><p>Pay the first month by secure checkout. Kickoff is that week.</p></li>
     </ol>
     <p class="fit rv"><strong>How we work:</strong> nothing reaches a customer without your yes · every number is in the agreement before you pay · we judge your replies by your own hours · no revenue promises · about 1 hour a week of your time · the person on your kickoff call does the work.</p>
@@ -506,6 +508,7 @@ footer a:hover{color:var(--cream)}
 
 <script>
 (function(){
+  window.__rvReady=true;
   var els=document.querySelectorAll('.rv');
   if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
   var io=new IntersectionObserver(function(entries){
@@ -519,7 +522,12 @@ footer a:hover{color:var(--cream)}
   f.addEventListener('submit',function(e){
     e.preventDefault();
     var d=Object.fromEntries(new FormData(f).entries());
-    if(!d.name||!d.email||!d.phone){msg.textContent='Name, email and business phone are required.';return;}
+    var FALLBACK=' You can also email king@floodinternational.com.';
+    var miss=[];if(!d.name)miss.push('name');if(!d.email)miss.push('email');if(!d.phone)miss.push('business phone');if(!d.industry)miss.push('industry');if(!d.locations)miss.push('locations');
+    if(miss.length){msg.textContent='Please fill in: '+miss.join(', ')+'.';return;}
+    if((d.phone.replace(/\D/g,'').length<10)){msg.textContent='Please enter a 10-digit business phone number.';return;}
+    if(!f.submission_id.value)f.submission_id.value=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+Math.random().toString(36).slice(2);
+    d.submission_id=f.submission_id.value;
     var q=new URLSearchParams(location.search);
     ['utm_source','utm_medium','utm_campaign','utm_content'].forEach(function(k){if(q.get(k))d[k]=q.get(k)});
     d.referrer=document.referrer;
@@ -528,9 +536,9 @@ footer a:hover{color:var(--cream)}
       .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})})
       .then(function(x){
         if(x.ok){f.reset();msg.textContent='Got it. Your first contact comes within 2 business days. Check your email for what happens next.';}
-        else{msg.textContent=(x.j&&x.j.error)||'Something went wrong. Email king@floodinternational.com.';btn.disabled=false;}
+        else{msg.textContent=((x.j&&x.j.error)||'Something went wrong.')+(/king@floodinternational\.com/.test((x.j&&x.j.error)||'')?'':FALLBACK);btn.disabled=false;}
       })
-      .catch(function(){msg.textContent='Something went wrong. Email king@floodinternational.com.';btn.disabled=false;});
+      .catch(function(){msg.textContent='We could not reach our server.'+FALLBACK;btn.disabled=false;});
   });
 })();
 </script>

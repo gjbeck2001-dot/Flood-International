@@ -19,9 +19,9 @@
 
 import nodemailer from 'nodemailer';
 import { waitUntil } from '@vercel/functions';
-import { notifyLead } from './lib/notify.js';
+import { alertChannels, withTimeout } from './lib/notify.js';
 
-const MAX = { name: 120, email: 160, company: 160, url: 300, challenge: 1200, utm: 120, phone: 40, industry: 80 };
+const MAX = { name: 120, email: 160, company: 160, url: 300, challenge: 1200, utm: 120, phone: 40, industry: 80, sid: 64 };
 
 // One name for the lead magnet, used in the alert, owner email and visitor
 // email. The page must use the same string (checked by feas/check_home.py).
@@ -54,6 +54,41 @@ function overLimit(key, max, windowMs) {
 }
 // Greeting uses the first name, letters only, so a visitor can't put a
 // sentence (or a phone number) into an email sent from our account.
+// Per-channel time limits (ms). Gmail SMTP measured up to 27.7 s cold.
+const ms = (v, d) => (Number(v) > 0 ? Number(v) : d);   // env override is for tests only
+const TIMEOUT_MS = {
+  alert: ms(process.env.LEAD_ALERT_TIMEOUT_MS, 6000),
+  ownerEmail: ms(process.env.LEAD_EMAIL_TIMEOUT_MS, 25000),
+  confirmEmail: ms(process.env.LEAD_EMAIL_TIMEOUT_MS, 25000),
+};
+
+// Resolves with the name of the first channel that reports 'sent', or null
+// once every channel has finished without one.
+function firstSent(records) {
+  return new Promise((resolve) => {
+    const entries = Object.entries(records);
+    let left = entries.length;
+    for (const [k, p] of entries) {
+      p.then((v) => {
+        if (v === 'sent') resolve(k);
+        if (--left === 0) resolve(null);
+      });
+    }
+  });
+}
+
+// Duplicate guard: in-memory, so per warm instance (same limits as overLimit).
+const seen = new Map();
+function isDuplicate(...keys) {
+  const now = Date.now();
+  for (const [k, t] of seen) if (now - t > 10 * 60 * 1000) seen.delete(k);
+  const live = keys.filter(Boolean);
+  if (live.some((k) => seen.has(k))) return true;
+  live.forEach((k) => seen.set(k, now));
+  return false;
+}
+function forgetDuplicate(...keys) { keys.filter(Boolean).forEach((k) => seen.delete(k)); }
+
 const firstName = (n) => (String(n).trim().split(/\s+/)[0] || '').replace(/[^\p{L}'-]/gu, '').slice(0, 30);
 
 export default async function handler(req, res) {
@@ -83,19 +118,28 @@ export default async function handler(req, res) {
     const company   = clean(b.company, MAX.company);
     const link      = clean(b.link, MAX.url);
     const challenge = clean(b.challenge, MAX.challenge);
-    // The number clients call. Required (400 below); a malformed one is kept and flagged.
+    // The number clients call (Nick ruled 2026-10-29: required; the two calls need it).
     const phone     = clean(b.phone, MAX.phone);
     const digits    = phone.replace(/\D/g, '');
     const phoneOk   = digits.length === 10 || (digits.length === 11 && digits[0] === '1');
-    const rawInd    = clean(b.industry, MAX.industry);
-    const industry  = INDUSTRIES.includes(rawInd) ? rawInd : (rawInd ? `Other (typed: ${rawInd})` : '');
-    const locations = LOCATIONS.includes(clean(b.locations, 4)) ? clean(b.locations, 4) : '';
-    const phoneLine = phone ? (phoneOk ? phone : `${phone} (CHECK: not a 10-digit US number)`) : 'MISSING: find it on their site before the first contact';
+    // Industry and locations are required and must be one of the listed options.
+    const industry  = clean(b.industry, MAX.industry);
+    const locations = clean(b.locations, 4);
+    const submissionId = clean(b.submission_id, 64);
 
     if (!name || !email) return res.status(400).json({ error: 'Name and email are required.' });
-    // Nick ruled 2026-10-29: the business phone is required (the two calls need it).
-    if (!phone) return res.status(400).json({ error: 'Business phone is required.' });
     if (!isEmail(email)) return res.status(400).json({ error: 'That email address looks wrong.' });
+    if (!phone) return res.status(400).json({ error: 'Business phone is required.' });
+    if (!phoneOk) return res.status(400).json({ error: 'Please enter a 10-digit business phone number.' });
+    if (!INDUSTRIES.includes(industry)) return res.status(400).json({ error: 'Please choose your industry.' });
+    if (!LOCATIONS.includes(locations)) return res.status(400).json({ error: 'Please choose your number of locations.' });
+
+    // Retries and double clicks: the same form submission, or the same
+    // business sent again within 10 minutes, is acknowledged once and not re-sent.
+    if (isDuplicate(submissionId ? `sid:${submissionId}` : null, `lead:${email}|${digits}`)) {
+      console.log('[gap-audit] duplicate submission acknowledged, not re-sent');
+      return res.status(200).json({ ok: true, duplicate: true });
+    }
     if (overLimit(`email:${email}`, 2, 24 * 60 * 60 * 1000)) {
       return res.status(429).json({ error: 'We already have a request for this email. Reply to our email if you need anything.' });
     }
@@ -110,7 +154,7 @@ export default async function handler(req, res) {
 
     const notes = [
       `${CHECK_NAME.toUpperCase()} REQUEST (lead magnet)`,
-      `Business phone: ${phoneLine}`,
+      `Business phone: ${phone}`,
       `Industry: ${industry || '—'}`,
       `Locations: ${locations || '—'}`,
       challenge ? `\nWhere inquiries come in:\n${challenge}` : null,
@@ -130,14 +174,14 @@ export default async function handler(req, res) {
     // Gmail SMTP can take 20s+ cold (measured 27.7s), so the visitor waits
     // only for Telegram and the emails finish via waitUntil. If Telegram
     // fails we block on the owner email; 500 only if both fail.
-    const alert = await notifyLead({
+    const channels = alertChannels({
       title: `🔍 New ${CHECK_NAME.toLowerCase()} request`,
       fields: {
         Name: name,
         Email: email,
         Business: company,
         Link: link,
-        Phone: phoneLine,
+        Phone: phone,
         Industry: industry,
         Locations: locations,
         Source: utm.source || (referrer ? 'referral' : 'direct'),
@@ -145,34 +189,35 @@ export default async function handler(req, res) {
         Inquiries: challenge ? challenge.slice(0, 220) : '',
       },
       footer: 'Owes: 4 contacts over 7 days + 1-page reply-time report. Log it in the company note.',
-    });
-    const alertOk = alert.telegram === 'sent' || alert.slack === 'sent';
+    }, { timeoutMs: TIMEOUT_MS.alert });
 
-    const ownerCopy = sendOwnerCopy({ name, email, company, link, notes })
-      .then(() => 'sent', (e) => `failed: ${e.message}`);
-    const confirm = () => sendConfirmationEmail({ name, email })
-      .catch((e) => console.error('[gap-audit] confirmation email failed:', e.message));
+    // All three record channels start now, each with its own timeout. The
+    // visitor gets success as soon as ANY one confirms the lead was captured;
+    // the rest (and the confirmation email) finish in the background.
+    const records = {
+      telegram: channels.telegram,
+      slack: channels.slack,
+      ownerCopy: withTimeout(sendOwnerCopy({ name, email, company, link, notes }), TIMEOUT_MS.ownerEmail, 'owner email')
+        .then(() => 'sent', (e) => `failed: ${e.message}`),
+    };
+    const allRecords = Promise.all(Object.entries(records).map(([k, p]) => p.then((v) => [k, v])))
+      .then((pairs) => { const r = Object.fromEntries(pairs); console.log('[gap-audit] records', JSON.stringify(r)); return r; });
+    const captured = await firstSent(records);
 
-    if (alertOk) {
-      waitUntil(Promise.all([
-        ownerCopy.then((o) => console.log('[gap-audit] records', JSON.stringify({ telegram: alert.telegram, ownerCopy: o }))),
-        confirm(),
-      ]));
-      return res.status(200).json({ ok: true });
+    if (!captured) {
+      await allRecords;
+      forgetDuplicate(submissionId ? `sid:${submissionId}` : null, `lead:${email}|${digits}`);   // let a retry through
+      throw new Error('no record captured (every channel failed or timed out)');
     }
-
-    const owner = await ownerCopy;
-    console.log('[gap-audit] records', JSON.stringify({ telegram: alert.telegram, ownerCopy: owner }));
-    if (owner !== 'sent') {
-      // Nothing durable landed — tell the visitor so they use the fallback
-      // email shown in the form's error state.
-      throw new Error('no record captured (alert and owner email both failed)');
-    }
-    waitUntil(confirm());
+    waitUntil(Promise.all([
+      allRecords,
+      withTimeout(sendConfirmationEmail({ name, email }), TIMEOUT_MS.confirmEmail, 'confirmation email')
+        .catch((e) => console.error('[gap-audit] confirmation email failed:', e.message)),
+    ]));
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('[gap-audit] Fatal:', err);
-    return res.status(500).json({ error: 'Something broke on our end. Try again in a moment.' });
+    return res.status(500).json({ error: 'Something broke on our end. Please email king@floodinternational.com and we will reply the same business day.' });
   }
 }
 

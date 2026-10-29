@@ -28,13 +28,35 @@ function esc(s) {
  * @returns {Promise<{telegram: string, slack: string}>} per-channel outcome
  */
 export async function notifyLead({ title, fields, footer }) {
-  const [telegram, slack] = await Promise.all([
-    sendTelegram({ title, fields, footer }).then(() => 'sent').catch(e => `failed: ${e.message}`),
-    sendSlack({ title, fields, footer }).then(r => r).catch(e => `failed: ${e.message}`),
-  ]);
+  const ch = alertChannels({ title, fields, footer });
+  const [telegram, slack] = await Promise.all([ch.telegram, ch.slack]);
   const outcome = { telegram, slack };
   console.log('[notify]', JSON.stringify(outcome));
   return outcome;
+}
+
+/** Reject after ms, so one stalled service can't hold the request open. */
+export function withTimeout(promise, ms, label) {
+  let timer;
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`${label} timed out after ${ms} ms`)), ms); }),
+  ]).finally(() => clearTimeout(timer));
+}
+
+/**
+ * Start each channel on its own, each with its own timeout. Returns one
+ * promise per channel; each resolves to 'sent', 'skipped (...)' or
+ * 'failed: ...' and never rejects, so the caller can act on whichever
+ * lands first instead of waiting for the slowest.
+ */
+export function alertChannels({ title, fields, footer }, { timeoutMs = 6000 } = {}) {
+  return {
+    telegram: withTimeout(sendTelegram({ title, fields, footer }), timeoutMs, 'telegram')
+      .then(() => 'sent', e => `failed: ${e.message}`),
+    slack: withTimeout(sendSlack({ title, fields, footer }), timeoutMs, 'slack')
+      .then(r => r, e => `failed: ${e.message}`),
+  };
 }
 
 async function sendTelegram({ title, fields, footer }) {
@@ -71,12 +93,14 @@ async function sendSlack({ title, fields, footer }) {
   // Not configured is a valid state, not an error — don't log noise for it.
   if (!token || !channel) return 'skipped (not configured)';
 
+  // Slack mrkdwn: escape & < > so visitor text can't add @channel or links.
+  const sl = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const lines = [
-    `*${title}*`,
+    `*${sl(title)}*`,
     '',
-    ...Object.entries(fields).map(([k, v]) => `*${k}:* ${v || '—'}`),
+    ...Object.entries(fields).map(([k, v]) => `*${sl(k)}:* ${sl(v || '—')}`),
   ];
-  if (footer) lines.push('', footer);
+  if (footer) lines.push('', sl(footer));
 
   const res = await fetch('https://slack.com/api/chat.postMessage', {
     method: 'POST',
