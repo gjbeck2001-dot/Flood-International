@@ -21,7 +21,16 @@ import nodemailer from 'nodemailer';
 import { waitUntil } from '@vercel/functions';
 import { notifyLead } from './lib/notify.js';
 
-const MAX = { name: 120, email: 160, company: 160, url: 300, challenge: 1200, utm: 120 };
+const MAX = { name: 120, email: 160, company: 160, url: 300, challenge: 1200, utm: 120, phone: 40, industry: 80 };
+
+// One name for the lead magnet, used in the alert, owner email and visitor
+// email. The page must use the same string (checked by feas/check_home.py).
+// Ruled by Nick 2026-10-29.
+const CHECK_NAME = 'Free reply-time check';
+// Must match the <select> options on the page (checked by check_home.py).
+const INDUSTRIES = ['Aesthetics & med-spas', 'Luxury real estate', 'Exotic & luxury car rental',
+  'Wellness, fitness & recovery', 'Custom homes', 'Luxury events', 'Other'];
+const LOCATIONS = ['1', '2', '3', '4+'];
 
 const clean = (v, max) => String(v ?? '').trim().slice(0, max);
 const isEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
@@ -45,8 +54,18 @@ export default async function handler(req, res) {
     const company   = clean(b.company, MAX.company);
     const link      = clean(b.link, MAX.url);
     const challenge = clean(b.challenge, MAX.challenge);
+    // The number clients call. Required (400 below); a malformed one is kept and flagged.
+    const phone     = clean(b.phone, MAX.phone);
+    const digits    = phone.replace(/\D/g, '');
+    const phoneOk   = digits.length === 10 || (digits.length === 11 && digits[0] === '1');
+    const rawInd    = clean(b.industry, MAX.industry);
+    const industry  = INDUSTRIES.includes(rawInd) ? rawInd : (rawInd ? `Other (typed: ${rawInd})` : '');
+    const locations = LOCATIONS.includes(clean(b.locations, 4)) ? clean(b.locations, 4) : '';
+    const phoneLine = phone ? (phoneOk ? phone : `${phone} (CHECK: not a 10-digit US number)`) : 'MISSING: find it on their site before the first contact';
 
     if (!name || !email) return res.status(400).json({ error: 'Name and email are required.' });
+    // Nick ruled 2026-10-29: the business phone is required (the two calls need it).
+    if (!phone) return res.status(400).json({ error: 'Business phone is required.' });
     if (!isEmail(email)) return res.status(400).json({ error: 'That email address looks wrong.' });
 
     const utm = {
@@ -58,8 +77,11 @@ export default async function handler(req, res) {
     const referrer = clean(b.referrer, MAX.url);
 
     const notes = [
-      'FREE GAP AUDIT REQUEST (lead magnet)',
-      challenge ? `\nWhat they say is broken:\n${challenge}` : null,
+      `${CHECK_NAME.toUpperCase()} REQUEST (lead magnet)`,
+      `Business phone: ${phoneLine}`,
+      `Industry: ${industry || '—'}`,
+      `Locations: ${locations || '—'}`,
+      challenge ? `\nWhere inquiries come in:\n${challenge}` : null,
       '\n— Attribution —',
       utm.source   ? `utm_source: ${utm.source}`     : null,
       utm.medium   ? `utm_medium: ${utm.medium}`     : null,
@@ -67,7 +89,7 @@ export default async function handler(req, res) {
       utm.content  ? `utm_content: ${utm.content}`   : null,
       referrer     ? `referrer: ${referrer}`         : null,
       `Submitted: ${new Date().toISOString()}`,
-      '\nOwed: 1-page missed-job read within 2 business days.',
+      '\nOwed: 4 contacts over 7 days (morning call, lunch call, evening form/text, weekend message), then the 1-page reply-time report.',
     ].filter(Boolean).join('\n');
 
     // Two independent records: Telegram alert + owner email. The Railway CRM
@@ -77,17 +99,20 @@ export default async function handler(req, res) {
     // only for Telegram and the emails finish via waitUntil. If Telegram
     // fails we block on the owner email; 500 only if both fail.
     const alert = await notifyLead({
-      title: '🔍 New missed-job check request',
+      title: `🔍 New ${CHECK_NAME.toLowerCase()} request`,
       fields: {
         Name: name,
         Email: email,
-        Shop: company,
+        Business: company,
         Link: link,
+        Phone: phoneLine,
+        Industry: industry,
+        Locations: locations,
         Source: utm.source || (referrer ? 'referral' : 'direct'),
         Campaign: utm.campaign,
-        Says: challenge ? challenge.slice(0, 220) : '',
+        Inquiries: challenge ? challenge.slice(0, 220) : '',
       },
-      footer: 'Owes: 1-page missed-job read. Log it in the shop\'s company note.',
+      footer: 'Owes: 4 contacts over 7 days + 1-page reply-time report. Log it in the company note.',
     });
     const alertOk = alert.telegram === 'sent' || alert.slack === 'sent';
 
@@ -138,11 +163,11 @@ async function sendOwnerCopy({ name, email, company, link, notes }) {
     from: `"Flood site" <${user}>`,
     to: process.env.LEAD_INBOX || user,
     replyTo: email,
-    subject: `Missed-job check request — ${company || name}`,
+    subject: `${CHECK_NAME} request — ${company || name}`,
     text: [
       `Name: ${name}`,
       `Email: ${email}`,
-      `Shop: ${company || '—'}`,
+      `Business: ${company || '—'}`,
       `Link: ${link || '—'}`,
       '',
       notes,
@@ -156,15 +181,16 @@ async function sendConfirmationEmail({ name, email }) {
   await transporter.sendMail({
     from: `"Nicholas King — Flood International" <${user}>`,
     to: email,
-    subject: 'Your missed-job check — what happens next',
-    html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;color:#111;line-height:1.6;">
+    subject: `Your ${CHECK_NAME.toLowerCase()}: what happens next`,
+    html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;color:#1A1410;line-height:1.6;">
   <p>Hi ${escapeHtml(name)},</p>
-  <p>Got your request. I'll look at your shop the way a customer does: calling after hours, finding you on Google, reading your reviews, trying to book, and timing how fast anyone gets back to them. You'll get a one-page read on where jobs are slipping and the one thing to fix first.</p>
-  <p>Expect it within 2 business days. No call required, no pitch attached. If it's useful and you want to go further, that conversation happens after you've seen the work.</p>
-  <p>One thing that makes it sharper: if there's a specific spot where you know jobs get lost, reply to this email and tell me. I'll aim the check at it.</p>
+  <p>Thanks for requesting a ${escapeHtml(CHECK_NAME.toLowerCase())}. Here is what happens next.</p>
+  <p>Our first contact comes within 2 business days. Over the 7 days from then, we will contact your business 4 times: a weekday morning call, a weekday lunch call, an evening website form or text, and a weekend message. We say who we are every time; we never pose as a client. We don't record anything, and we text only a number you list for texting, once. We only count a reply as late against your own listed hours or any reply time you promise.</p>
+  <p>Within 2 business days of the last contact we send you one page showing when each reply came, or didn't. No call required and no pitch attached. If it's useful and you want to talk about it, that happens after you've seen it.</p>
+  <p>One thing makes it sharper: reply to this email with your business hours and the number or form you most want tested.</p>
   <p style="margin-top:28px;">— <strong>Nicholas King</strong><br>
-  <span style="color:#666;">Founder, Flood International</span><br>
-  <a href="https://floodinternational.com" style="color:#111;">floodinternational.com</a></p>
+  <span style="color:#8B7355;">Founder, Flood International · Los Angeles</span><br>
+  <a href="https://floodinternational.com" style="color:#1A1410;">floodinternational.com</a></p>
 </div>`,
   });
 }
