@@ -50,7 +50,7 @@ export function withTimeout(promise, ms, label) {
  * 'failed: ...' and never rejects, so the caller can act on whichever
  * lands first instead of waiting for the slowest.
  */
-export function alertChannels({ title, fields, footer }, { timeoutMs = 6000 } = {}) {
+export function alertChannels({ title, fields, footer }, { timeoutMs = 6000, slack = true } = {}) {
   // The fetch itself is aborted at the limit (not just stopped being awaited).
   // A timeout is reported as 'timeout: ...' because the message may still land.
   const outcome = (e) => (e?.name === 'TimeoutError' || e?.name === 'AbortError' || /timed out/.test(e?.message || '')
@@ -59,8 +59,10 @@ export function alertChannels({ title, fields, footer }, { timeoutMs = 6000 } = 
   return {
     telegram: withTimeout(sendTelegram({ title, fields, footer }, signal()), timeoutMs + 250, 'telegram')
       .then(() => 'sent', outcome),
-    slack: withTimeout(sendSlack({ title, fields, footer }, signal()), timeoutMs + 250, 'slack')
-      .then(r => r, outcome),
+    // slack: false keeps a message Telegram-only (FAQ questions, ruled 2026-10-29).
+    slack: !slack ? Promise.resolve('skipped (not requested)')
+      : withTimeout(sendSlack({ title, fields, footer }, signal()), timeoutMs + 250, 'slack')
+        .then(r => r, outcome),
   };
 }
 
