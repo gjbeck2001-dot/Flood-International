@@ -43,7 +43,7 @@ const PHRASES = [[/\bset ?up\b/g, 'setup'], [/\blong[- ]term\b/g, 'longterm'], [
   // "'?ve": owners drop apostrophes ("ive", "weve").
   [/\b(?:(?:unless|without) (?:i|me|we|us)(?: have|'?ve)? (?:see|seen|seeing|saw|check(?:ed|ing)?|look(?:ed|ing)? at|review(?:ed|ing)?|ok(?:'?ed|'?ing|'?d)?|okay(?:ed|ing)?|approv(?:e|ed|ing)|sign(?:ed|ing)? off)|(?:until|till|before) (?:i|me|we|us)(?: have|'?ve)? (?:ok(?:'?ed|'?d)?|okay(?:ed)?|approv(?:e|ed)|sign(?:ed)? off)|sign(?:ed|ing)? off on|run (?:it|them|things|everything|each \w+|every \w+) (?:past|by) (?:me|us)|final say|my (?:ok|okay|approval|sign[- ]?off))\b/g, 'approve'],
   // "how much" means price only before is/does/for... ("How much of my time" is the time entry).
-  [/\bhow much (is|does|for|do you charge|per)\b/g, 'price $1'], [/\bmy time\b/g, 'mytime'], [/\bhow long\b/g, 'howlong']];
+  [/\bhow much (is|does|for|do you charge|per)\b/g, 'price $1'], [/\bmy time\b/g, 'mytime'], [/\bhow long\b/g, 'howlong'], [/\bhow many\b/g, 'howmany']];
 // The inquiry queue in the owner's words (the page says "active inquiries"). Skipped when the question
 // mentions a phone or call anywhere: answering calls is not something the page offers, so "pick up the
 // phone when i forget to answer" must not read as the inquiry review.
@@ -82,6 +82,11 @@ const SYN = {
   builder: ['industry'], home: ['industry'], custom: ['industry'], event: ['industry'], wedding: ['industry'], venue: ['industry'],
   car: ['industry'], spa: ['industry'], salon: ['industry'], clinic: ['industry'], realtor: ['industry'], broker: ['industry'],
   fit: ['industry'], step: ['start'], process: ['start'], socal: ['area'],
+  // the content-first page (2026-11-13): the sample work, the free proof shoot, photos, plans, and the trades it names
+  sample: ['samples'], example: ['samples'], portfolio: ['samples'], real: ['samples'], testimonial: ['samples'], reference: ['samples'],
+  proof: ['proof'], trial: ['proof'], try: ['proof'], demo: ['proof'],
+  photo: ['film', 'services'], picture: ['film', 'services'], photographer: ['film'], howmany: ['services'], plan: ['price', 'services'],
+  hvac: ['industry'], electrical: ['industry'], electrician: ['industry'], contractor: ['industry'], heating: ['industry'],
 };
 // <details> id -> concepts that make it the answer. Each entry's own question adds more at load time.
 const TRIG = {
@@ -91,6 +96,7 @@ const TRIG = {
   'faq-seo-social': ['seo', 'social', 'ads'], 'faq-film': ['film'], 'faq-industry': ['industry'], 'faq-area': ['area'],
   'faq-not-fit': ['franchise'], 'faq-start': ['start'], 'faq-time': ['time'], 'faq-outreach': ['outreach'],
   'faq-approval': ['approve', 'outreach'], 'faq-texting': ['texting'], 'faq-free-check': ['freecheck'],
+  'faq-samples': ['samples'], 'faq-proof-shoot': ['proof'],
 };
 // Questions the homepage must not answer from its own copy (Nick's ruling 2026-10-29): they get the
 // Privacy/Terms fallback. Lowercase on purpose; these are matched against what the visitor typed.

@@ -317,6 +317,19 @@ footer a:hover{color:var(--cream)}
 .official{margin-top:34px;font-size:15px;color:rgba(245,240,232,.72);max-width:52ch}
 @media (max-width:960px){.rungs{grid-template-columns:1fr 1fr}.rung .pain{min-height:0}}
 @media (max-width:560px){.rungs{grid-template-columns:1fr}}
+/* pre-launch check 2026-11-13 */
+/* Small taupe text measured 3.8 to 4.2:1. These two shades measure 4.8:1 or better on the backgrounds they sit on. */
+:root,.sheet{--taupe:#7B6649}
+.hero,.price,.close,.strip,.writing{--taupe:#A38B6B}
+.writing .sheet{--taupe:#7B6649}
+/* A photo tile that has not loaded yet is a warm blank, not a black box. Video tiles stay black behind the poster. */
+.tile .m.p,.tile .m.l,.tile .m.a{background:#E7DFD2}
+@media (max-width:560px){
+  /* phone: keep the one booking button in the header; stop the two signature lines running together */
+  .nav .btn{display:inline-flex;padding:10px 14px;font-size:13px;white-space:nowrap}
+  .sign{row-gap:56px}
+}
+@media (max-width:350px){.mark{font-size:18px}}
 </style>
 <script>document.documentElement.classList.add('js-rv');setTimeout(function(){if(!window.__rvReady)document.documentElement.classList.add('rv-done')},2500);</script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -455,7 +468,7 @@ footer a:hover{color:var(--cream)}
         <p class="pain">"We need more clients, not just faster replies."</p>
         <ul>
           <li>The follow-up and inquiry review in Follow-Up</li>
-          <li>One shoot a month, up to 2 hours: up to 90 pieces from about 15 master clips and 20 edited photos, counting sizes, cutdowns and ad-ready versions</li>
+          <li>One shoot a month, up to 2 hours: 60 pieces of content a month, made from about 15 master clips and 20 edited photos, counting alternate sizes, cutdowns and ad-ready versions</li>
           <li>20 researched prospects or referral partners a month, with outreach drafted for you to send</li>
           <li>3 competitors watched, one brief a month</li>
           <li>Monthly plan, weekly update, monthly review</li>
@@ -468,7 +481,7 @@ footer a:hover{color:var(--cream)}
         <ul>
           <li>The whole Growth plan</li>
           <li>40 researched prospects a month in place of 20</li>
-          <li>A text back when a call is missed, once your number is registered</li>
+          <li>A text back when a call is missed, using a dedicated tracking number after carrier registration</li>
           <li>A review every 2 weeks</li>
         </ul>
       </div>
@@ -680,7 +693,7 @@ footer a:hover{color:var(--cream)}
         </div>
         <div class="faq-group">
           <h3>What you get</h3>
-          <details id="faq-services"><summary>What do I get each month?</summary><p>It depends on your plan. Content is one shoot a month at your place, 8 vertical clips and 20 edited photos with captions and post copy. Follow-Up is text and email follow-up plus an inquiry review each business day. Growth combines follow-up, a larger content scope, prospect research and a competitor brief. Full adds more prospects, a text back on missed calls and a review every 2 weeks. Every number is in the Plans section and in your agreement.</p></details>
+          <details id="faq-services"><summary>What do I get each month?</summary><p>It depends on your plan. Content is one shoot a month at your place, 8 vertical clips and 20 edited photos with captions and post copy. Follow-Up is text and email follow-up plus an inquiry review each business day. Growth combines Follow-Up with one shoot that becomes 60 pieces of content a month, made from about 15 master clips and 20 edited photos and counting alternate sizes, cutdowns and ad-ready versions, plus captions, post copy and one revision round. It also includes 20 researched prospects or referral partners and a competitor brief. Full adds more prospects, a text back on missed calls through a dedicated tracking number after carrier registration and a review every 2 weeks. Every number is in the Plans section and in your agreement.</p></details>
           <details id="faq-film"><summary>Do you film?</summary><p>Yes. On Content, Growth and Full we come to your place once a month for up to 2 hours and film. Anyone on camera signs a release, and your customers stay off camera.</p></details>
           <details id="faq-samples"><summary>Is the work on this page from real clients?</summary><p>No. The pieces under Sample work are samples we made with produced visuals to show the formats. Your own content is filmed at your place.</p></details>
           <details id="faq-proof-shoot"><summary>What is the free proof shoot?</summary><p>One hour of filming at your business at no charge. You get 3 short clips and 5 edited photos. We ask for the right to show the work, your honest feedback and an honest review. It is set up on a 15-minute call.</p></details>
