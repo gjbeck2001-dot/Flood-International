@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flood International | Growth Support for Owner-Led Businesses in Southern California</title>
-<meta name="description" content="Prospecting, follow-up, competitor watch and content for owner-led, high-value businesses in Los Angeles, Orange County and the Inland Empire. One package, fixed monthly numbers, $3,000 a month, month to month.">
+<title>Flood International | Monthly Content, Ads and Follow-Up for Owner-Led Businesses in Southern California</title>
+<meta name="description" content="We film your business once a month and turn it into short videos, edited photos and ad-ready pieces, with follow-up and new-client work when you want it. Los Angeles, Orange County and the Inland Empire. From $1,500 a month, month to month.">
 <link rel="canonical" href="https://www.floodinternational.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Flood International">
-<meta property="og:title" content="Flood International | Growth support with numbers in writing">
-<meta property="og:description" content="One package for owner-led businesses in Southern California. Fixed monthly numbers. $3,000 a month, month to month.">
+<meta property="og:title" content="Flood International | We film your business every month">
+<meta property="og:description" content="Monthly content, ad-ready pieces and follow-up for owner-led businesses in Southern California. Every number in writing. Month to month.">
 <meta property="og:url" content="https://www.floodinternational.com/">
 <meta property="og:image" content="https://www.floodinternational.com/assets/og-home.png">
 <meta property="og:image:width" content="1200">
@@ -22,8 +22,8 @@
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Flood International Growth Support",
-  "serviceType": "Monthly growth support: prospecting, follow-up, competitor watch, inquiry oversight and content",
+  "name": "Flood International",
+  "serviceType": "Monthly content production, ad-ready creative, follow-up and prospect research for owner-led businesses",
   "url": "https://www.floodinternational.com/",
   "provider": {
     "@type": "Organization",
@@ -39,11 +39,12 @@
     { "@type": "Place", "name": "Inland Empire, CA" }
   ],
   "offers": {
-    "@type": "Offer",
-    "price": "3000",
+    "@type": "AggregateOffer",
+    "lowPrice": "1500",
+    "highPrice": "5000",
+    "offerCount": "4",
     "priceCurrency": "USD",
-    "priceSpecification": { "@type": "UnitPriceSpecification", "price": "3000", "priceCurrency": "USD", "unitText": "MONTH" },
-    "description": "Month to month. No setup fee. First month paid before work begins."
+    "description": "Four monthly plans. Month to month. No setup fee. First month paid before work begins."
   }
 }
 </script>
@@ -283,6 +284,39 @@ footer a:hover{color:var(--cream)}
   footer .wrap>span{display:flex;flex-wrap:wrap;gap:8px 18px}
   footer a{margin:0}
 }
+
+/* sample work */
+.work-note{margin-top:28px;border-left:2px solid var(--amber);padding:4px 0 4px 20px;max-width:64ch;color:var(--ink-soft);font-size:15px}
+.work-note b{color:var(--ink);font-weight:600}
+.group{margin-top:clamp(56px,7vw,88px)}
+.group-hd{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;border-top:1px solid var(--ink);padding-top:20px;margin-bottom:26px}
+.group-hd h3{font-size:clamp(28px,3vw,40px)}
+.group-hd p{font-size:14px;color:var(--sienna)}
+.reel{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:16px;-webkit-overflow-scrolling:touch}
+.reel:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.tile{flex:none;scroll-snap-align:start}
+.tile .m{height:clamp(320px,42vw,460px);background:var(--black);overflow:hidden}
+.tile .m.v{aspect-ratio:9/16}.tile .m.p{aspect-ratio:3/4}.tile .m.l{aspect-ratio:4/3}.tile .m.a{aspect-ratio:900/1032}
+.tile img,.tile video{width:100%;height:100%;object-fit:cover;display:block}
+.tile figcaption{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);padding-top:10px}
+.tile figcaption b{color:var(--sienna);font-weight:500}
+/* plans */
+.rungs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:left;margin:56px 0 48px}
+.rung{background:#241A13;padding:32px 26px 34px;position:relative}
+.rung.rec{box-shadow:inset 0 0 0 1px var(--amber)}
+.rung .tag{position:absolute;top:0;right:0;background:var(--amber);color:var(--black);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:6px 10px}
+.rung .nm{font-family:var(--serif);font-style:italic;color:var(--amber);font-size:20px}
+.rung .amt{font-family:var(--serif);font-size:clamp(44px,4.4vw,60px);line-height:1;letter-spacing:-.03em;margin:12px 0 4px}
+.rung .amt small{display:block;font-family:var(--sans);font-size:14px;letter-spacing:0;color:var(--taupe);margin-top:8px}
+.rung .pain{font-family:var(--serif);font-style:italic;font-size:17px;line-height:1.35;color:rgba(245,240,232,.78);margin:16px 0 18px;min-height:3.4em}
+.rung ul{list-style:none}
+.rung li{font-size:15px;color:rgba(245,240,232,.78);padding:11px 0;border-top:1px dotted rgba(245,240,232,.2)}
+.price h2{max-width:none;margin:0 auto}
+.addon{max-width:760px;margin:0 auto 40px;font-size:15px;color:rgba(245,240,232,.78)}
+.addon b{color:var(--cream);font-weight:500}
+.official{margin-top:34px;font-size:15px;color:rgba(245,240,232,.72);max-width:52ch}
+@media (max-width:960px){.rungs{grid-template-columns:1fr 1fr}.rung .pain{min-height:0}}
+@media (max-width:560px){.rungs{grid-template-columns:1fr}}
 </style>
 <script>document.documentElement.classList.add('js-rv');setTimeout(function(){if(!window.__rvReady)document.documentElement.classList.add('rv-done')},2500);</script>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -293,10 +327,10 @@ footer a:hover{color:var(--cream)}
   <div class="wrap">
     <a class="mark" href="/">Flood <i>International</i></a>
     <ul>
-      <li><a href="#who">Who it's for</a></li>
-      <li><a href="#package">The package</a></li>
-      <li><a href="#first-30">First 30 days</a></li>
-      <li><a href="#price">Price</a></li>
+      <li><a href="#work">Sample work</a></li>
+      <li><a href="#services">What we do</a></li>
+      <li><a href="#price">Plans</a></li>
+      <li><a href="#proof">Free proof shoot</a></li>
     </ul>
     <a class="btn btn-line" href="https://calendly.com/king-floodinternational/15-minute-fit-call" target="_blank" rel="noopener">Book a call</a>
   </div>
@@ -305,16 +339,16 @@ footer a:hover{color:var(--cream)}
 <section class="hero" style="padding-bottom:0">
   <div class="wrap">
     <p class="where">Los Angeles &nbsp;·&nbsp; Orange County &nbsp;·&nbsp; Inland Empire</p>
-    <h1>More clients found. <em>Faster follow-up.</em></h1>
+    <h1>We film your business. <em>Every month.</em></h1>
     <div class="sub">
-      <p>We find people who can send you clients and draft the outreach for you, follow up on new inquiries and keep your content going. One package, one price, every number in writing.</p>
+      <p>One shoot a month at your place becomes short videos, edited photos and ad-ready pieces, with the captions written. You approve everything. You post from your own accounts.</p>
       <div class="ctas">
-        <a class="btn btn-solid" href="#check">Free reply-time check <span class="arr">→</span></a>
-        <a class="btn btn-line" href="https://calendly.com/king-floodinternational/15-minute-fit-call" target="_blank" rel="noopener">Book a call</a>
+        <a class="btn btn-solid" href="#proof">Free proof shoot <span class="arr">→</span></a>
+        <a class="btn btn-line" href="#work">See the formats</a>
       </div>
     </div>
     <div class="price-tag">
-      <div><b>$3,000</b><span>a month, the whole price</span></div>
+      <div><b>From $1,500</b><span>a month, set by scope</span></div>
       <div><b>$0</b><span>setup fee</span></div>
       <div><b>Monthly</b><span>no long-term contract</span></div>
       <div><b>You</b><span>approve everything first</span></div>
@@ -323,22 +357,192 @@ footer a:hover{color:var(--cream)}
   <div class="letterbox"></div>
 </section>
 
+<section id="work" class="paper">
+  <div class="wrap">
+    <div class="rv">
+      <p class="chapter">Sample work</p>
+      <h2>What lands in <em>your inbox.</em></h2>
+      <p class="work-note"><b>These are samples, not client work.</b> We made them with produced visuals to show the formats you get: captioned short videos, edited photos, product videos and static ads. Your own content is filmed at your place, with your people and your product.</p>
+    </div>
+
+    <div class="group rv">
+      <div class="group-hd"><h3>Aesthetics &amp; med-spas</h3><p>Captioned videos · edited photos · static ad</p></div>
+      <div class="reel" tabindex="0" aria-label="Med-spa samples, scroll sideways">
+        <figure class="tile"><div class="m v"><video controls preload="none" playsinline poster="/assets/work/clip-c01.jpg" aria-label="Sample captioned vertical video, med-spa setting"><source src="/assets/work/clip-c01.mp4" type="video/mp4"></video></div><figcaption><b>Sample</b> · Captioned short video</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/spa-1.jpg" alt="Sample photo of a treatment room with a cream chair and an olive tree" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m a"><img src="/assets/work/ad-1.jpg" alt="Sample static ad: a serum bottle on stone with the line Look rested. Not done." loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Static ad</figcaption></figure>
+        <figure class="tile"><div class="m v"><video controls preload="none" playsinline poster="/assets/work/clip-c02.jpg" aria-label="Sample captioned vertical video, shoot day"><source src="/assets/work/clip-c02.mp4" type="video/mp4"></video></div><figcaption><b>Sample</b> · Captioned short video</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/spa-2.jpg" alt="Sample photo of a treatment room in warm light" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m v"><video controls preload="none" playsinline poster="/assets/work/clip-c04.jpg" aria-label="Sample captioned vertical video, approval step"><source src="/assets/work/clip-c04.mp4" type="video/mp4"></video></div><figcaption><b>Sample</b> · Captioned short video</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/spa-3.jpg" alt="Sample photo of a treatment room by a window" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="group rv">
+      <div class="group-hd"><h3>Exotic &amp; luxury car rental</h3><p>Product video · edited photos</p></div>
+      <div class="reel" tabindex="0" aria-label="Luxury car samples, scroll sideways">
+        <figure class="tile"><div class="m v"><video controls preload="none" playsinline poster="/assets/work/car-video.jpg" aria-label="Sample vertical product video of a black sports car at sunset" muted loop><source src="/assets/work/car-video.mp4" type="video/mp4"></video></div><figcaption><b>Sample</b> · Product video</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/car-1.jpg" alt="Sample photo of a black sports car in front of a modern home at sunset" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/car-2.jpg" alt="Sample photo of a black sports car on a stone driveway" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/car-3.jpg" alt="Sample photo of a black sports car outside a glass-walled home" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="group rv">
+      <div class="group-hd"><h3>HVAC &amp; electrical</h3><p>Edited photos of finished work</p></div>
+      <div class="reel" tabindex="0" aria-label="HVAC and electrical samples, scroll sideways">
+        <figure class="tile"><div class="m l"><img src="/assets/work/hvac-1.jpg" alt="Sample photo of a new outdoor unit beside a white stucco home" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m l"><img src="/assets/work/elec-1.jpg" alt="Sample photo of a kitchen with new pendant and under-shelf lighting" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m l"><img src="/assets/work/hvac-2.jpg" alt="Sample photo of a wall-mounted unit in a bright bedroom" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m l"><img src="/assets/work/elec-2.jpg" alt="Sample photo of a wall charger in a clean garage" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="pkg-head rv">
+      <div>
+        <p class="chapter">What we do</p>
+        <h2>Three things, <em>done for you.</em></h2>
+      </div>
+      <p class="lede" style="max-width:40ch">Each one has a number, and the number goes into your agreement.</p>
+    </div>
+    <ol class="steps rv" style="margin-top:0">
+      <li><span>1</span><h3>Content</h3><p>Once a month we come to your place for up to 2 hours and film: the space, the work, the product, and you answering the questions clients always ask. You get short vertical videos and edited photos.</p></li>
+      <li><span>2</span><h3>Media for your socials</h3><p>Every piece arrives ready to post, with the caption and post copy written and one round of changes. You post from your own accounts, so your logins and your audience stay yours.</p></li>
+      <li><span>3</span><h3>Ad campaigns</h3><p>Growth and Full include ad-ready versions of your content. Want us to run the campaigns too? That is an add-on, priced below, and you pay your ad budget to the platform directly.</p></li>
+    </ol>
+    <div class="approve rv">
+      <div class="seal">F</div>
+      <p>Nothing goes to a customer or gets posted without your approval.</p>
+    </div>
+    <p class="fit rv">When you want the content to turn into booked clients, three of the four plans add follow-up on new inquiries, and two add research on who can send you clients. Not every business needs all of it, and we'll say so on the call.</p>
+  </div>
+</section>
+
+<section id="price" class="price">
+  <div class="wrap rv">
+    <p class="chapter">Plans</p>
+    <h2>Four plans. <em>Same terms.</em></h2>
+    <div class="rungs">
+      <div class="rung">
+        <p class="nm">Follow-Up</p>
+        <p class="amt">$1,500<small>a month</small></p>
+        <p class="pain">"People reach out and we're slow, or they go cold."</p>
+        <ul>
+          <li>Text and email follow-up: up to 3 workflows in one platform you approve</li>
+          <li>Inquiry review each business day, up to 50 active inquiries</li>
+          <li>Monthly results review</li>
+        </ul>
+      </div>
+      <div class="rung">
+        <p class="nm">Content</p>
+        <p class="amt">$1,500<small>a month</small></p>
+        <p class="pain">"Nobody sees us, and I don't have time to film."</p>
+        <ul>
+          <li>One shoot a month at your place, up to 2 hours</li>
+          <li>8 vertical clips</li>
+          <li>20 edited photos</li>
+          <li>Captions and post copy, one round of changes</li>
+        </ul>
+      </div>
+      <div class="rung rec">
+        <span class="tag">We recommend</span>
+        <p class="nm">Growth</p>
+        <p class="amt">$3,000<small>a month</small></p>
+        <p class="pain">"We need more clients, not just faster replies."</p>
+        <ul>
+          <li>The follow-up and inquiry review in Follow-Up</li>
+          <li>One shoot a month, up to 2 hours: up to 90 pieces from about 15 master clips and 20 edited photos, counting sizes, cutdowns and ad-ready versions</li>
+          <li>20 researched prospects or referral partners a month, with outreach drafted for you to send</li>
+          <li>3 competitors watched, one brief a month</li>
+          <li>Monthly plan, weekly update, monthly review</li>
+        </ul>
+      </div>
+      <div class="rung">
+        <p class="nm">Full</p>
+        <p class="amt">$5,000<small>a month</small></p>
+        <p class="pain">"More clients, faster, and we miss calls."</p>
+        <ul>
+          <li>The whole Growth plan</li>
+          <li>40 researched prospects a month in place of 20</li>
+          <li>A text back when a call is missed, once your number is registered</li>
+          <li>A review every 2 weeks</li>
+        </ul>
+      </div>
+    </div>
+    <p class="addon"><b>Add-on for Growth and Full, running your ad campaigns:</b> $750 a month. Meta only, up to 2 campaigns, up to 8 new static ads a month. Your ad budget is paid to Meta directly and is not part of our fee.</p>
+    <div class="rules">
+      <span>No setup fee</span><span>Month to month</span><span>Agreement signed before payment</span><span>Secure checkout by Stripe</span>
+    </div>
+    <a class="btn btn-solid" href="https://calendly.com/king-floodinternational/15-minute-fit-call" target="_blank" rel="noopener">Book a call to start <span class="arr">→</span></a>
+    <p class="decline">The price moves only when the scope moves. We decline rather than discount.</p>
+    <p class="notinc"><b>Not included:</b> SEO or website work · social media management (you post from your own accounts) · your ad budget · texting, platform and carrier fees · promises of revenue, bookings or followers · anything not listed above.</p>
+  </div>
+</section>
+
+<section id="month" class="paper">
+  <div class="wrap">
+    <div class="rv">
+      <p class="chapter">A content month</p>
+      <h2>One visit. <em>A month of content.</em></h2>
+    </div>
+  </div>
+  <div class="strip rv">
+    <div class="wrap">
+      <div class="frames">
+        <div class="frame"><p class="wk">Step one</p><h3>Shoot</h3><p>We come to your place for up to 2 hours. Anyone on camera signs a release, and your customers stay off camera.</p></div>
+        <div class="frame"><p class="wk">Step two</p><h3>Edit</h3><p>We cut the clips, edit the photos and write the captions and post copy.</p></div>
+        <div class="frame"><p class="wk">Step three</p><h3>Approve</h3><p>You review everything and get one round of changes. Approvals within 3 business days keep the month on schedule.</p></div>
+        <div class="frame"><p class="wk">Step four</p><h3>Post</h3><p>You post from your own accounts. On Growth and Full the month ends with a results review and next month's plan.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proof" class="writing">
+  <div class="wrap writing-grid">
+    <div class="rv">
+      <p class="chapter">Free proof shoot</p>
+      <h2>See it at your place <em>before you pay.</em></h2>
+      <p class="lede">One hour at your business, free. You get 3 short clips and 5 edited photos made from your own place. We ask for three things back: the right to show the work, your honest feedback, and an honest review. We set it up on a 15-minute call.</p>
+      <p style="margin-top:34px"><a class="btn btn-solid" href="https://calendly.com/king-floodinternational/15-minute-fit-call" target="_blank" rel="noopener">Book the 15-minute call <span class="arr">→</span></a></p>
+    </div>
+    <div class="sheet rv" aria-label="What the free proof shoot includes">
+      <div class="hd"><span>Free proof shoot</span><span>1 hour</span></div>
+      <h3>What you get, what we ask</h3>
+      <p class="sm">Owner-led businesses · Los Angeles, Orange County, Inland Empire</p>
+      <ol class="terms">
+        <li>One hour of filming at your place.</li>
+        <li>3 short clips and 5 edited photos, delivered to you.</li>
+        <li>No charge, and no plan to buy afterwards.</li>
+        <li>We may show the work as an example.</li>
+        <li>You tell us honestly what you think.</li>
+        <li>You leave an honest review, good or bad.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
 <section id="who" class="paper">
   <div class="wrap who-grid">
     <div class="rv">
       <p class="chapter">Who it's for</p>
       <h2>For businesses where one client is worth <em>thousands.</em></h2>
-      <p class="lede" style="margin-top:28px">These businesses share one situation: each inquiry is worth a lot, the owner has no spare hours, and follow-up slips when the week gets busy.</p>
-      <p class="fit"><strong>A fit if</strong> you own the business, have 1 to 3 locations in Southern California, want every number in writing, and you'll review our drafts each week. We only take on a business when its own numbers say the work can return at least three times its price. We check that first.</p>
-      <p class="fit"><strong>Not a fit if</strong> you run a chain or franchise, want ads or follower counts, or want revenue promised.</p>
+      <p class="lede" style="margin-top:28px">These businesses share one situation: each client is worth a lot, the owner has no spare hours, and the content never gets made.</p>
+      <p class="fit"><strong>A fit if</strong> you own the business, have 1 to 3 locations in Southern California, want every number in writing, can give us shoot access once a month, and you'll review our drafts each week. We only take on a business when its own numbers say the work can return at least three times its price. We check that first.</p>
+      <p class="fit"><strong>Not a fit if</strong> you run a chain or franchise, want follower counts, or want revenue promised.</p>
     </div>
     <ol class="index rv">
-      <li><span class="n">i.</span><div><h3>Aesthetics &amp; med-spas</h3><p>Referral partners, consult follow-up, rebooking.</p></div></li>
-      <li><span class="n">ii.</span><div><h3>Luxury real estate</h3><p>Referral sources, showing follow-up, listing content.</p></div></li>
-      <li><span class="n">iii.</span><div><h3>Exotic &amp; luxury car rental</h3><p>Hotel and event partners, quote follow-up.</p></div></li>
-      <li><span class="n">iv.</span><div><h3>Wellness, fitness &amp; recovery</h3><p>Corporate and clinic partners, trial follow-up.</p></div></li>
-      <li><span class="n">v.</span><div><h3>Custom homes</h3><p>Architect and designer partners, estimate follow-up.</p></div></li>
-      <li><span class="n">vi.</span><div><h3>Luxury events</h3><p>Venue and planner partners, inquiry follow-up.</p></div></li>
+      <li><span class="n">i.</span><div><h3>Aesthetics &amp; med-spas</h3><p>Treatment-room videos, client questions answered, consult follow-up.</p></div></li>
+      <li><span class="n">ii.</span><div><h3>Exotic &amp; luxury car rental</h3><p>Fleet videos and photos, quote follow-up.</p></div></li>
+      <li><span class="n">iii.</span><div><h3>HVAC &amp; electrical</h3><p>Finished-install photos, crew videos, estimate follow-up.</p></div></li>
+      <li><span class="n">iv.</span><div><h3>Luxury real estate</h3><p>Listing content, showing follow-up.</p></div></li>
+      <li><span class="n">v.</span><div><h3>Wellness, fitness &amp; recovery</h3><p>Studio content, trial follow-up.</p></div></li>
+      <li><span class="n">vi.</span><div><h3>Custom homes</h3><p>Project content, estimate follow-up.</p></div></li>
+      <li><span class="n">vii.</span><div><h3>Luxury events</h3><p>Event content, inquiry follow-up.</p></div></li>
     </ol>
   </div>
 </section>
@@ -356,7 +560,7 @@ footer a:hover{color:var(--cream)}
       <label>Email<input name="email" type="email" autocomplete="email" required></label>
       <label>Business name<input name="company" autocomplete="organization"></label>
       <label>Business phone (the number clients call)<input name="phone" type="tel" autocomplete="tel" required></label>
-      <label>Industry<select name="industry" required><option value="">Choose one</option><option value="Aesthetics & med-spas">Aesthetics &amp; med-spas</option><option value="Luxury real estate">Luxury real estate</option><option value="Exotic & luxury car rental">Exotic &amp; luxury car rental</option><option value="Wellness, fitness & recovery">Wellness, fitness &amp; recovery</option><option value="Custom homes">Custom homes</option><option value="Luxury events">Luxury events</option><option value="Other">Other</option></select></label>
+      <label>Industry<select name="industry" required><option value="">Choose one</option><option value="Aesthetics & med-spas">Aesthetics &amp; med-spas</option><option value="Luxury real estate">Luxury real estate</option><option value="Exotic & luxury car rental">Exotic &amp; luxury car rental</option><option value="HVAC & electrical">HVAC &amp; electrical</option><option value="Wellness, fitness & recovery">Wellness, fitness &amp; recovery</option><option value="Custom homes">Custom homes</option><option value="Luxury events">Luxury events</option><option value="Other">Other</option></select></label>
       <label>Locations<select name="locations" required><option value="">Choose one</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4+">4+</option></select></label>
       <label>Website or Instagram<input name="link" placeholder="https://"></label>
       <label>Where do most inquiries come in?<input name="challenge" placeholder="Phone, website form, Instagram DMs..."></label>
@@ -369,73 +573,23 @@ footer a:hover{color:var(--cream)}
   </div>
 </section>
 
-<section id="package">
-  <div class="wrap">
-    <div class="pkg-head rv">
-      <div>
-        <p class="chapter">What you get</p>
-        <h2>What we do <em>every month.</em></h2>
-      </div>
-      <p class="lede" style="max-width:40ch">Six services. Each one has a number, and it goes into your agreement.</p>
-    </div>
-
-    <div class="parts">
-      <article class="part rv">
-        <div class="big">20</div>
-        <div><h3>Not enough referrals coming in?</h3><p class="unit">Prospecting · 20 a month</p></div>
-        <p>We find 20 people and businesses who can send you clients, and write the outreach for you to approve.</p>
-      </article>
-      <article class="part rv">
-        <div class="big">3</div>
-        <div><h3>Losing clients to competitors?</h3><p class="unit">Competitor watch · 3 tracked</p></div>
-        <p>We track the 3 you lose to and send you a brief each month: what changed, and what to do about it.</p>
-      </article>
-      <article class="part rv">
-        <div class="big">3</div>
-        <div><h3>Leads going cold?</h3><p class="unit">Text &amp; email follow-up · 3 workflows</p></div>
-        <p>We build up to 3 follow-ups in one text and email platform you approve: new inquiries, reminders and rebooking (review requests are one example). Each goes live after you approve and test it, with written documentation of how it works.</p>
-      </article>
-      <article class="part rv">
-        <div class="big">50</div>
-        <div><h3>Inquiries waiting too long?</h3><p class="unit">Inquiry review · up to 50 active inquiries</p></div>
-        <p>Once each business day we review up to 50 active inquiries and flag anything that needs a reply.</p>
-      </article>
-      <article class="part rv">
-        <div class="big">8</div>
-        <div><h3>No time to post?</h3><p class="unit">Content · 8 clips</p></div>
-        <p>We cut 8 short clips from your footage, with captions, post copy and one round of changes, ready for you to post from your accounts. Phone video works.</p>
-      </article>
-      <article class="part rv">
-        <div class="big">1</div>
-        <div><h3>Not sure what's working?</h3><p class="unit">Reporting · 1 plan, weekly updates</p></div>
-        <p>A plan each month, an update each week and a results review at the end. The review counts the work (prospects researched, outreach drafted, inquiries reviewed and flagged, clips delivered) and the results you report back (replies, consults booked, new clients).</p>
-      </article>
-    </div>
-
-    <div class="approve rv">
-      <div class="seal">F</div>
-      <p>Nothing goes to a customer or gets posted without your approval. Outreach goes out from your own accounts, in your name.</p>
-    </div>
-    <p class="fit rv">Not every business needs all six. If you'd only use one or two, this isn't the right buy, and we'll say so on the call.</p>
-  </div>
-</section>
-
-<section class="writing">
+<section class="writing" style="background:var(--black)">
   <div class="wrap writing-grid">
     <div class="rv">
       <p class="chapter">The agreement</p>
       <h2>Everything in writing, <em>before you pay.</em></h2>
-      <p class="lede">Before any money moves, you sign a short written agreement: the scope with the price and every monthly number, our standard terms, and a data processing addendum. If $3,000 a month doesn't make sense for your business, we'll tell you on the call.</p>
+      <p class="lede">Before any money moves, you sign a short written agreement: the scope with the price and every monthly number, our standard terms, and a data processing addendum. If none of the four plans makes sense for your business, we'll tell you on the call.</p>
+      <p class="official">Flood International LLC is a California company based in Los Angeles, owned and run by Nicholas King. The person on your call films your shoot and does the work.</p>
     </div>
     <div class="sheet rv" aria-label="Summary of the agreement terms">
       <div class="hd"><span>Statement of work</span><span>Flood International LLC</span></div>
-      <h3>Growth Support</h3>
+      <h3>Your plan</h3>
       <p class="sm">Monthly scope · Los Angeles, CA</p>
       <ol class="terms">
-        <li>$3,000 a month. No setup fee.</li>
+        <li>Your plan and its monthly price. No setup fee.</li>
         <li>The first month is paid before work begins, after signing.</li>
-        <li>Month to month. Cancel any time before the next billing period.</li>
-        <li>The six monthly numbers, as listed.</li>
+        <li>Month to month. Cancel by email at any time; service runs to the end of the paid month.</li>
+        <li>Every monthly number, as listed.</li>
         <li>You approve everything that reaches a customer.</li>
         <li>Later months are invoiced. No card surcharge.</li>
       </ol>
@@ -444,39 +598,6 @@ footer a:hover{color:var(--cream)}
         <div><p class="sig">Nicholas King</p>Flood International</div>
       </div>
     </div>
-  </div>
-</section>
-
-<section id="first-30" class="paper">
-  <div class="wrap">
-    <div class="rv">
-      <p class="chapter">Month one</p>
-      <h2>You know what happens <em>every week</em> of month one.</h2>
-    </div>
-  </div>
-  <div class="strip rv">
-    <div class="wrap">
-      <div class="frames">
-        <div class="frame"><p class="wk">Week one</p><h3>Kickoff</h3><p>A 45-minute kickoff call. We agree in writing which accounts we work in. You pick your 3 competitors and send your footage.</p></div>
-        <div class="frame"><p class="wk">Week two</p><h3>First work</h3><p>Your first 10 prospects or referral partners with drafts. Your first follow-up workflow built and tested. Your first 4 clips ready for review.</p></div>
-        <div class="frame"><p class="wk">Week three</p><h3>Live</h3><p>Email workflow one goes live after your sign-off. Texting starts once your number is registered, usually 2 to 3 weeks after kickoff. The next 10 prospects. Clips 5 to 8. The daily inquiry review begins.</p></div>
-        <div class="frame"><p class="wk">Week four</p><h3>Review</h3><p>Your first competitor brief. Workflows two and three built. The monthly results review and next month's plan.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="price" class="price">
-  <div class="wrap rv">
-    <p class="chapter">Price</p>
-    <div class="amount"><sup>$</sup>3,000</div>
-    <p class="per">a month. That is the whole price.</p>
-    <div class="rules">
-      <span>No setup fee</span><span>Month to month</span><span>Agreement signed before payment</span><span>Secure checkout by Stripe</span>
-    </div>
-    <a class="btn btn-solid" href="https://calendly.com/king-floodinternational/15-minute-fit-call" target="_blank" rel="noopener">Book a call to start <span class="arr">→</span></a>
-    <p class="decline">We decline rather than discount.</p>
-    <p class="notinc"><b>Not included:</b> paid ad spend or ad management · SEO or website work · filming (we cut from your footage) · promises of revenue, bookings or followers · anything not listed above.</p>
   </div>
 </section>
 
@@ -489,9 +610,9 @@ footer a:hover{color:var(--cream)}
     <ol class="steps rv">
       <li><span>1</span><h3>Talk</h3><p>A 15-minute call. We look at how you get clients today and tell you honestly if this fits.</p></li>
       <li><span>2</span><h3>Sign</h3><p>A short written agreement with the price and every monthly number. Nothing is paid before you sign.</p></li>
-      <li><span>3</span><h3>Start</h3><p>Pay the first month by secure checkout. Kickoff is that week.</p></li>
+      <li><span>3</span><h3>Start</h3><p>Pay the first month by secure checkout. We set your first shoot date that week.</p></li>
     </ol>
-    <p class="fit rv"><strong>How we work:</strong> nothing reaches a customer without your yes · every number is in the agreement before you pay · we judge your replies by your own hours · no revenue promises · about 1 hour a week of your time · the person on your kickoff call does the work.</p>
+    <p class="fit rv"><strong>How we work:</strong> nothing reaches a customer without your yes · every number is in the agreement before you pay · no revenue promises · about 1 hour a week of your time · the person on your kickoff call does the work.</p>
   </div>
 </section>
 
@@ -549,32 +670,34 @@ footer a:hover{color:var(--cream)}
       <div class="faq-list">
         <div class="faq-group">
           <h3>Price and terms</h3>
-          <details id="faq-price"><summary>How much does it cost?</summary><p>$3,000 a month, the whole price. No setup fee.</p></details>
-          <details id="faq-contract"><summary>Is there a long-term contract?</summary><p>No. It's month to month. Cancel any time before the next billing period.</p></details>
-          <details id="faq-cancel"><summary>How do I cancel?</summary><p>Email cancel@floodinternational.com before the next billing period begins. We will confirm in writing. There is no cancellation fee.</p></details>
+          <details id="faq-price"><summary>How much does it cost?</summary><p>There are four plans: Follow-Up at $1,500 a month, Content at $1,500 a month, Growth at $3,000 a month and Full at $5,000 a month. No setup fee on any of them.</p></details>
+          <details id="faq-contract"><summary>Is there a long-term contract?</summary><p>No. It's month to month, with no minimum term.</p></details>
+          <details id="faq-cancel"><summary>How do I cancel?</summary><p>Email cancel@floodinternational.com at any time. We will confirm in writing, and service runs to the end of the month you have paid for. There is no cancellation fee.</p></details>
           <details id="faq-refund"><summary>Do I get a refund if I cancel?</summary><p>Fees already paid for the current billing period are not refunded, and services continue through the end of that period.</p></details>
-          <details id="faq-discount"><summary>Do you offer discounts?</summary><p>No. We decline rather than discount.</p></details>
+          <details id="faq-discount"><summary>Do you offer discounts?</summary><p>No. The price moves only when the scope moves, so a lower price always means a smaller plan. We decline rather than discount.</p></details>
           <details id="faq-pay"><summary>How do I pay?</summary><p>After you sign, you get a secure Stripe checkout link for the first month. Later months are invoiced.</p></details>
-          <details id="faq-results"><summary>Can you promise results?</summary><p>No one can honestly guarantee revenue, bookings or followers, so we don't. What we commit to is the work: the numbers on this page, every month, and a written review of what it produced.</p></details>
+          <details id="faq-results"><summary>Can you promise results?</summary><p>No one can honestly guarantee revenue, bookings or followers, so we don't. What we commit to is the work: the numbers in your plan, every month.</p></details>
         </div>
         <div class="faq-group">
           <h3>What you get</h3>
-          <details id="faq-services"><summary>What do I get each month?</summary><p>Six services, each with a number that goes into your agreement: prospecting (20 a month), competitor watch (3 tracked), text and email follow-up (3 workflows), inquiry review (up to 50 active inquiries), content (8 clips) and reporting (1 plan, weekly updates).</p></details>
-          <details id="faq-not-included"><summary>What isn't included?</summary><p>Not included: paid ad spend or ad management, SEO or website work, filming (we cut from your footage), promises of revenue, bookings or followers, and anything not listed above.</p></details>
-          <details id="faq-paid-ads"><summary>Do you run paid ads?</summary><p>Not in this package. It covers the six parts above and nothing else.</p></details>
-          <details id="faq-seo-social"><summary>Do you do SEO, ads or social media management?</summary><p>Not in this package. It covers the six parts above and nothing else.</p></details>
-          <details id="faq-film"><summary>Do you film?</summary><p>No. We cut 8 clips a month from up to 2 hours of footage you send. Phone video is fine.</p></details>
-          <details id="faq-industry"><summary>Does it work for my industry?</summary><p>The package is the same in every industry. If you own a business in Southern California where one client is worth thousands, we'll look at it together on the call and tell you honestly whether it fits.</p></details>
+          <details id="faq-services"><summary>What do I get each month?</summary><p>It depends on your plan. Content is one shoot a month at your place, 8 vertical clips and 20 edited photos with captions and post copy. Follow-Up is text and email follow-up plus an inquiry review each business day. Growth combines follow-up, a larger content scope, prospect research and a competitor brief. Full adds more prospects, a text back on missed calls and a review every 2 weeks. Every number is in the Plans section and in your agreement.</p></details>
+          <details id="faq-film"><summary>Do you film?</summary><p>Yes. On Content, Growth and Full we come to your place once a month for up to 2 hours and film. Anyone on camera signs a release, and your customers stay off camera.</p></details>
+          <details id="faq-samples"><summary>Is the work on this page from real clients?</summary><p>No. The pieces under Sample work are samples we made with produced visuals to show the formats. Your own content is filmed at your place.</p></details>
+          <details id="faq-proof-shoot"><summary>What is the free proof shoot?</summary><p>One hour of filming at your business at no charge. You get 3 short clips and 5 edited photos. We ask for the right to show the work, your honest feedback and an honest review. It is set up on a 15-minute call.</p></details>
+          <details id="faq-paid-ads"><summary>Do you run paid ads?</summary><p>Growth and Full include ad-ready versions of your content. Running the campaigns is an add-on at $750 a month: Meta only, up to 2 campaigns, up to 8 new static ads a month. You pay your ad budget to Meta directly.</p></details>
+          <details id="faq-seo-social"><summary>Do you do SEO or social media management?</summary><p>Not included: SEO, website work and social media management. We make the content and write the captions; you post from your own accounts.</p></details>
+          <details id="faq-not-included"><summary>What isn't included?</summary><p>Not included: SEO or website work, social media management, your ad budget, texting, platform and carrier fees, promises of revenue, bookings or followers, and anything not listed in your plan.</p></details>
+          <details id="faq-industry"><summary>Does it work for my industry?</summary><p>The plans are the same in every industry. If you own a business in Southern California where one client is worth thousands, we'll look at it together on the call and tell you honestly whether it fits.</p></details>
           <details id="faq-area"><summary>Where do you work?</summary><p>Los Angeles, Orange County and the Inland Empire.</p></details>
-          <details id="faq-not-fit"><summary>Who is this not for?</summary><p>Not a fit if you run a chain or franchise, want ads or follower counts, or want revenue promised.</p></details>
+          <details id="faq-not-fit"><summary>Who is this not for?</summary><p>Not a fit if you run a chain or franchise, want follower counts, or want revenue promised.</p></details>
         </div>
         <div class="faq-group">
           <h3>How it works</h3>
           <details id="faq-start"><summary>How do I get started?</summary><p>Book a 15-minute call. We look at how you get clients today and tell you honestly if this fits. Then you sign a short agreement and pay the first month by secure checkout.</p></details>
-          <details id="faq-time"><summary>How much of my time does this take?</summary><p>About 1 hour a week: reviewing drafts, sending the outreach you approve and reading the weekly update. Plus a 45-minute kickoff call in week one.</p></details>
-          <details id="faq-outreach"><summary>Who sends the outreach?</summary><p>You do, from your own accounts. We research each prospect and write the draft; you approve it and send it.</p></details>
-          <details id="faq-approval"><summary>Do I approve everything?</summary><p>Yes. Nothing goes to a customer or gets posted without your approval. Outreach goes out from your own accounts, in your name.</p></details>
-          <details id="faq-texting"><summary>When does texting start?</summary><p>Texting starts once your number is registered, usually 2 to 3 weeks after kickoff. Email follow-up goes live after your sign-off.</p></details>
+          <details id="faq-time"><summary>How much of my time does this take?</summary><p>About 1 hour a week: reviewing drafts and approving pieces, plus the monthly shoot on plans that include one.</p></details>
+          <details id="faq-outreach"><summary>Who sends the outreach?</summary><p>You do, from your own accounts. On Growth and Full we research each prospect and write the draft; you approve it and send it.</p></details>
+          <details id="faq-approval"><summary>Do I approve everything?</summary><p>Yes. Nothing goes to a customer or gets posted without your approval.</p></details>
+          <details id="faq-texting"><summary>When does texting start?</summary><p>Texting starts once your number is registered, usually 2 to 3 weeks after kickoff. Email follow-up goes live after your sign-off. Each follow-up goes live after you approve and test it.</p></details>
           <details id="faq-free-check"><summary>What is the free reply-time check?</summary><p>Over one week we contact your business 4 times: a morning call, a lunch call, an evening form or text, and a weekend message. We say who we are every time. Within 2 business days of the last contact you get one page showing when each reply came, or didn't.</p></details>
         </div>
       </div>
@@ -586,8 +709,8 @@ footer a:hover{color:var(--cream)}
   <div class="wrap">
     <div class="row rv">
       <div>
-        <h2>One <em>call.</em></h2>
-        <p>We'll look at how you get clients today. You'll leave knowing whether this fits.</p>
+        <h2>One <em>hour.</em></h2>
+        <p>A free proof shoot at your place, set up on a 15-minute call. You'll see the work before you decide anything.</p>
       </div>
       <a class="btn btn-solid" href="https://calendly.com/king-floodinternational/15-minute-fit-call" target="_blank" rel="noopener">Book a call <span class="arr">→</span></a>
     </div>

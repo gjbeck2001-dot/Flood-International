@@ -28,7 +28,7 @@ const MAX = { name: 120, email: 160, company: 160, url: 300, challenge: 1200, ut
 // Ruled by Nick 2026-10-29.
 const CHECK_NAME = 'Free reply-time check';
 // Must match the <select> options on the page (checked by check_home.py).
-const INDUSTRIES = ['Aesthetics & med-spas', 'Luxury real estate', 'Exotic & luxury car rental',
+const INDUSTRIES = ['Aesthetics & med-spas', 'Luxury real estate', 'Exotic & luxury car rental', 'HVAC & electrical',
   'Wellness, fitness & recovery', 'Custom homes', 'Luxury events', 'Other'];
 const LOCATIONS = ['1', '2', '3', '4+'];
 
