@@ -6,6 +6,7 @@
 <title>Flood International | Monthly Content, Ads and Follow-Up for Owner-Led Businesses in Southern California</title>
 <meta name="description" content="We film your business once a month and turn it into short videos, edited photos and ad-ready pieces, with follow-up and new-client work when you want it. Los Angeles, Orange County and the Inland Empire. From $1,500 a month, month to month.">
 <link rel="canonical" href="https://www.floodinternational.com/">
+<meta name="theme-color" content="#1A1410">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Flood International">
 <meta property="og:title" content="Flood International | We film your business every month">
@@ -330,25 +331,32 @@ footer a:hover{color:var(--cream)}
   .sign{row-gap:56px}
 }
 @media (max-width:350px){.mark{font-size:18px}}
+/* foundation pass 2026-11-13: keyboard users can jump past the header */
+.skip{position:absolute;left:-9999px;top:12px;z-index:60;background:var(--amber);color:var(--black);font:500 14px/1 var(--sans);padding:12px 18px;text-decoration:none}
+.skip:focus{left:12px}
 </style>
 <script>document.documentElement.classList.add('js-rv');setTimeout(function(){if(!window.__rvReady)document.documentElement.classList.add('rv-done')},2500);</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
 <header class="nav">
   <div class="wrap">
     <a class="mark" href="/">Flood <i>International</i></a>
+    <nav aria-label="Main">
     <ul>
       <li><a href="#work">Sample work</a></li>
       <li><a href="#services">What we do</a></li>
       <li><a href="#price">Plans</a></li>
       <li><a href="#proof">Free proof shoot</a></li>
     </ul>
+    </nav>
     <a class="btn btn-line" href="https://calendly.com/king-floodinternational/15-minute-fit-call" target="_blank" rel="noopener">Book a call</a>
   </div>
 </header>
 
+<main id="main">
 <section class="hero" style="padding-bottom:0">
   <div class="wrap">
     <p class="where">Los Angeles &nbsp;·&nbsp; Orange County &nbsp;·&nbsp; Inland Empire</p>
@@ -380,34 +388,34 @@ footer a:hover{color:var(--cream)}
 
     <div class="group rv">
       <div class="group-hd"><h3>Aesthetics &amp; med-spas</h3><p>Captioned videos · edited photos · static ad</p></div>
-      <div class="reel" tabindex="0" aria-label="Med-spa samples, scroll sideways">
+      <div class="reel" role="region" tabindex="0" aria-label="Med-spa samples, scroll sideways">
         <figure class="tile"><div class="m v"><video controls preload="none" playsinline poster="/assets/work/clip-c01.jpg" aria-label="Sample captioned vertical video, med-spa setting"><source src="/assets/work/clip-c01.mp4" type="video/mp4"></video></div><figcaption><b>Sample</b> · Captioned short video</figcaption></figure>
-        <figure class="tile"><div class="m p"><img src="/assets/work/spa-1.jpg" alt="Sample photo of a treatment room with a cream chair and an olive tree" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
-        <figure class="tile"><div class="m a"><img src="/assets/work/ad-1.jpg" alt="Sample static ad: a serum bottle on stone with the line Look rested. Not done." loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Static ad</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/spa-1.jpg" width="900" height="1200" alt="Sample photo of a treatment room with a cream chair and an olive tree" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m a"><img src="/assets/work/ad-1.jpg" width="900" height="1032" alt="Sample static ad: a serum bottle on stone with the line Look rested. Not done." loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Static ad</figcaption></figure>
         <figure class="tile"><div class="m v"><video controls preload="none" playsinline poster="/assets/work/clip-c02.jpg" aria-label="Sample captioned vertical video, shoot day"><source src="/assets/work/clip-c02.mp4" type="video/mp4"></video></div><figcaption><b>Sample</b> · Captioned short video</figcaption></figure>
-        <figure class="tile"><div class="m p"><img src="/assets/work/spa-2.jpg" alt="Sample photo of a treatment room in warm light" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/spa-2.jpg" width="900" height="1200" alt="Sample photo of a treatment room in warm light" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
         <figure class="tile"><div class="m v"><video controls preload="none" playsinline poster="/assets/work/clip-c04.jpg" aria-label="Sample captioned vertical video, approval step"><source src="/assets/work/clip-c04.mp4" type="video/mp4"></video></div><figcaption><b>Sample</b> · Captioned short video</figcaption></figure>
-        <figure class="tile"><div class="m p"><img src="/assets/work/spa-3.jpg" alt="Sample photo of a treatment room by a window" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/spa-3.jpg" width="900" height="1200" alt="Sample photo of a treatment room by a window" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
       </div>
     </div>
 
     <div class="group rv">
       <div class="group-hd"><h3>Exotic &amp; luxury car rental</h3><p>Product video · edited photos</p></div>
-      <div class="reel" tabindex="0" aria-label="Luxury car samples, scroll sideways">
+      <div class="reel" role="region" tabindex="0" aria-label="Luxury car samples, scroll sideways">
         <figure class="tile"><div class="m v"><video controls preload="none" playsinline poster="/assets/work/car-video.jpg" aria-label="Sample vertical product video of a black sports car at sunset" muted loop><source src="/assets/work/car-video.mp4" type="video/mp4"></video></div><figcaption><b>Sample</b> · Product video</figcaption></figure>
-        <figure class="tile"><div class="m p"><img src="/assets/work/car-1.jpg" alt="Sample photo of a black sports car in front of a modern home at sunset" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
-        <figure class="tile"><div class="m p"><img src="/assets/work/car-2.jpg" alt="Sample photo of a black sports car on a stone driveway" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
-        <figure class="tile"><div class="m p"><img src="/assets/work/car-3.jpg" alt="Sample photo of a black sports car outside a glass-walled home" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/car-1.jpg" width="900" height="1200" alt="Sample photo of a black sports car in front of a modern home at sunset" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/car-2.jpg" width="900" height="1200" alt="Sample photo of a black sports car on a stone driveway" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m p"><img src="/assets/work/car-3.jpg" width="900" height="1200" alt="Sample photo of a black sports car outside a glass-walled home" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
       </div>
     </div>
 
     <div class="group rv">
       <div class="group-hd"><h3>HVAC &amp; electrical</h3><p>Edited photos of finished work</p></div>
-      <div class="reel" tabindex="0" aria-label="HVAC and electrical samples, scroll sideways">
-        <figure class="tile"><div class="m l"><img src="/assets/work/hvac-1.jpg" alt="Sample photo of a new outdoor unit beside a white stucco home" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
-        <figure class="tile"><div class="m l"><img src="/assets/work/elec-1.jpg" alt="Sample photo of a kitchen with new pendant and under-shelf lighting" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
-        <figure class="tile"><div class="m l"><img src="/assets/work/hvac-2.jpg" alt="Sample photo of a wall-mounted unit in a bright bedroom" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
-        <figure class="tile"><div class="m l"><img src="/assets/work/elec-2.jpg" alt="Sample photo of a wall charger in a clean garage" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+      <div class="reel" role="region" tabindex="0" aria-label="HVAC and electrical samples, scroll sideways">
+        <figure class="tile"><div class="m l"><img src="/assets/work/hvac-1.jpg" width="1200" height="900" alt="Sample photo of a new outdoor unit beside a white stucco home" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m l"><img src="/assets/work/elec-1.jpg" width="1200" height="900" alt="Sample photo of a kitchen with new pendant and under-shelf lighting" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m l"><img src="/assets/work/hvac-2.jpg" width="1200" height="900" alt="Sample photo of a wall-mounted unit in a bright bedroom" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
+        <figure class="tile"><div class="m l"><img src="/assets/work/elec-2.jpg" width="1200" height="900" alt="Sample photo of a wall charger in a clean garage" loading="lazy" decoding="async"></div><figcaption><b>Sample</b> · Edited photo</figcaption></figure>
       </div>
     </div>
   </div>
@@ -717,6 +725,8 @@ footer a:hover{color:var(--cream)}
     </div>
   </div>
 </section>
+
+</main>
 
 <section class="close">
   <div class="wrap">
