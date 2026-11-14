@@ -7,6 +7,7 @@
 <meta name="description" content="We film your business once a month and turn it into short videos, edited photos and ad-ready pieces, with follow-up and new-client work when you want it. Los Angeles, Orange County and the Inland Empire. From $1,500 a month, month to month.">
 <link rel="canonical" href="https://www.floodinternational.com/">
 <meta name="theme-color" content="#1A1410">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Flood International">
 <meta property="og:title" content="Flood International | We film your business every month">
@@ -331,6 +332,17 @@ footer a:hover{color:var(--cream)}
   .sign{row-gap:56px}
 }
 @media (max-width:350px){.mark{font-size:18px}}
+/* phone menu (2026-11-13): shown under 960px, where the inline links are hidden */
+.menu{display:none;position:relative;border:0}
+.menu summary{list-style:none;cursor:pointer;font:500 13px/1 var(--sans);letter-spacing:.02em;padding:10px 14px;border:1px solid currentColor;padding-right:14px;display:block}
+.menu summary::-webkit-details-marker{display:none}
+.menu summary::after{content:none}
+.menu[open] summary{background:var(--cream);color:var(--black)}
+.menu-list{position:absolute;right:0;top:calc(100% + 8px);min-width:210px;list-style:none;background:var(--black);border:1px solid rgba(245,240,232,.18);padding:6px 0;z-index:20;box-shadow:0 20px 40px -20px rgba(0,0,0,.7)}
+.menu-list a{display:block;padding:14px 20px;text-decoration:none;font-size:15px;color:var(--cream)}
+.menu-list a:hover{color:var(--amber)}
+.menu summary:focus-visible,.menu-list a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media (max-width:960px){.menu{display:block}.nav .menu .menu-list{display:block}.nav .wrap{gap:10px}.nav nav{margin-left:auto}}
 /* foundation pass 2026-11-13: keyboard users can jump past the header */
 .skip{position:absolute;left:-9999px;top:12px;z-index:60;background:var(--amber);color:var(--black);font:500 14px/1 var(--sans);padding:12px 18px;text-decoration:none}
 .skip:focus{left:12px}
@@ -351,6 +363,15 @@ footer a:hover{color:var(--cream)}
       <li><a href="#price">Plans</a></li>
       <li><a href="#proof">Free proof shoot</a></li>
     </ul>
+    <details class="menu">
+      <summary>Menu</summary>
+      <ul class="menu-list">
+        <li><a href="#work">Sample work</a></li>
+        <li><a href="#services">What we do</a></li>
+        <li><a href="#price">Plans</a></li>
+        <li><a href="#proof">Free proof shoot</a></li>
+      </ul>
+    </details>
     </nav>
     <a class="btn btn-line" href="https://calendly.com/king-floodinternational/15-minute-fit-call" target="_blank" rel="noopener">Book a call</a>
   </div>
@@ -488,6 +509,7 @@ footer a:hover{color:var(--cream)}
         <p class="pain">"More clients, faster, and we miss calls."</p>
         <ul>
           <li>The whole Growth plan</li>
+          <li>90 pieces of content a month in place of 60, from the same monthly shoot</li>
           <li>40 researched prospects a month in place of 20</li>
           <li>A text back when a call is missed, using a dedicated tracking number after carrier registration</li>
           <li>A review every 2 weeks</li>
@@ -693,7 +715,7 @@ footer a:hover{color:var(--cream)}
           <h3>Price and terms</h3>
           <details id="faq-price"><summary>How much does it cost?</summary><p>There are four plans: Follow-Up at $1,500 a month, Content at $1,500 a month, Growth at $3,000 a month and Full at $5,000 a month. No setup fee on any of them.</p></details>
           <details id="faq-contract"><summary>Is there a long-term contract?</summary><p>No. It's month to month, with no minimum term.</p></details>
-          <details id="faq-cancel"><summary>How do I cancel?</summary><p>Email cancel@floodinternational.com at any time. We will confirm in writing, and service runs to the end of the month you have paid for. There is no cancellation fee.</p></details>
+          <details id="faq-cancel"><summary>How do I cancel?</summary><p>Email cancel@floodinternational.com at any time. We will confirm in writing, and service runs to the end of the month you have paid for. There is no cancellation fee. If an invoice for a later month isn't paid by its due date, we may treat that as a cancellation: service ends at the end of the last month you paid for, and nothing is charged for the unpaid month.</p></details>
           <details id="faq-refund"><summary>Do I get a refund if I cancel?</summary><p>Fees already paid for the current billing period are not refunded, and services continue through the end of that period.</p></details>
           <details id="faq-discount"><summary>Do you offer discounts?</summary><p>No. The price moves only when the scope moves, so a lower price always means a smaller plan. We decline rather than discount.</p></details>
           <details id="faq-pay"><summary>How do I pay?</summary><p>After you sign, you get a secure Stripe checkout link for the first month. Later months are invoiced.</p></details>
@@ -701,7 +723,7 @@ footer a:hover{color:var(--cream)}
         </div>
         <div class="faq-group">
           <h3>What you get</h3>
-          <details id="faq-services"><summary>What do I get each month?</summary><p>It depends on your plan. Content is one shoot a month at your place, 8 vertical clips and 20 edited photos with captions and post copy. Follow-Up is text and email follow-up plus an inquiry review each business day. Growth combines Follow-Up with one shoot that becomes 60 pieces of content a month, made from about 15 master clips and 20 edited photos and counting alternate sizes, cutdowns and ad-ready versions, plus captions, post copy and one revision round. It also includes 20 researched prospects or referral partners and a competitor brief. Full adds more prospects, a text back on missed calls through a dedicated tracking number after carrier registration and a review every 2 weeks. Every number is in the Plans section and in your agreement.</p></details>
+          <details id="faq-services"><summary>What do I get each month?</summary><p>It depends on your plan. Content is one shoot a month at your place, 8 vertical clips and 20 edited photos with captions and post copy. Follow-Up is text and email follow-up plus an inquiry review each business day. Growth combines Follow-Up with one shoot that becomes 60 pieces of content a month, made from about 15 master clips and 20 edited photos and counting alternate sizes, cutdowns and ad-ready versions, plus captions, post copy and one revision round. It also includes 20 researched prospects or referral partners and a competitor brief. Full adds 90 pieces of content a month in place of 60 from the same monthly shoot, more prospects, a text back on missed calls through a dedicated tracking number after carrier registration and a review every 2 weeks. Every number is in the Plans section and in your agreement.</p></details>
           <details id="faq-film"><summary>Do you film?</summary><p>Yes. On Content, Growth and Full we come to your place once a month for up to 2 hours and film. Anyone on camera signs a release, and your customers stay off camera.</p></details>
           <details id="faq-samples"><summary>Is the work on this page from real clients?</summary><p>No. The pieces under Sample work are samples we made with produced visuals to show the formats. Your own content is filmed at your place.</p></details>
           <details id="faq-proof-shoot"><summary>What is the free proof shoot?</summary><p>One hour of filming at your business at no charge. You get 3 short clips and 5 edited photos. We ask for the right to show the work, your honest feedback and an honest review. It is set up on a 15-minute call.</p></details>
@@ -749,6 +771,9 @@ footer a:hover{color:var(--cream)}
 <script>
 (function(){
   window.__rvReady=true;
+  var mn=document.querySelector('.menu');
+  if(mn){mn.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){mn.removeAttribute('open')})});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&mn.open){mn.removeAttribute('open');mn.querySelector('summary').focus()}});}
   var els=document.querySelectorAll('.rv');
   if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
   var io=new IntersectionObserver(function(entries){
