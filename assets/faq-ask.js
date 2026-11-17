@@ -70,7 +70,7 @@ const SYN = {
   area: ['area'], serve: ['area'], located: ['area'], location: ['area'], based: ['area'], where: ['area'], orange: ['area'], county: ['area'],
   angeles: ['area'], inland: ['area'], empire: ['area'], california: ['area'],
   franchise: ['franchise'], chain: ['franchise'],
-  free: ['freecheck'], check: ['freecheck'], replytime: ['freecheck'], audit: ['freecheck'],
+  free: ['proof'], check: ['proof'], audit: ['proof'],   // 2026-11-17: reply-time check removed; 'free' now means the proof shoot
   approve: ['approve'], approval: ['approve'], permission: ['approve'],
   refund: ['refund'], refunded: ['refund'],
   start: ['start'], signup: ['start'], begin: ['start'],
@@ -95,7 +95,7 @@ const TRIG = {
   'faq-services': ['services'], 'faq-not-included': ['notincluded', 'website', 'seo', 'ads'], 'faq-paid-ads': ['ads'],
   'faq-seo-social': ['seo', 'social', 'ads'], 'faq-film': ['film'], 'faq-industry': ['industry'], 'faq-area': ['area'],
   'faq-not-fit': ['franchise'], 'faq-start': ['start'], 'faq-time': ['time'], 'faq-outreach': ['outreach'],
-  'faq-approval': ['approve', 'outreach'], 'faq-texting': ['texting'], 'faq-free-check': ['freecheck'],
+  'faq-approval': ['approve', 'outreach'], 'faq-texting': ['texting'],
   'faq-samples': ['samples'], 'faq-proof-shoot': ['proof'],
 };
 // Questions the homepage must not answer from its own copy (Nick's ruling 2026-10-29): they get the

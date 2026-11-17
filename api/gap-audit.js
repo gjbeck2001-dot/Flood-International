@@ -1,7 +1,12 @@
 /**
- * Flood Systems — Free Gap Audit (lead magnet)
+ * Flood International — Free proof shoot request (lead form)
  *
- * Trigger: the /#audit form on floodinternational.com (same-origin POST).
+ * 2026-11-17 (Nick): the free reply-time check was removed; this endpoint now
+ * takes the free proof shoot request from the #proof form. Owed per lead: a
+ * call within 1 business day to book the 1-hour shoot. The lead is logged by
+ * Nick in the company's prospect note (FIELD OS → Calls); nothing here writes it.
+ *
+ * Trigger: the #proof form (id checkForm) on floodinternational.com (same-origin POST).
  * Pipeline: form → Telegram alert + owner email (either one = captured)
  *           → confirmation email to the visitor. No CRM (dropped 2026-10-08).
  *
@@ -21,12 +26,12 @@ import nodemailer from 'nodemailer';
 import { waitUntil } from '@vercel/functions';
 import { alertChannels, withTimeout } from './lib/notify.js';
 
-const MAX = { name: 120, email: 160, company: 160, url: 300, challenge: 1200, utm: 120, phone: 40, industry: 80, sid: 64 };
+const MAX = { best_time: 80, name: 120, email: 160, company: 160, url: 300, challenge: 1200, utm: 120, phone: 40, industry: 80, sid: 64 };
 
 // One name for the lead magnet, used in the alert, owner email and visitor
 // email. The page must use the same string (checked by feas/check_home.py).
 // Ruled by Nick 2026-10-29.
-const CHECK_NAME = 'Free reply-time check';
+const CHECK_NAME = 'Free proof shoot';
 // Must match the <select> options on the page (checked by check_home.py).
 const INDUSTRIES = ['Aesthetics & med-spas', 'Luxury real estate', 'Exotic & luxury car rental', 'HVAC & electrical',
   'Wellness, fitness & recovery', 'Custom homes', 'Luxury events', 'Other'];
@@ -153,13 +158,15 @@ export default async function handler(req, res) {
     const company   = clean(b.company, MAX.company);
     const link      = clean(b.link, MAX.url);
     const challenge = clean(b.challenge, MAX.challenge);
-    // The number clients call (Nick ruled 2026-10-29: required; the two calls need it).
+    // Required: Nicholas calls this number to book the shoot.
     const phone     = clean(b.phone, MAX.phone);
     const digits    = phone.replace(/\D/g, '');
     const phoneOk   = digits.length === 10 || (digits.length === 11 && digits[0] === '1');
-    // Industry and locations are required and must be one of the listed options.
+    // Industry is required and must be one of the listed options. Locations is
+    // optional since 2026-11-17 (the proof shoot form doesn't ask); checked only if sent.
     const industry  = clean(b.industry, MAX.industry);
     const locations = clean(b.locations, 4);
+    const bestTime  = clean(b.best_time, MAX.best_time);
     const submissionId = clean(b.submission_id, 64);
     const utm = {
       source:   clean(b.utm_source, MAX.utm),
@@ -171,10 +178,11 @@ export default async function handler(req, res) {
 
     if (!name || !email) return res.status(400).json({ error: 'Name and email are required.' });
     if (!isEmail(email)) return res.status(400).json({ error: 'That email address looks wrong.' });
-    if (!phone) return res.status(400).json({ error: 'Business phone is required.' });
-    if (!phoneOk) return res.status(400).json({ error: 'Please enter a 10-digit business phone number.' });
+    if (!phone) return res.status(400).json({ error: 'Phone is required.' });
+    if (!phoneOk) return res.status(400).json({ error: 'Please enter a 10-digit phone number.' });
+    if (!company) return res.status(400).json({ error: 'Business name is required.' });
     if (!INDUSTRIES.includes(industry)) return res.status(400).json({ error: 'Please choose your industry.' });
-    if (!LOCATIONS.includes(locations)) return res.status(400).json({ error: 'Please choose your number of locations.' });
+    if (locations && !LOCATIONS.includes(locations)) return res.status(400).json({ error: 'Please choose your number of locations.' });
 
     // Retries and double clicks: the same form submission, or the same
     // business again within 10 minutes, gets the original's outcome and is
@@ -209,9 +217,10 @@ export default async function handler(req, res) {
 
     const notes = [
       `${CHECK_NAME.toUpperCase()} REQUEST (lead magnet)`,
-      `Business phone: ${phone}`,
+      `Phone: ${phone}`,
       `Industry: ${industry || '—'}`,
-      `Locations: ${locations || '—'}`,
+      locations ? `Locations: ${locations}` : null,
+      `Best time to call: ${bestTime || '—'}`,
       challenge ? `\nWhere inquiries come in:\n${challenge}` : null,
       '\n— Attribution —',
       utm.source   ? `utm_source: ${utm.source}`     : null,
@@ -220,7 +229,7 @@ export default async function handler(req, res) {
       utm.content  ? `utm_content: ${utm.content}`   : null,
       referrer     ? `referrer: ${referrer}`         : null,
       `Submitted: ${new Date().toISOString()}`,
-      '\nOwed: 4 contacts over 7 days (morning call, lunch call, evening form/text, weekend message), then the 1-page reply-time report.',
+      '\nOwed: a call within 1 business day to book the 1-hour shoot. Log it in the company note (FIELD OS → Calls).',
     ].filter(Boolean).join('\n');
 
     // Record channels: Telegram alert, Slack (if configured) and the owner
@@ -235,11 +244,12 @@ export default async function handler(req, res) {
         Phone: phone,
         Industry: industry,
         Locations: locations,
+        'Best time': bestTime,
         Source: utm.source || (referrer ? 'referral' : 'direct'),
         Campaign: utm.campaign,
         Inquiries: challenge ? challenge.slice(0, 220) : '',
       },
-      footer: 'Owes: 4 contacts over 7 days + 1-page reply-time report. Log it in the company note.',
+      footer: 'Owes: a call within 1 business day to book the shoot. Log it in the company note (FIELD OS → Calls).',
     }, { timeoutMs: TIMEOUT_MS.alert });
     started = true;
 
@@ -334,9 +344,9 @@ async function sendConfirmationEmail({ name, email }) {
     html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;color:#1A1410;line-height:1.6;">
   <p>Hi${firstName(name) ? ' ' + escapeHtml(firstName(name)) : ''},</p>
   <p>Thanks for requesting a ${escapeHtml(CHECK_NAME.toLowerCase())}. Here is what happens next.</p>
-  <p>Our first contact comes within 2 business days. Over the 7 days from then, we will contact your business 4 times: a weekday morning call, a weekday lunch call, an evening website form or text, and a weekend message. We say who we are every time; we never pose as a client. We don't record anything, and we text only a number you list for texting, once. We only count a reply as late against your own listed hours or any reply time you promise.</p>
-  <p>Within 2 business days of the last contact we send you one page showing when each reply came, or didn't. No call required and no pitch attached. If it's useful and you want to talk about it, that happens after you've seen it.</p>
-  <p>One thing makes it sharper: reply to this email with your business hours and the number or form you most want tested.</p>
+  <p>I'll call you within 1 business day at the number you gave us to pick a time for the shoot. If another time suits you better, reply to this email.</p>
+  <p>The shoot is one hour of filming at your business, at no charge. You get 3 short clips and 5 edited photos made from your own place. In return we ask for three things: the right to show the work as an example, your honest feedback, and an honest review, good or bad. There's no plan to buy afterwards.</p>
+  <p>Prefer to pick the time yourself? <a href="https://calendly.com/king-floodinternational/15-minute-fit-call" style="color:#1A1410;">Book the 15-minute call here.</a></p>
   <p style="margin-top:28px;">— <strong>Nicholas King</strong><br>
   <span style="color:#8B7355;">Founder, Flood International · Los Angeles</span><br>
   <a href="https://floodinternational.com" style="color:#1A1410;">floodinternational.com</a></p>
