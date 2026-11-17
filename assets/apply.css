@@ -1,0 +1,42 @@
+.apply-hero{padding-bottom:72px}
+.apply-hero h1{font-size:clamp(50px,6vw,86px);line-height:1.07;margin:24px 0 26px}
+.apply-hero .lede{color:#bfc2b7;font-size:17px;line-height:1.9;max-width:58ch;margin:0 0 22px}
+.apply-terms{font-size:13px;letter-spacing:.04em;color:#d1bd90}
+.apply-alt{margin-top:14px;font-size:14px;color:#bfc2b7}
+.apply-alt .text-link{display:inline;margin:0}
+.apply-sec{padding:72px 0 96px}
+.apply-form{max-width:860px;display:grid;gap:56px}
+.apply-form[hidden]{display:none}
+.apply-form fieldset{border:0;display:grid;gap:22px;min-width:0}
+.apply-form legend{font-family:var(--serif);font-size:clamp(28px,3vw,38px);line-height:1.15;padding:0 0 18px;margin-bottom:6px;border-bottom:2px solid var(--ink);width:100%}
+.apply-form legend span{font:500 11px/1 var(--sans);letter-spacing:.18em;color:var(--sienna);vertical-align:middle;margin-right:12px}
+.apply-form .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 32px}
+.apply-form .wide{grid-column:1/-1}
+.apply-form label{display:grid;gap:6px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe)}
+.apply-form input:not([type=checkbox]):not([type=radio]),.apply-form select,.apply-form textarea{font:400 16px var(--sans);color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--rule);padding:8px 0;letter-spacing:0;text-transform:none;width:100%;border-radius:0}
+.apply-form textarea{border:1px solid var(--rule);padding:12px;resize:vertical}
+.apply-form input:focus,.apply-form select:focus,.apply-form textarea:focus{outline:none;border-color:var(--amber)}
+.apply-form :focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.apply-form .hint{font-size:14px;color:var(--ink-soft)}
+.apply-form .checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px}
+.apply-form .checks label{display:flex;align-items:flex-start;gap:12px;font-size:15px;letter-spacing:0;text-transform:none;color:var(--ink);line-height:1.5;cursor:pointer}
+.apply-form input[type=checkbox],.apply-form input[type=radio]{accent-color:var(--sienna);width:18px;height:18px;margin-top:3px;flex:none}
+.apply-form .plans{display:grid;gap:10px}
+.apply-form .plan{display:flex;align-items:flex-start;gap:14px;padding:18px 20px;border:1px solid var(--rule);letter-spacing:0;text-transform:none;color:var(--ink);cursor:pointer;transition:border-color .2s}
+.apply-form .plan:hover,.apply-form .plan:has(input:checked){border-color:var(--sienna)}
+.apply-form .plan b{font-family:var(--serif);font-weight:400;font-size:21px}
+.apply-form .plan i{font-style:normal;font-size:13px;color:var(--sienna);margin-left:8px}
+.apply-form .plan small{display:block;font-size:14px;color:var(--ink-soft);margin-top:4px;line-height:1.55}
+.apply-form .btn{justify-content:center;justify-self:start}
+.apply-form .form-msg{font-size:15px;color:var(--sienna);min-height:1.4em;margin-top:-36px}
+.apply-form .fine{font-size:13px;color:var(--taupe);margin-top:-40px}
+.apply-done{max-width:760px}
+.apply-done:focus{outline:none}
+.apply-done h2{margin:10px 0 0}
+.apply-done .lede{color:var(--ink-soft);font-size:18px;margin:24px 0 32px}
+@media(max-width:650px){
+  .apply-form .grid,.apply-form .checks{grid-template-columns:1fr}
+  .apply-sec{padding:48px 0 72px}
+  .apply-form{gap:44px}
+  .apply-form .btn{justify-self:stretch}
+}

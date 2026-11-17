@@ -306,6 +306,9 @@ footer a:hover{color:var(--cream)}
 .rungs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:left;margin:56px 0 48px}
 .rung{background:#241A13;padding:32px 26px 34px;position:relative}
 .rung.rec{box-shadow:inset 0 0 0 1px var(--amber)}
+.rung-apply{display:inline-flex;gap:8px;margin-top:22px;font-size:13px;letter-spacing:.04em;color:var(--amber);text-underline-offset:6px}
+.rung-apply:hover{color:var(--cream)}
+.close-ctas{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
 .rung .tag{position:absolute;top:0;right:0;background:var(--amber);color:var(--black);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:6px 10px}
 .rung .nm{font-family:var(--serif);font-style:italic;color:var(--amber);font-size:20px}
 .rung .amt{font-family:var(--serif);font-size:clamp(44px,4.4vw,60px);line-height:1;letter-spacing:-.03em;margin:12px 0 4px}
@@ -365,6 +368,7 @@ footer a:hover{color:var(--cream)}
       <li><a href="#price">Plans</a></li>
 <li><a href="#firm">The firm</a></li>
       <li><a href="#proof">Free proof shoot</a></li>
+      <li><a href="/apply">Apply</a></li>
     </ul>
     <details class="menu">
       <summary>Menu</summary>
@@ -375,6 +379,7 @@ footer a:hover{color:var(--cream)}
         <li><a href="#price">Plans</a></li>
 <li><a href="#firm">The firm</a></li>
         <li><a href="#proof">Free proof shoot</a></li>
+        <li><a href="/apply">Apply to work with us</a></li>
       </ul>
     </details>
     </nav>
@@ -474,6 +479,7 @@ footer a:hover{color:var(--cream)}
           <li>Inquiry review each business day, up to 50 active inquiries</li>
           <li>Monthly results review</li>
         </ul>
+        <a class="rung-apply" href="/apply?plan=Follow-Up">Apply for Follow-Up <span>↗</span></a>
       </div>
       <div class="rung">
         <p class="nm">Content</p>
@@ -485,6 +491,7 @@ footer a:hover{color:var(--cream)}
           <li>20 edited photos</li>
           <li>Captions and post copy, one round of changes</li>
         </ul>
+        <a class="rung-apply" href="/apply?plan=Content">Apply for Content <span>↗</span></a>
       </div>
       <div class="rung rec">
         <span class="tag">We recommend</span>
@@ -498,6 +505,7 @@ footer a:hover{color:var(--cream)}
           <li>3 competitors watched, one brief a month</li>
           <li>Monthly plan, weekly update, monthly review</li>
         </ul>
+        <a class="rung-apply" href="/apply?plan=Growth">Apply for Growth <span>↗</span></a>
       </div>
       <div class="rung">
         <p class="nm">Full</p>
@@ -510,6 +518,7 @@ footer a:hover{color:var(--cream)}
           <li>A text back when a call is missed, using a dedicated tracking number after carrier registration</li>
           <li>A review every 2 weeks</li>
         </ul>
+        <a class="rung-apply" href="/apply?plan=Full">Apply for Full <span>↗</span></a>
       </div>
     </div>
     <p class="addon"><b>Add-on for Growth and Full, running your ad campaigns:</b> $750 a month. Meta only, up to 2 campaigns, up to 8 new static ads a month. Your ad budget is paid to Meta directly and is not part of our fee.</p>
@@ -736,7 +745,7 @@ footer a:hover{color:var(--cream)}
         <h2>Let’s begin<br><em>with a conversation.</em></h2>
         <p>Tell us what you have in mind. For monthly creative work, ask about a free proof shoot at your place, set up on a 15-minute call.</p>
       </div>
-      <a class="btn btn-solid" href="https://calendly.com/king-floodinternational/15-minute-fit-call" target="_blank" rel="noopener">Book a call <span class="arr">→</span></a>
+      <div class="close-ctas"><a class="btn btn-solid" href="https://calendly.com/king-floodinternational/15-minute-fit-call" target="_blank" rel="noopener">Book a call <span class="arr">→</span></a><a class="text-link" href="/apply">Apply to work with us ↗</a></div>
     </div>
   </div>
   <footer>
