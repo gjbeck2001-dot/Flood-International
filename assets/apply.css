@@ -7,6 +7,8 @@
 .apply-sec{padding:72px 0 96px}
 .apply-form{max-width:860px;display:grid;gap:56px}
 .apply-form[hidden]{display:none}
+.apply-form{position:relative}
+.apply-form .hp{position:absolute!important;left:-9999px;width:1px!important;height:1px;overflow:hidden;opacity:0}
 .apply-form fieldset{border:0;display:grid;gap:22px;min-width:0}
 .apply-form legend{font-family:var(--serif);font-size:clamp(28px,3vw,38px);line-height:1.15;padding:0 0 18px;margin-bottom:6px;border-bottom:2px solid var(--ink);width:100%}
 .apply-form legend span{font:500 11px/1 var(--sans);letter-spacing:.18em;color:var(--sienna);vertical-align:middle;margin-right:12px}
