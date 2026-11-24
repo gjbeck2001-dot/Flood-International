@@ -25,7 +25,7 @@ const YEARS = ['Under 2', '2-5', '5-10', '10+'];
 const VALUES = ['Under $1,000', '$1,000-$5,000', '$5,000-$20,000', '$20,000+'];
 const SLIPPING = ['After-hours inquiries wait until the next day', 'Consults or estimates never book',
   'Calls missed while with clients', 'Not enough photos and video', "Past clients don't come back", 'Other'];
-const PLANS = { 'Follow-Up': '$1,500/mo', Content: '$1,500/mo', Growth: '$3,000/mo', Full: '$5,000/mo', 'Not sure': 'help me choose' };
+const PLANS = { 'Booked Jobs': '$2,500/mo', 'Not sure': 'help me choose' };
 const BUDGETS = ['Yes', "Depends on what's included", 'Not right now'];
 const STARTS = ['This month', 'Next month', 'Just exploring'];
 
@@ -306,7 +306,7 @@ async function sendConfirmationEmail({ name, email }) {
   <p>Hi${firstName(name) ? ' ' + escapeHtml(firstName(name)) : ''},</p>
   <p>Thanks for applying to work with Flood International. I'll read your answers before we talk, so the call is about your business.</p>
   <p>Next step: a 25-minute call. <a href="${CALENDLY}" style="color:#1A1410;">Pick a time here</a>, or I'll call you within 1 business day at the number you gave us.</p>
-  <p>On the call we'll go through what's slipping, which plan fits, and what the first month would look like. Every plan is month to month with no setup fee, and nothing starts until you've signed the agreement.</p>
+  <p>On the call we'll go through what's slipping, whether the plan fits, and what the first month would look like. The plan is month to month with no setup fee, and nothing starts until you've signed the agreement.</p>
   <p style="margin-top:28px;">— <strong>Nicholas King</strong><br>
   <span style="color:#8B7355;">Founder, Flood International · Los Angeles</span><br>
   <a href="https://floodinternational.com" style="color:#1A1410;">floodinternational.com</a></p>
