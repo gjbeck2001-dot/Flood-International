@@ -14,7 +14,7 @@ import nodemailer from 'nodemailer';
 import { waitUntil } from '@vercel/functions';
 import { alertChannels, withTimeout } from './lib/notify.js';
 
-const CALENDLY = 'https://calendly.com/king-floodinternational/15-minute-fit-call';
+const CALENDLY = 'https://calendly.com/king-floodinternational/25-minute-sales-call';
 const MAX = { best_time: 80, name: 120, email: 160, company: 160, url: 300, challenge: 1200, utm: 120, phone: 40 };
 
 // Every list must match the options in apply.html.
@@ -305,7 +305,7 @@ async function sendConfirmationEmail({ name, email }) {
     html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;color:#1A1410;line-height:1.6;">
   <p>Hi${firstName(name) ? ' ' + escapeHtml(firstName(name)) : ''},</p>
   <p>Thanks for applying to work with Flood International. I'll read your answers before we talk, so the call is about your business.</p>
-  <p>Next step: a 15-minute call. <a href="${CALENDLY}" style="color:#1A1410;">Pick a time here</a>, or I'll call you within 1 business day at the number you gave us.</p>
+  <p>Next step: a 25-minute call. <a href="${CALENDLY}" style="color:#1A1410;">Pick a time here</a>, or I'll call you within 1 business day at the number you gave us.</p>
   <p>On the call we'll go through what's slipping, which plan fits, and what the first month would look like. Every plan is month to month with no setup fee, and nothing starts until you've signed the agreement.</p>
   <p style="margin-top:28px;">— <strong>Nicholas King</strong><br>
   <span style="color:#8B7355;">Founder, Flood International · Los Angeles</span><br>

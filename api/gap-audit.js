@@ -346,7 +346,7 @@ async function sendConfirmationEmail({ name, email }) {
   <p>Thanks for requesting a ${escapeHtml(CHECK_NAME.toLowerCase())}. Here is what happens next.</p>
   <p>I'll call you within 1 business day at the number you gave us to pick a time for the shoot. If another time suits you better, reply to this email.</p>
   <p>The shoot is one hour of filming at your business, at no charge. You get 3 short clips and 5 edited photos made from your own place. In return we ask for three things: the right to show the work as an example, your honest feedback, and an honest review, good or bad. There's no plan to buy afterwards.</p>
-  <p>Prefer to pick the time yourself? <a href="https://calendly.com/king-floodinternational/15-minute-fit-call" style="color:#1A1410;">Book the 15-minute call here.</a></p>
+  <p>Prefer to pick the time yourself? <a href="https://calendly.com/king-floodinternational/25-minute-sales-call" style="color:#1A1410;">Book the 25-minute call here.</a></p>
   <p style="margin-top:28px;">— <strong>Nicholas King</strong><br>
   <span style="color:#8B7355;">Founder, Flood International · Los Angeles</span><br>
   <a href="https://floodinternational.com" style="color:#1A1410;">floodinternational.com</a></p>
